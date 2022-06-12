@@ -1,4 +1,4 @@
-// Should be inserted into your Javascript story format:
+// Should be inserted into your Story Javascript:
 var isGame = parent.GameInterface !== undefined && parent.GameInterface !== null;
 var time = Date.now();
 var maxSeconds = 20;
