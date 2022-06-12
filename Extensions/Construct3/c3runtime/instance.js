@@ -1,7 +1,7 @@
 
 const C3 = self.C3;
 
-C3.Plugins.MyCompany_SingleGlobal.Instance = class SingleGlobalInstance extends C3.SDKInstanceBase
+C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstance extends C3.SDKWorldInstanceBase
 {
 	constructor(inst, properties)
 	{

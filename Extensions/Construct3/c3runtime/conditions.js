@@ -1,5 +1,5 @@
 
-self.C3.Plugins.MyCompany_SingleGlobal.Cnds =
+self.C3.Plugins.GDACollab_MicrogameJamController.Cnds =
 {
 	IsLargeNumber(number)
 	{

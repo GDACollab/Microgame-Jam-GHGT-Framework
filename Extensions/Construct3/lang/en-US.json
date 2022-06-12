@@ -3,9 +3,9 @@
 	"fileDescription": "Strings for MyCustomPlugin.",
 	"text": {
 		"plugins": {
-			"GDACollab_MicrogameJamController": {
-				"name": "MyCustomPlugin",
-				"description": "An example third-party plugin.",
+			"gdacollab_microgamejamcontroller": {
+				"name": "MicrogameJamController",
+				"description": "Controller for Microgame Jam supported games.",
 				"help-url": "https://www.construct.net",
 				"properties": {
 					"test-property": {

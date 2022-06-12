@@ -5,7 +5,7 @@
 	"id": "GDACollab_MicrogameJamController",
 	"version": "1.0.0.0",
 	"author": "Game Design and Art Collaboration",
-	"website": "http://gdacollab.com/", // REPLACE:
+	"website": "http://gdacollab.com/",
 	"documentation": "https://www.construct.net",
 	"description": "Controller Plugin for GDA's Microgame Jam",
 	"editor-scripts": [

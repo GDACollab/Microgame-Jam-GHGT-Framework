@@ -1,5 +1,5 @@
 
-self.C3.Plugins.MyCompany_SingleGlobal.Exps =
+self.C3.Plugins.GDACollab_MicrogameJamController.Exps =
 {
 	Double(number)
 	{

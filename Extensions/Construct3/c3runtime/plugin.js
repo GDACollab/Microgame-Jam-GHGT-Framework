@@ -1,7 +1,7 @@
 
 const C3 = self.C3;
 
-C3.Plugins.MyCompany_SingleGlobal = class SingleGlobalPlugin extends C3.SDKPluginBase
+C3.Plugins.GDACollab_MicrogameJamController = class SingleGlobalPlugin extends C3.SDKPluginBase
 {
 	constructor(opts)
 	{
