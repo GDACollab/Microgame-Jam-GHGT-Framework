@@ -1,19 +1,35 @@
 
 const C3 = self.C3;
 
-C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstance extends C3.SDKWorldInstanceBase
+// NOTE: use a unique DOM component ID to ensure it doesn't clash with anything else
+// This must also match the ID in domSide.js.
+const DOM_COMPONENT_ID = "gdacollab-microgamejamcontroller";
+
+C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstance extends C3.SDKInstanceBase
 {
 	constructor(inst, properties)
 	{
-		super(inst);
-		
-		// Initialise object properties
-		this._testProperty = 0;
-		
-		if (properties)		// note properties may be null in some cases
-		{
-			this._testProperty = properties[0];
-		}
+		super(inst, DOM_COMPONENT_ID);
+
+		this._isGame = false;
+		this.GameInterface = null;
+
+		// While the game is loading:
+		this._runtime.AddLoadPromise(
+			this.PostToDOMAsync("get-interface").then((interface) => {
+				this.GameInterface = interface;
+				this._isGame = this.GameInterface !== null;
+			})
+		);
+
+		// After we're done loading:
+		this._runtime.Dispatcher().addEventListener("afterload", function(){
+			this._maxTimer = 20;
+			this._timer = Date.now();
+			if (this._isGame) {
+				this.GameInterface.gameStart();
+			}
+		});
 	}
 	
 	Release()
@@ -21,31 +37,65 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 		super.Release();
 	}
 
-	_SetTestProperty(n)
-	{
-		this._testProperty = n;
+	_GetLives() {
+		if (this._isGame){
+			return this.GameInterface.getLives();
+		} else {
+			return 3;
+		}
 	}
 
-	_GetTestProperty()
-	{
-		return this._testProperty;
+	_GetDifficulty() {
+		if (this._isGame) {
+			return this.GameInterface.getDifficulty();
+		} else {
+			return 1;
+		}
 	}
-	
-	SaveToJson()
-	{
-		return {
-			// data to be saved for savegames
-		};
+
+	_GetTimer(){
+		if (this._isGame) {
+			return this.GameInterface.getTimer();
+		} else {
+			return this._maxTimer - Math.floor((Date.now() - this._timer)/1000);
+		}
 	}
-	
-	LoadFromJson(o)
-	{
-		// load state for savegames
+
+	_WinGame() {
+		if (this._isGame) {
+			this.GameInterface.winGame();
+		} else {
+			alert("Game won!");
+		}
+	}
+
+	_LoseGame() {
+		if (this._isGame) {
+			this.GameInterface.loseGame();
+		} else {
+			alert("Game lost!");
+		}
+	}
+
+	_SetMaxTimer(seconds){
+		if (this._isGame) {
+			this.GameInterface.setMaxTimer(seconds);
+		} else {
+			this._maxTimer = seconds;
+		}
+	}
+
+	_GetMaxTimer(){
+		if (this._isGame) {
+			return this.GameInterface.getMaxTimer();
+		} else {
+			return this._maxTimer;
+		}
 	}
 
 	GetScriptInterfaceClass()
 	{
-		return self.IMySingleGlobalInstance;
+		return self.IMicrogameJamControllerInstance;
 	}
 };
 
@@ -53,7 +103,8 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 // caller using the script interface.
 const map = new WeakMap();
 
-self.IMySingleGlobalInstance = class IMySingleGlobalInstance extends self.IInstance {
+// Should be accessible through JS by IMicrogameControllerInstance
+self.IMicrogameJamControllerInstance = class IMicrogameJamControllerInstance extends self.IInstance {
 	constructor()
 	{
 		super();
@@ -62,14 +113,31 @@ self.IMySingleGlobalInstance = class IMySingleGlobalInstance extends self.IInsta
 		map.set(this, self.IInstance._GetInitInst().GetSdkInstance());
 	}
 
-	// Example setter/getter property on script interface
-	set testProperty(n)
-	{
-		map.get(this)._SetTestProperty(n);
+	GetLives(){
+		return map.get(this)._GetLives(); 
 	}
 
-	get testProperty()
-	{
-		return map.get(this)._GetTestProperty();
+	GetDifficulty() {
+		return map.get(this)._GetDifficulty();
+	}
+
+	GetTimer() {
+		return map.get(this)._GetTimer();
+	}
+
+	WinGame() {
+		map.get(this)._WinGame();
+	}
+
+	LoseGame(){
+		map.get(this)._LoseGame();
+	}
+
+	SetMaxTimer(seconds) {
+		map.get(this)._SetMaxTimer(seconds);
+	}
+
+	GetMaxTimer() {
+		return map.get(this)._GetMaxTimer();
 	}
 };

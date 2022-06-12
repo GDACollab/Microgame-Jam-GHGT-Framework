@@ -1,8 +1,16 @@
 
 self.C3.Plugins.GDACollab_MicrogameJamController.Acts =
 {
-	LogToConsole()
+	WinGame()
 	{
-		console.log("This is the 'Log to console' action. Test property = " + this._GetTestProperty());
+		this._WinGame();
+	},
+
+	LoseGame(){
+		this._LoseGame();
+	},
+
+	SetMaxTimer(seconds) {
+		this._SetMaxTimer(seconds);
 	}
 };

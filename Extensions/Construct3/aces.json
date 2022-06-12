@@ -1,38 +1,47 @@
 ﻿{
 	"custom": {
-		"conditions": [
+		"actions": [
 			{
-				"id": "is-large-number",
-				"scriptName": "IsLargeNumber",
-				"highlight": true,
+				"id": "win-game",
+				"scriptName": "WinGame",
+				"highlight": true
+			}, {
+				"id": "lose-game",
+				"scriptName": "LoseGame",
+				"highlight": true
+			},
+			{
+				"id": "set-max-timer",
+				"scriptName": "SetMaxTimer",
 				"params": [
 					{
 						"id": "number",
 						"type": "number"
 					}
 				]
-			}
-		],
-		"actions": [
-			{
-				"id": "log-to-console",
-				"scriptName": "LogToConsole",
-				"highlight": true
 			}
 		],
 		"expressions": [
 			{
-				"id": "double",
-				"expressionName": "Double",
-				"scriptName": "Double",
+				"id": "get-lives",
+				"expressionName": "GetLives",
+				"scriptName": "GetLives",
+				"returnType": "number"
+			}, {
+				"id": "get-difficulty",
+				"expressionName": "GetDifficulty",
+				"scriptName": "GetDifficulty",
 				"highlight": true,
-				"returnType": "number",
-				"params": [
-					{
-						"id": "number",
-						"type": "number"
-					}
-				]
+				"returnType": "number"
+			}, {
+				"id": "get-timer",
+				"expressionName": "GetTimer",
+				"scriptName": "GetTimer",
+				"returnType": "number"
+			}, {
+				"id": "get-max-timer",
+				"expressionName": "GetMaxTimer",
+				"scriptName": "GetMaxTimer"
 			}
 		]
 	}
