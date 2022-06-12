@@ -14,38 +14,48 @@
 					}
 				},
 				"aceCategories": {
-					"custom": "Custom"
-				},
-				"conditions": {
-					"is-large-number": {
-						"list-name": "Is large number",
-						"display-text": "[i]{0}[/i] is a large number",
-						"description": "Test if a number is greater than 100.",
-						"params": {
-							"number": {
-								"name": "Number",
-								"desc": "Number to test if greater than 100."
-							}
-						}
-					}
+					"endingGame": "Controls to either win or lose the game",
+					"gameParameters": "Control/Access parameters from the Microgame Jam"
 				},
 				"actions": {
-					"log-to-console": {
-						"list-name": "Log to console",
-						"display-text": "Log to console",
-						"description": "Log a test message to the console."
+					"win-game": {
+						"list-name": "Win Game",
+						"display-text": "Win Game",
+						"description": "Win the game in the context of the Microgame Jam."
+					},
+					"lose-game": {
+						"list-name": "Lose Game",
+						"display-text": "Lose Game",
+						"description": "Lose the game in the context of the Microgame Jam."
+					},
+					"set-max-timer": {
+						"list-name": "Set Max Timer",
+						"display-text": "Set Max Timer",
+						"description": "Set the maximum amount of time for the player to play your game before they automatically lose. Should be called at the start of the game.",
+						"params": {
+							"maxSeconds": {
+								"name": "Max Seconds",
+								"desc": "Maximum number of seconds to set (maximum you can set is 20)."
+							}
+						}
 					}
 				},
 				"expressions": {
-					"double": {
-						"description": "Double a number.",
-						"translated-name": "Double",
-						"params": {
-							"number": {
-								"name": "Number",
-								"desc": "The number to double."
-							}
-						}
+					"get-lives": {
+						"description": "Get the number of lives the player has.",
+						"translated-name": "GetLives"
+					},
+					"get-difficulty": {
+						"description": "Get the current difficulty setting from the Microgame Jam. Difficulty is between 1 and 3.",
+						"translated-name": "GetDifficulty"
+					},
+					"get-timer": {
+						"description": "Get the number of seconds until the player automatically loses the game.",
+						"translated-name": "GetTimer"
+					},
+					"get-max-timer": {
+						"description": "Get the maximum number of seconds the player is allowed to play for before automatically losing.",
+						"translated-name": "GetMaxTimer"
 					}
 				}
 			}

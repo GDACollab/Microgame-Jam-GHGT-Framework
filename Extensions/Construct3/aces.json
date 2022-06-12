@@ -1,5 +1,5 @@
 ﻿{
-	"custom": {
+	"endingGame": {
 		"actions": [
 			{
 				"id": "win-game",
@@ -9,13 +9,17 @@
 				"id": "lose-game",
 				"scriptName": "LoseGame",
 				"highlight": true
-			},
+			}
+		]
+	},
+	"gameParameters": {
+		"actions": [
 			{
 				"id": "set-max-timer",
 				"scriptName": "SetMaxTimer",
 				"params": [
 					{
-						"id": "number",
+						"id": "maxSeconds",
 						"type": "number"
 					}
 				]
