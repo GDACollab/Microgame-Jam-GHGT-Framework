@@ -30,8 +30,8 @@
 					},
 					"set-max-timer": {
 						"list-name": "Set Max Timer",
-						"display-text": "Set Max Timer",
-						"description": "Set a maximum of {0} seconds for the player to play your game before they automatically lose. Should be called at the start of the game.",
+						"display-text": "Set Max Timer for {0} seconds",
+						"description": "Set a maximum of seconds for the player to play your game before they automatically lose. Should be called at the start of the game.",
 						"params": {
 							"maxSeconds": {
 								"name": "Max Seconds",

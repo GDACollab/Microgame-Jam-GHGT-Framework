@@ -45,7 +45,8 @@
 			}, {
 				"id": "get-max-timer",
 				"expressionName": "GetMaxTimer",
-				"scriptName": "GetMaxTimer"
+				"scriptName": "GetMaxTimer",
+				"returnType": "number"
 			}
 		]
 	}
