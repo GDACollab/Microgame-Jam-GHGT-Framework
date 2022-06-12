@@ -9,13 +9,13 @@ const SDK = self.SDK;
 // Only the plugin name is displayed in the editor, so to rename your plugin change the name but NOT the ID.
 // If you want to completely replace a plugin, make it deprecated (it will be hidden but old projects keep working),
 // and create an entirely new plugin with a different plugin ID.
-const PLUGIN_ID = "MyCompany_SingleGlobal";
+const PLUGIN_ID = "GDACollab_MicrogameJamController";
 ////////////////////////////////////////////
 
 const PLUGIN_VERSION = "1.0.0.0";
 const PLUGIN_CATEGORY = "general";
 
-const PLUGIN_CLASS = SDK.Plugins.MyCompany_SingleGlobal = class MyCustomPlugin extends SDK.IPluginBase
+const PLUGIN_CLASS = SDK.Plugins.GDACollab_MicrogameJamController = class MicrogameJamController extends SDK.IPluginBase
 {
 	constructor()
 	{
@@ -27,7 +27,7 @@ const PLUGIN_CLASS = SDK.Plugins.MyCompany_SingleGlobal = class MyCustomPlugin e
 		this._info.SetDescription(self.lang(".description"));
 		this._info.SetVersion(PLUGIN_VERSION);
 		this._info.SetCategory(PLUGIN_CATEGORY);
-		this._info.SetAuthor("Scirra");
+		this._info.SetAuthor("Game Design and Art Collaboration");
 		this._info.SetHelpUrl(self.lang(".help-url"));
 		this._info.SetIsSingleGlobal(true);
 		

@@ -1,9 +1,9 @@
 
 const SDK = self.SDK;
 
-const PLUGIN_CLASS = SDK.Plugins.MyCompany_SingleGlobal;
+const PLUGIN_CLASS = SDK.Plugins.GDACollab_MicrogameJamController;
 
-PLUGIN_CLASS.Type = class MyCustomPluginType extends SDK.ITypeBase
+PLUGIN_CLASS.Type = class MicrogameJamController extends SDK.ITypeBase
 {
 	constructor(sdkPlugin, iObjectType)
 	{

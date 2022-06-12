@@ -1,5 +1,5 @@
 
-self.C3.Plugins.MyCompany_SingleGlobal.Acts =
+self.C3.Plugins.GDACollab_MicrogameJamController.Acts =
 {
 	LogToConsole()
 	{

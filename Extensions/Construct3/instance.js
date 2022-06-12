@@ -1,9 +1,9 @@
 
 const SDK = self.SDK;
 
-const PLUGIN_CLASS = SDK.Plugins.MyCompany_SingleGlobal;
+const PLUGIN_CLASS = SDK.Plugins.GDACollab_MicrogameJamController;
 
-PLUGIN_CLASS.Instance = class MyCustomInstance extends SDK.IInstanceBase
+PLUGIN_CLASS.Instance = class MicrogameJamControllerInstance extends SDK.IInstanceBase
 {
 	constructor(sdkType, inst)
 	{

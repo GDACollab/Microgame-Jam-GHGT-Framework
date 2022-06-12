@@ -1,13 +1,13 @@
 ﻿{
 	"is-c3-addon": true,
 	"type": "plugin",
-	"name": "My custom plugin",
-	"id": "MyCompany_SingleGlobal",
+	"name": "Microgame Jam Controller",
+	"id": "GDACollab_MicrogameJamController",
 	"version": "1.0.0.0",
-	"author": "Scirra",
-	"website": "https://www.construct.net",
+	"author": "Game Design and Art Collaboration",
+	"website": "http://gdacollab.com/", // REPLACE:
 	"documentation": "https://www.construct.net",
-	"description": "Example custom Construct 3 plugin.",
+	"description": "Controller Plugin for GDA's Microgame Jam",
 	"editor-scripts": [
 						"plugin.js",
 						"type.js",

@@ -3,7 +3,7 @@
 	"fileDescription": "Strings for MyCustomPlugin.",
 	"text": {
 		"plugins": {
-			"mycompany_singleglobal": {
+			"GDACollab_MicrogameJamController": {
 				"name": "MyCustomPlugin",
 				"description": "An example third-party plugin.",
 				"help-url": "https://www.construct.net",
