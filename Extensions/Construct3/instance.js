@@ -16,6 +16,7 @@ PLUGIN_CLASS.Instance = class MicrogameJamControllerInstance extends SDK.IInstan
 	
 	OnCreate()
 	{
+		// TODO: Should probably add some code checking that the resolution of the game is right
 	}
 	
 	OnPropertyChanged(id, value)

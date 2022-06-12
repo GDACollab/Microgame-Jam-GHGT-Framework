@@ -3,11 +3,11 @@ const C3 = self.C3;
 
 // NOTE: use a unique DOM component ID to ensure it doesn't clash with anything else
 // This must also match the ID in domSide.js.
-const DOM_COMPONENT_ID = "gdacollab-microgamejamcontroller";
+const DOM_COMPONENT_ID = "GDACollab_MicrogameJamController";
 
 C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstance extends C3.SDKInstanceBase
 {
-	constructor(inst, properties)
+	constructor(inst)
 	{
 		super(inst, DOM_COMPONENT_ID);
 
@@ -16,8 +16,10 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 
 		// While the game is loading:
 		this._runtime.AddLoadPromise(
-			this.PostToDOMAsync("get-interface").then((interface) => {
-				this.GameInterface = interface;
+			this.PostToDOMAsync("get-interface")
+			.then(data => 
+			{
+				this.GameInterface = data["interface"];
 				this._isGame = this.GameInterface !== null;
 			})
 		);
@@ -91,6 +93,18 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 		} else {
 			return this._maxTimer;
 		}
+	}
+
+	SaveToJson()
+	{
+		return {
+			// data to be saved for savegames
+		};
+	}
+	
+	LoadFromJson(o)
+	{
+		// load state for savegames
 	}
 
 	GetScriptInterfaceClass()

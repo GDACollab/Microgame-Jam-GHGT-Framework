@@ -1,4 +1,5 @@
 
-self.C3.Plugins.MyCompany_CustomImporter.Cnds =
+self.C3.Plugins.GDACollab_MicrogameJamController.Cnds =
 {
+    // no conditions
 };
