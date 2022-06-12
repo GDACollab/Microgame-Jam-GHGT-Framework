@@ -34,6 +34,7 @@ function updateVariables() {
     }
     Object.entries(variableNames).forEach(function([key, value]) {
         // TODO VARIABLE SETTER, DEPENDENT ON STORY FORMAT:
+        // This should probably be merged with functionSetter? Just make the extensions uniform at least in terms of calling functions (or in harlowe's case, macros).
         variableSetter[key] = value();
     });
 }
