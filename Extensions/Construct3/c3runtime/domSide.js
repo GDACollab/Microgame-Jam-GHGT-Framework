@@ -16,9 +16,10 @@
 	
 	// NOTE: use a unique DOM component ID to ensure it doesn't clash with anything else
 	// This must also match the ID in instance.js
-    const DOM_COMPONENT_ID = "GDACollab_MicrogameJamController";
+    const DOM_COMPONENT_ID = "GDACollab_MicrogameJamDOMComponent";
 
-    const HANDLER_CLASS = class MicrogameJamControllerDOMHandler extends self.DOMHandler {
+    const HANDLER_CLASS = class MicrogameJamControllerDOMHandler extends self.DOMHandler
+    {
         constructor(iRuntime)
         {
             super(iRuntime, DOM_COMPONENT_ID);
@@ -29,9 +30,8 @@
         }
 
         _getInterface() {
-            var interface = (parent.GameInterface !== undefined && parent.GameInterface !== null) ? parent.GameInterface : null;
             return {
-                "interface": interface
+                "interface": parent.GameInterface
             };
         }
 

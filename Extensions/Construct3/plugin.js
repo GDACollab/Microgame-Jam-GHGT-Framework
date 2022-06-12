@@ -30,6 +30,10 @@ const PLUGIN_CLASS = SDK.Plugins.GDACollab_MicrogameJamController = class Microg
 		this._info.SetAuthor("Game Design and Art Collaboration");
 		this._info.SetHelpUrl(self.lang(".help-url"));
 		this._info.SetIsSingleGlobal(true);
+
+		this._info.SetDOMSideScripts(["c3runtime/domSide.js"]);
+
+		// TODO: Change for default valued properties?
 		
 		SDK.Lang.PushContext(".properties");
 		
