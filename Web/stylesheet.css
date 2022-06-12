@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+}
+canvas {
+    z-index: 1;
+}
+
+iframe {
+    z-index: 0;
+}
+
+#menu {
+    z-index: 2;
+}
+
+#menu, #transitionContainer, iframe{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
+}

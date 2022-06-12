@@ -1,0 +1,7 @@
+Fix gameinterface and microgamecontroller to allow for setting of custom difficulty and lives (and a function for detecting whether or not the game is being played in the web
+browser, so people can add restarting code for their minigames)
+
+- Allow "WinWithTransition()" or "LoseWithTransition()" to allow for microgames that want to show some kind of animation?
+- Signal when game is ready to restart (or force. Should be for dev/solo builds)?
+- Disable "Run in background" option for all engines to allow for async loading? (Does this even work?)
+- BETTER IDEA: I think for Unity, the game loads, but doesn't actually start until the Iframe removes the "hidden" attribute. Does this work with all games? What about really big games? Check to see if we can do async loading with this.
