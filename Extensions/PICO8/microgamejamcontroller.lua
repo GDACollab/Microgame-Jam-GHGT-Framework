@@ -5,9 +5,9 @@
 
 --[[
 Here's the memory structure I expect (shouldn't be too complicated, all values here are between 0 and 256):
-0x5f80 - Should be set to 1 by picocontroller.js, tells us it's there.
-0x5f81 - # of maximum seconds for the game to run for. Should initially be set by picocontroller.js for whatever the default value is.
-0x5f82 - Set to 1 by the controller to indicate to picocontroller.js that the game has started.
+0x5f80 - Should be set to 1 by picointerface.js, tells us it's there.
+0x5f81 - # of maximum seconds for the game to run for. Should initially be set by picointerface.js for whatever the default value is.
+0x5f82 - Set to 1 by the controller to indicate to picointerface.js that the game has started.
 0x5f83 - # of lives
 0x5f84 - Difficulty #
 0x5f85 - # of seconds left (Timer)
