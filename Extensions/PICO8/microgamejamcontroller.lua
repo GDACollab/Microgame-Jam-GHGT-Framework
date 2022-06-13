@@ -14,7 +14,7 @@ Here's the memory structure I expect (shouldn't be too complicated, all values h
 0x5f86 - Win or lose (Set to 0 < X <= 128 for lose, set to 128 < X <= 255 for win) 
 ]]--
 MicrogameJamController = {
-    is_game = peek(0x5f80),
+    is_game = peek(0x5f80) == 1,
     lives = 3,
     difficulty = 1,
     timer = time(),
@@ -26,21 +26,21 @@ poke(0x5f82, 1)
 function MicrogameJamController:GetLives()
     -- I forgot how much LUA sucks for not using curly braces.
     -- Python too. I see you.
-    if (self.is_game)
+    if (self.is_game) then
         self.lives = peek(0x5f83)
     end
     return self.lives
 end
 
 function MicrogameJamController:GetDifficulty()
-    if(self.is_game)
+    if(self.is_game) then
         self.difficulty = peek(0x5f84)
     end
     return self.difficulty
 end
 
 function MicrogameJamController:GetTimer()
-    if(self.is_game)
+    if(self.is_game) then
         self.timer = peek(0x5f85)
     else
         self.timer = self.max_time - flr(time() - self.timer)
@@ -49,7 +49,7 @@ function MicrogameJamController:GetTimer()
 end
 
 function MicrogameJamController:WinGame()
-    if (self.is_game)
+    if (self.is_game) then
         poke(0x5f86, 255)
     else
         print("Game Won!")
@@ -57,7 +57,7 @@ function MicrogameJamController:WinGame()
 end
 
 function MicrogameJamController:LoseGame()
-    if (self.is_game)
+    if (self.is_game) then
         poke(0x5f86, 1)
     else
         print("Game Lost!")
@@ -65,7 +65,7 @@ function MicrogameJamController:LoseGame()
 end
 
 function MicrogameJamController:SetMaxTimer(seconds)
-    if (self.is_game)
+    if (self.is_game) then
         poke(0x5f81, seconds)
     end
     self.max_time = seconds
