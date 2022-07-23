@@ -3,10 +3,38 @@ var MicrogameJamController = (function() {
     var isGame = parent.GameInterface !== undefined;
 
     var time = Date.now();
-    var maxSeconds = 20;
+    var gameStarted = false;
+
+    var maxSeconds = 15;
+
+    // Insures default time is set correctly
     if (isGame) {
-        parent.GameInterface.gameStart();
+        parent.GameInterface.setMaxTimer(maxSeconds);
     }
+
+    function StartGame(){
+        if(gameStarted == false){
+            if (isGame) {
+                parent.GameInterface.gameStart();
+            }
+            time = Date.now();
+
+            gameStarted = true;
+        }
+    };
+
+    // Failsafe - After 3 seconds, without SetMaxTimer call, game will still start
+    setTimeout(StartGame, 3000);
+
+    function CheckGameOver() {
+        if(GetTimer() <= 0){
+            LoseGame();
+            clearInterval(myLoop);
+        }
+    }
+    
+    var myLoop = setInterval(CheckGameOver, 1000);
+
     return {
         GetLives: function(){
             if (isGame){
@@ -31,24 +59,25 @@ var MicrogameJamController = (function() {
         },
         WinGame: function(){
             if (isGame) {
-                parent.GameInterface.WinGame();
+                parent.GameInterface.winGame();
             } else {
                 alert("Game won!");
             }
         },
         LoseGame: function(){
             if (isGame) {
-                parent.GameInterface.LoseGame();
+                parent.GameInterface.loseGame();
             } else {
                 alert("Game lost!");
             }
         },
         SetMaxTimer: function(seconds){
             if (isGame) {
-                parent.GameInterface.SetMaxTimer(seconds);
+                parent.GameInterface.setMaxTimer(seconds);
             } else {
                 maxSeconds = seconds;
             }
+            StartGame();
         }
     };
 });
