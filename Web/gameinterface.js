@@ -7,7 +7,7 @@ var GameInterface = (function() {
     var _gameStartCallback = function(){};
     var _winCallback = function(){};
     var _loseCallback = function(){};
-    var _update;
+    var _update = function(){};
 
     return {
         getLives: function(){
