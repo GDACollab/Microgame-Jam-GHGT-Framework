@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Runtime.InteropServices;
+using UnityEngine.SceneManagement;
 
 public class MicrogameJamController : MonoBehaviour {
 
@@ -31,36 +32,54 @@ public class MicrogameJamController : MonoBehaviour {
 
     private float maxTime = 20.0f;
 
+    private bool timeChangesLocked = false;
+
     private bool isInGame = false;
 
-    private bool gameOver = false;
+    // For dev mode:
+    private Scene startScene;
 
+    // This way, you can call SetMaxTimer in the start function BEFORE gameStart is called.
     private void Start(){
+        DontDestroyOnLoad(this.gameObject);
         #if UNITY_WEBGL && !UNITY_EDITOR
-            isInGame = StartGame();
+            isInGame = GameExists();
         #else
+            // isInGame is false by default.
             time = 0.0f;
         #endif
+        StartCoroutine(GameStartDelay());
+    }
+
+    IEnumerator GameStartDelay() {
+        yield return new WaitForEndOfFrame();
+        timeChangesLocked = true;
+        if (isInGame) {
+            StartGame();
+        } else {
+            startScene = SceneManager.GetActiveScene();
+        }
     }
 
     public void WinGame(){
         if (isInGame){
             Win();
         } else {
+            // Synchronous, because what else is there to do?
+            Debug.Log("Game won. Reloading...");
+            SceneManager.LoadScene(startScene.buildIndex);
             time = 0.0f;
-            gameOver = true;
         }
-        Debug.Log("Game won.");
     }
 
     public void LoseGame(){
         if (isInGame){
             Lose();
         } else {
+            Debug.Log("Game lost. Reloading...");
+            SceneManager.LoadScene(startScene.buildIndex);
             time = 0.0f;
-            gameOver = true;
         }
-        Debug.Log("Game lost.");
     }
 
     public int GetDifficulty() {
@@ -92,16 +111,21 @@ public class MicrogameJamController : MonoBehaviour {
     }
 
     public void SetMaxTimer(float time){
-        if (isInGame) {
-            SetTimerMax(time);
+        if (!timeChangesLocked){
+            if (isInGame) {
+                SetTimerMax(time);
+            } else {
+                maxTime = time;
+            }
+        } else {
+            Debug.LogError("SetMaxTimer(" + time + " seconds) call failed. Called AFTER Start(). Any changes to the maximum amount of allowed time must be made during the Start function in MonoBehaviour.");
         }
     }
 
     private void Update(){
-        if(!isInGame && !gameOver){
+        if(!isInGame){
             time += Time.deltaTime;
             if (time > maxTime){
-                gameOver = true;
                 Debug.Log("Reached time limit!");
                 LoseGame();
             }
