@@ -5,3 +5,4 @@ browser, so people can add restarting code for their minigames)
 - Signal when game is ready to restart (or force. Should be for dev/solo builds)?
 - Disable "Run in background" option for all engines to allow for async loading? (Does this even work?)
 - BETTER IDEA: I think for Unity, the game loads, but doesn't actually start until the Iframe removes the "hidden" attribute. Does this work with all games? What about really big games? Check to see if we can do async loading with this.
+- Fix Unity extension to use global singleton
