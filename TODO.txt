@@ -6,6 +6,8 @@ browser, so people can add restarting code for their minigames)
 - Disable "Run in background" option for all engines to allow for async loading? (Does this even work?)
 - BETTER IDEA: I think for Unity, the game loads, but doesn't actually start until the Iframe removes the "hidden" attribute. Does this work with all games? What about really big games? Check to see if we can do async loading with this.
 - Minify all .js and .css for web build?
+- Prevent winGame and loseGame from being called multiple times in one game
 
 For next time:
 - Upgrade to typescript?
+- Transition animator workflow
