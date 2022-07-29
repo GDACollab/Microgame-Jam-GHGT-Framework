@@ -6,8 +6,13 @@ var alert_popup;
 func matches_settings():
 	var view_width = ProjectSettings.get_setting("display/window/size/width");
 	var view_height = ProjectSettings.get_setting("display/window/size/height");
+	var gles = ProjectSettings.get_setting("rendering/quality/driver/driver_name");
+	
+	# View width and height (required):
 	var size_matches = (view_width == 960 and view_height == 540);
-	return size_matches
+	# GLES2 because it's generally better for web builds (not required):
+	var render_matches = (gles == "GLES2");
+	return size_matches and render_matches;
 
 func _enter_tree():
 	popup = ConfirmationDialog.new()
@@ -25,7 +30,7 @@ func _enter_tree():
 		That's not recommended, and your game may not be accepted if you go through with this.\n
 		Please make sure your game follows the guidelines as specified on the jam's itch page.\n
 		If you change your mind, you can always update the menu from:\n
-		Project->Tools->Microgame Jam Controller Settings Update section.
+		Project->Tools->Microgame Jam Controller Settings Update
 	""";
 	alert_popup.popup_exclusive = true;
 	alert_popup.rect_min_size = Vector2(200, 100);

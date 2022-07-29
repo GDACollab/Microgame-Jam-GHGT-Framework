@@ -1,6 +1,10 @@
 extends Node
 
+# Set this to set the difficulty you get from GetDifficulty() when the full Microgame Jam Controller is not detected.
+# (I.E., for dev builds or solo web builds)
 var dev_difficulty = 3;
+# Set this to set the lives you get from GetLives() when the full Microgame Jam Controller is not detected
+# (I.E., for dev builds or solo web builds)
 var dev_lives = 3;
 var _is_game = false;
 var _game_started = false;
@@ -13,14 +17,20 @@ func WinGame():
 		JavaScript.eval('parent.GameInterface.winGame();');
 	else:
 		print("Game Won! Restarting...");
-		get_tree().set_current_scene(_current_scene);
+		if (_current_scene == get_tree().get_current_scene()):
+			get_tree().reload_current_scene();
+		else:
+			get_tree().change_scene_to(_current_scene.filename);
 
 func LoseGame():
 	if _is_game:
 		JavaScript.eval('parent.GameInterface.loseGame();');
 	else:
 		print("Game Lost! Restarting...");
-		get_tree().set_current_scene(_current_scene);
+		if (_current_scene == get_tree().get_current_scene()):
+			get_tree().reload_current_scene();
+		else:
+			get_tree().change_scene_to(_current_scene.filename);
 
 func GetLives():
 	if _is_game:
