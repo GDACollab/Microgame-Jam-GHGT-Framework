@@ -7,7 +7,7 @@ class PicoInterface {
     }
 
     static isPicoRunning() {
-        return pico8_gpio !== undefined && pico8_gpio !== null;
+        return (typeof pico8_gpio !== "undefined");
     }
 
     interfaceWithPico() {
