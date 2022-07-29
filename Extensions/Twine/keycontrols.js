@@ -42,7 +42,6 @@ function rgbToHex(rgb){
 
 // Left and right arrows to navigate through _selectableElements, up and down to scroll up and down (should be handled automatically by browser)?
 // TODO: Also need helper text to tell people how to use the control scheme.
-// Need to get this to work with different colors
 // Selecting scrolls you to where you need to be?
 // Move into twine.js and minify:
 var _selectableElements = [];
