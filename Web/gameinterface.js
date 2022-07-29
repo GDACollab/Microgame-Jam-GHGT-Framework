@@ -1,8 +1,11 @@
+const MAX_ALLOWED_TIMER = 15;
+const MIN_ALLOWED_TIMER = 1;
+
 // Based on https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 var GameInterface = (function() {
     var _lives = 3;
     var _difficulty = 1;
-    var _maxTimer = 20;
+    var _maxTimer = 15;
     var _currTimer = 0;
     var _gameStartCallback = function(){};
     var _winCallback = function(){};
@@ -53,12 +56,16 @@ var GameInterface = (function() {
         },
 
         setMaxTimer: function(time){
-            _maxTimer = time;
+            if (time >= MAX_ALLOWED_TIMER) {
+                _maxTimer = MAX_ALLOWED_TIMER;
+                console.warn("Someone tried to set max timer to " + time + "s. Setting to " + MAX_ALLOWED_TIMER + "s instead.");
+            } else if (time <= MIN_ALLOWED_TIMER) {
+                _maxTimer = MIN_ALLOWED_TIMER;
+                console.warn("Someone tried to set max timer to " + time + "s. Setting to " + MIN_ALLOWED_TIMER + "s instead.");
+            } else {
+                _maxTimer = time;
+            }
             return;
-        },
-
-        getMaxTimer: function(){
-            return _maxTimer;
         },
 
         init(gameStartCallback, winCallback, loseCallback){

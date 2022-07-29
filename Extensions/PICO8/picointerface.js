@@ -21,6 +21,7 @@ class PicoInterface {
 
     picoUpdate(){
         if (this.gameStarted === false) {
+            // Set repeatedly until we're given the go-ahead to set otherwise:
             GameInterface.setMaxTimer(pico8_gpio[1]);
             if (pico8_gpio[2] === 1){
                 this.gameStarted = true;
