@@ -16,6 +16,12 @@
         <div id="transitionContainer" hidden>
             LOADING TRANSITION HERE
         </div>
-        <iframe id="game"></iframe>
+        <!-- about:blank to avoid browser caches messing with us: -->
+        <iframe id="game" src="about:blank"></iframe>
+        <!-- And as a double preventative measure courtesy of https://stackoverflow.com/questions/2648053/preventing-iframe-caching-in-browser -->
+        <script>
+            var _theframe = document.getElementById("game");
+            _theframe.contentWindow.location.href = _theframe.src;
+        </script>
     </body>
 </html>
