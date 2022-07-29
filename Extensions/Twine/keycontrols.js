@@ -1,3 +1,45 @@
+// From https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
+function invertColor(hex) {
+    if (hex.indexOf('#') === 0) {
+        hex = hex.slice(1);
+    }
+    // convert 3-digit hex to 6-digits.
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    if (hex.length !== 6) {
+        throw new Error('Invalid HEX color.');
+    }
+    // invert color components
+    var r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16),
+        g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16),
+        b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16);
+    // pad each with zeros and return
+    return '#' + padZero(r) + padZero(g) + padZero(b);
+}
+
+function padZero(str, len) {
+    len = len || 2;
+    var zeros = new Array(len).join('0');
+    return (zeros + str).slice(-len);
+}
+
+// From https://stackoverflow.com/questions/13070054/convert-rgb-strings-to-hex-in-javascript
+function rgbToHex(rgb){
+    var rgbNoParen = rgb.split("(")[1].split(")")[0];
+    var separate = rgbNoParen.split(",");
+    // Ignore alpha values:
+    if (rgb.includes("rgba")){
+        separate = separate.slice(0, 3);
+    }
+    var hexArr = separate.map(function(num){
+        num = parseInt(num).toString(16);
+        return (num.length === 1) ? "0" + num : num;
+    });
+    return "#" + hexArr.join("");
+}
+
+
 // Left and right arrows to navigate through _selectableElements, up and down to scroll up and down (should be handled automatically by browser)?
 // TODO: Also need helper text to tell people how to use the control scheme.
 // Need to get this to work with different colors
@@ -14,7 +56,7 @@ function selectElementRecurse(element){
         return;
     }
     var computedStyle = window.getComputedStyle(element);
-    if ((computedStyle.display !== "none" && element.style.display !== "none") && (computedStyle.visibility !== "hidden" && element.style.visibility !== "hidden") && (computedStyle.cursor === "pointer" || element.style.cursor === "pointer")){
+    if (computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer"){
         _selectableElements.push(element);
     } else {
         for (var child in element.children){
@@ -29,13 +71,20 @@ function selectElement(element) {
         _selected.element.style.backgroundColor = _selected.backgroundColor;
     }
 
+    
     _selected = {
         element: element,
         color: element.style.color,
         backgroundColor: element.style.backgroundColor
     };
-    element.style.backgroundColor = "#000000";
-    element.style.color = "#ffffff";
+    var computedStyle = window.getComputedStyle(document.body);
+
+    var invertedBackground = invertColor(rgbToHex(computedStyle.backgroundColor));
+
+    var invertedColor = invertColor(rgbToHex(computedStyle.color));
+
+    element.style.backgroundColor = invertedBackground;
+    element.style.color = invertedColor;
 }
 
 document.body.onkeydown = function (e) {
