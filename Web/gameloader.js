@@ -7,4 +7,8 @@ function loadGame(){
     let gameURL = "./games/" + gameToLoad + "/index.html";
     document.getElementById("game").src = gameURL;
     document.getElementById("game").setAttribute("hidden", "");
+    if (PicoInterface.isPicoRunning()){
+        var picoInterface = new PicoInterface();
+        picoInterface.interfaceWithPico();
+    }
 }

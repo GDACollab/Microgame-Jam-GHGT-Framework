@@ -6,7 +6,7 @@ class PicoInterface {
         this.gameStarted = false;
     }
 
-    isPicoRunning() {
+    static isPicoRunning() {
         return pico8_gpio !== undefined && pico8_gpio !== null;
     }
 
@@ -20,9 +20,9 @@ class PicoInterface {
     }
 
     picoUpdate(){
-        if (this.gameStarted == false) {
+        if (this.gameStarted === false) {
             GameInterface.setMaxTimer(pico8_gpio[1]);
-            if (pico8_gpio[2] == 1){
+            if (pico8_gpio[2] === 1){
                 this.gameStarted = true;
                 GameInterface.gameStart();
             }
