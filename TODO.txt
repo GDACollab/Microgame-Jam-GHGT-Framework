@@ -7,6 +7,8 @@ browser, so people can add restarting code for their minigames)
 - BETTER IDEA: I think for Unity, the game loads, but doesn't actually start until the Iframe removes the "hidden" attribute. Does this work with all games? What about really big games? Check to see if we can do async loading with this.
 - Minify all .js and .css for web build?
 - Prevent winGame and loseGame from being called multiple times in one game
+- Difficulty increment code (set difficulty to 1 if the browser doesn't detect the game as having been played before?)
+
 
 For next time:
 - Upgrade to typescript?
