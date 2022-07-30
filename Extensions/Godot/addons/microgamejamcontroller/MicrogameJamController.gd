@@ -11,26 +11,38 @@ var _game_started = false;
 var _max_time = 15;
 var _dev_timer = 0;
 var _current_scene;
+var _game_ended = false;
 
 func WinGame():
-	if _is_game:
-		JavaScript.eval('parent.GameInterface.winGame();');
-	else:
-		print("Game Won! Restarting...");
-		if (_current_scene == get_tree().get_current_scene()):
-			get_tree().reload_current_scene();
+	if not _game_ended:
+		_game_ended = true;
+		if _is_game:
+			JavaScript.eval('parent.GameInterface.winGame();');
 		else:
-			get_tree().change_scene_to(_current_scene.filename);
+			if (_current_scene == get_tree().get_current_scene()):
+				get_tree().reload_current_scene();
+			else:
+				get_tree().change_scene_to(_current_scene.filename);
+			_game_ended = false;
+			_dev_timer = _max_time;
+	else:
+		print("[Microgame Jam Controller] Attempted to call WinGame() after game has ended.");
 
 func LoseGame():
-	if _is_game:
-		JavaScript.eval('parent.GameInterface.loseGame();');
-	else:
-		print("Game Lost! Restarting...");
-		if (_current_scene == get_tree().get_current_scene()):
-			get_tree().reload_current_scene();
+	if not _game_ended:
+		_game_ended = true;
+		if _is_game:
+			JavaScript.eval('parent.GameInterface.loseGame();');
 		else:
-			get_tree().change_scene_to(_current_scene.filename);
+			print("Game Lost! Restarting...");
+			if (_current_scene == get_tree().get_current_scene()):
+				get_tree().reload_current_scene();
+			else:
+				get_tree().change_scene_to(_current_scene.filename);
+			_game_ended = false;
+			_dev_timer = _max_time;
+	else:
+		print("[Microgame Jam Controller] Attempted to call LoseGame() after game has ended.");
 
 func GetLives():
 	if _is_game:
@@ -78,4 +90,7 @@ func _ready():
 		_dev_timer = _max_time;
 
 func _process(delta):
-	_dev_timer -= delta;
+	if not _is_game and not _game_ended:
+		_dev_timer -= delta;
+		if (_dev_timer <= 0):
+			LoseGame();
