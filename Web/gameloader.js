@@ -14,6 +14,8 @@ function loadGame(){
 function iframeLoaded(){
     // Focus the iframe so inputs get through:
     document.getElementById("game").click();
+    // For Unity Exports specifically (minimal Unity HTML templates work good enough, except for when it adds margin):
+    document.getElementById("game").contentDocument.body.style.margin = "0";
     if (PicoInterface.isPicoRunning()){
         var picoInterface = new PicoInterface();
         picoInterface.interfaceWithPico();
