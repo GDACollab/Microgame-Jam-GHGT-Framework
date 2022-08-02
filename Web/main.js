@@ -13,5 +13,10 @@ function gameStarted(){
 
 function transition(didWin){
     document.getElementById("transitionContainer").removeAttribute("hidden");
+    if (didWin){
+        document.getElementById("transitionContainer").innerText = "WIN TRANSITION HERE";
+    } else {
+        document.getElementById("transitionContainer").innerText = "LOSE TRANSITION HERE";
+    }
     loadGame();
 }

@@ -1,12 +1,13 @@
 const MAX_ALLOWED_TIMER = 15;
-const MIN_ALLOWED_TIMER = 1;
+const MIN_ALLOWED_TIMER = 5;
 
 // Based on https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 var GameInterface = (function() {
     var _lives = 3;
     var _difficulty = 1;
-    var _maxTimer = 15;
+    var _maxTimer = MAX_ALLOWED_TIMER;
     var _currTimer = 0;
+    var _gameEnd = false;
     var _gameStartCallback = function(){};
     var _winCallback = function(){};
     var _loseCallback = function(){};
@@ -31,13 +32,15 @@ var GameInterface = (function() {
         },
 
         winGame: function(){
-            clearInterval(_update);
+            this._gameEnd = true;
+            this._maxTimer = MAX_ALLOWED_TIMER;
             _winCallback();
             return;
         },
 
         loseGame: function(){
-            clearInterval(_update);
+            this._gameEnd = true;
+            this._maxTimer = MAX_ALLOWED_TIMER;
             _loseCallback();
             return;
         },
@@ -45,17 +48,23 @@ var GameInterface = (function() {
         gameStart: function(){
             _currTimer = Date.now();
             var self = this;
-            _update = setInterval(function(){
-                console.log(self.getTimer());
-                if (self.getTimer() <= 0){
+            this._gameEnd = false;
+            _update = function() {
+                document.getElementById("timerFull").style.width = ((self.getTimer()/_maxTimer) * 100) + "%";
+                if (self.getTimer() <= 0) {
                     self.loseGame();
                 }
-            }, 100);
+                if (!self._gameEnd){
+                    window.requestAnimationFrame(_update);
+                }
+            };
             _gameStartCallback();
+            window.requestAnimationFrame(_update);
             return;
         },
 
         setMaxTimer: function(time){
+            console.log("setMaxTimer called: " + time + "s");
             if (time > MAX_ALLOWED_TIMER) {
                 _maxTimer = MAX_ALLOWED_TIMER;
                 console.warn("Someone tried to set max timer to " + time + "s. Setting to " + MAX_ALLOWED_TIMER + "s instead.");
