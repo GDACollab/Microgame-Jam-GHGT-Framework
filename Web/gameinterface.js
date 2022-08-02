@@ -50,7 +50,7 @@ var GameInterface = (function() {
             var self = this;
             _gameEnd = false;
             _update = function() {
-                document.getElementById("timerFull").style.width = ((self.getTimer()/_maxTimer) * 100) + "%";
+                document.getElementById("timerFull").style.left = "-" + ((1 - self.getTimer()/_maxTimer) * 100) + "%";
                 if (self.getTimer() <= 0) {
                     self.loseGame();
                 }
