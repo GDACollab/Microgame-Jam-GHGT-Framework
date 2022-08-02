@@ -8,7 +8,9 @@ function loadGame(){
     let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];
     let gameURL = "./games/" + gameToLoad + "/" + gamesList[gameToLoad];
     document.getElementById("game").src = gameURL;
-    document.getElementById("game").setAttribute("hidden", "");
+
+    // Create an element to show over the iframe:
+    
 }
 
 function iframeLoaded(){

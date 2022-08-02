@@ -56,10 +56,10 @@ var GameInterface = (function() {
         },
 
         setMaxTimer: function(time){
-            if (time >= MAX_ALLOWED_TIMER) {
+            if (time > MAX_ALLOWED_TIMER) {
                 _maxTimer = MAX_ALLOWED_TIMER;
                 console.warn("Someone tried to set max timer to " + time + "s. Setting to " + MAX_ALLOWED_TIMER + "s instead.");
-            } else if (time <= MIN_ALLOWED_TIMER) {
+            } else if (time < MIN_ALLOWED_TIMER) {
                 _maxTimer = MIN_ALLOWED_TIMER;
                 console.warn("Someone tried to set max timer to " + time + "s. Setting to " + MIN_ALLOWED_TIMER + "s instead.");
             } else {

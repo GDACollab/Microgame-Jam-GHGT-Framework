@@ -19,7 +19,9 @@ class PicoInterface {
         }
 
 
-        console.log(document.getElementById("game").contentWindow);
+        // Mute sound (That start-up sound that plays every time and gets annoying fast):
+        document.getElementById("game").contentWindow.pico8_audio_context.suspend();
+
         this.pico8_gpio = document.getElementById("game").contentWindow.pico8_gpio;
 
         this.gameStarted = false;
@@ -37,6 +39,8 @@ class PicoInterface {
             GameInterface.setMaxTimer(self.pico8_gpio[1]);
             if (self.pico8_gpio[2] === 1){
                 self.gameStarted = true;
+                // Unmute sound:
+                document.getElementById("game").contentWindow.pico8_audio_context.resume();
                 GameInterface.gameStart();
             }
         } else {

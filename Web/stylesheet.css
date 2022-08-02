@@ -15,9 +15,23 @@ iframe {
     z-index: 2;
 }
 
-#menu, #transitionContainer, iframe{
+#menu, #transitionContainer{
     position: absolute;
     width: 100%;
     height: 100%;
     border: none;
+}
+
+/* Display transition on top of everything: */
+#transitionContainer {
+    background-color: white;
+    z-index: 5;
+}
+
+iframe {
+    position: absolute;
+    width: 960px;
+    height: 540px;
+    border: none;
+    overflow: hidden;
 }
