@@ -32,15 +32,15 @@ var GameInterface = (function() {
         },
 
         winGame: function(){
-            this._gameEnd = true;
-            this._maxTimer = MAX_ALLOWED_TIMER;
+            _gameEnd = true;
+            _maxTimer = MAX_ALLOWED_TIMER;
             _winCallback();
             return;
         },
 
         loseGame: function(){
-            this._gameEnd = true;
-            this._maxTimer = MAX_ALLOWED_TIMER;
+            _gameEnd = true;
+            _maxTimer = MAX_ALLOWED_TIMER;
             _loseCallback();
             return;
         },
@@ -48,13 +48,13 @@ var GameInterface = (function() {
         gameStart: function(){
             _currTimer = Date.now();
             var self = this;
-            this._gameEnd = false;
+            _gameEnd = false;
             _update = function() {
                 document.getElementById("timerFull").style.width = ((self.getTimer()/_maxTimer) * 100) + "%";
                 if (self.getTimer() <= 0) {
                     self.loseGame();
                 }
-                if (!self._gameEnd){
+                if (!_gameEnd){
                     window.requestAnimationFrame(_update);
                 }
             };
