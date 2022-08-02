@@ -18,7 +18,9 @@ microgamejamcontroller = {
     lives = 3,
     difficulty = 1,
     timer = time(),
-    max_time = 20
+    max_time = 20,
+    win = false,
+    gameover = false
 }
 
 poke(0x5f82, 1)
@@ -43,7 +45,8 @@ function microgamejamcontroller:gettimer()
     if(self.is_game) then
         self.timer = peek(0x5f85)
     else
-        self.timer = self.max_time - flr(time() - self.timer)
+        --self.timer = self.max_time - flr(time() - self.timer)
+        self.timer = time()
     end
     return self.timer
 end
@@ -51,16 +54,18 @@ end
 function microgamejamcontroller:wingame()
     if (self.is_game) then
         poke(0x5f86, 255)
-    else
-        print("Game Won!")
+    elseif (not self.gameover) then
+        self.gameover = true
+        self.win = true
     end
 end
 
 function microgamejamcontroller:losegame()
     if (self.is_game) then
         poke(0x5f86, 1)
-    else
-        print("Game Lost!")
+    elseif (not self.gameover) then
+        self.gameover = true
+        self.win = false
     end
 end
 
@@ -71,7 +76,10 @@ function microgamejamcontroller:setmaxtimer(seconds)
     self.max_time = seconds
 end
 
-function microgamejamcontroller:getmaxtimer(seconds)
-    self.max_time = seconds
-    return self.max_time
+function microgamejamcontroller:drawgameresult()
+    if (self.win) then 
+        print("You won!")
+    else 
+        print("You lost!")
+    end
 end
