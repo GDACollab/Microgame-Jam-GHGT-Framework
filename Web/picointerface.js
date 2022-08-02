@@ -7,33 +7,45 @@ class PicoInterface {
     }
 
     static isPicoRunning() {
-        return (typeof pico8_gpio !== "undefined");
+        // Search the game frame:
+        return (typeof document.getElementById("game").contentWindow.pico8_gpio !== "undefined");
     }
 
     interfaceWithPico() {
+        // Tell PICO to start automatically if needed:
+        var p8Button = document.getElementById("game").contentDocument.getElementById("p8_start_button");
+        if (p8Button !== null){
+            p8Button.click();
+        }
+
+
+        console.log(document.getElementById("game").contentWindow);
+        this.pico8_gpio = document.getElementById("game").contentWindow.pico8_gpio;
+
         this.gameStarted = false;
-        pico8_gpio[0] = 1;
+        this.pico8_gpio[0] = 1;
         // Set max number of seconds:
-        pico8_gpio[1] = 20;
+        this.pico8_gpio[1] = 15;
         var update = this.picoUpdate;
-        this.internalUpdate = window.setInterval(update, 100);
+        var self = this;
+        this.internalUpdate = window.setInterval(function () {update(self); }, 100);
     }
 
-    picoUpdate(){
-        if (this.gameStarted === false) {
+    picoUpdate(self){
+        if (self.gameStarted === false) {
             // Set repeatedly until we're given the go-ahead to set otherwise:
-            GameInterface.setMaxTimer(pico8_gpio[1]);
-            if (pico8_gpio[2] === 1){
-                this.gameStarted = true;
+            GameInterface.setMaxTimer(self.pico8_gpio[1]);
+            if (self.pico8_gpio[2] === 1){
+                self.gameStarted = true;
                 GameInterface.gameStart();
             }
         } else {
-            pico8_gpio[3] = GameInterface.getLives();
-            pico8_gpio[4] = GameInterface.getDifficulty();
-            pico8_gpio[5] = GameInterface.getTimer();
-            var didLose = pico8_gpio[6];
+            self.pico8_gpio[3] = GameInterface.getLives();
+            self.pico8_gpio[4] = GameInterface.getDifficulty();
+            self.pico8_gpio[5] = GameInterface.getTimer();
+            var didLose = self.pico8_gpio[6];
             if (didLose > 0){
-                clearInterval(this.internalUpdate);
+                clearInterval(self.internalUpdate);
                 if (didLose <= 128) {
                     GameInterface.loseGame();
                 } else if (didLose > 128) {
