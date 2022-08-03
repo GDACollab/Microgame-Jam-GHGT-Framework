@@ -1,2 +1,3 @@
-Tyler K. - Project Lead, Lead Programmer
+Tyler K. - Project Lead, Lead Programmer, Contributor to Unity, Godot, PICO-8, Twine, and Javascript Extensions
+Sophie M. - Win Sound, Lose Sound, Button Sound
 ChapelR (https://github.com/ChapelR/) - Harlowe Macro API
