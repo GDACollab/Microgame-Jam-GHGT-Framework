@@ -3,18 +3,34 @@
     <head>
         <title>Microgame Jam 2022</title>
         <link rel="stylesheet" href="stylesheet.css"/>
+        <script src="picointerface.js"></script>
         <script src="gameinterface.js"></script>
         <script src="gameloader.js"></script>
         <script src="main.js"></script>
     </head>
     <body>
+        <noscript>
+            Your browser does not support Javascript. You need Javascript support to play GDA's Microgame Jam.
+        </noscript>
         <div id="menu">
             <h2>Microgame Jam 2022</h2>
             <button onclick="startMicrogames()">Start</button>
         </div>
-        <div id="transitionContainer" hidden>
-            LOADING TRANSITION HERE
+        <div id="gameContainer">
+            <div id="transitionContainer" hidden>
+                LOADING TRANSITION HERE
+            </div>
+            <div id="timer">
+                <div id="timerEmpty" class="timerFill" style="background-color: black;"></div>
+                <div id="timerFull" class="timerFill" style="background-color: red;"></div>
+            </div>
+            <!-- about:blank to avoid browser caches messing with us: -->
+            <iframe id="game" src="about:blank" width="960px" height="540px" scrolling="no" onload="iframeLoaded()"></iframe>
+            <!-- And as a double preventative measure courtesy of https://stackoverflow.com/questions/2648053/preventing-iframe-caching-in-browser -->
+            <script>
+                var _theframe = document.getElementById("game");
+                _theframe.contentWindow.location.href = _theframe.src;
+            </script>
         </div>
-        <iframe id="game"></iframe>
     </body>
 </html>
