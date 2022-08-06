@@ -32,16 +32,24 @@ var GameInterface = (function() {
         },
 
         winGame: function(){
-            _gameEnd = true;
-            _maxTimer = MAX_ALLOWED_TIMER;
-            _winCallback();
+            if (!_gameEnd){
+                _gameEnd = true;
+                _maxTimer = MAX_ALLOWED_TIMER;
+                _winCallback();
+            } else {
+                console.warn("Something tried to call winGame() after game has already ended.");
+            }
             return;
         },
 
         loseGame: function(){
-            _gameEnd = true;
-            _maxTimer = MAX_ALLOWED_TIMER;
-            _loseCallback();
+            if (!_gameEnd){
+                _gameEnd = true;
+                _maxTimer = MAX_ALLOWED_TIMER;
+                _loseCallback();
+            } else {
+                console.warn("Something tried to call loseGame() after game has already ended.");
+            }
             return;
         },
 
