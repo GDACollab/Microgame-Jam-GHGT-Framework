@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Runtime.InteropServices;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MicrogameJamController : MonoBehaviour {
 
     [Range(1, 3)]
-    public int defaultDifficulty;
+    public int defaultDifficulty = 1;
 
     [DllImport("__Internal")]
     private static extern void Win();
@@ -104,10 +105,6 @@ public class MicrogameJamController : MonoBehaviour {
         } else {
             return _time;
         }
-    }
-
-    public bool IsInWebGL(){
-        return _isInGame;
     }
 
     public void SetMaxTimer(float seconds){
