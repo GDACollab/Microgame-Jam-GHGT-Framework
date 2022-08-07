@@ -13,6 +13,9 @@ var _dev_timer = 0;
 var _current_scene;
 var _game_ended = false;
 
+const MAX_TIMER_VALUE = 15;
+const MIN_TIMER_VALUE = 5;
+
 func WinGame():
 	if not _game_ended:
 		_game_ended = true;
@@ -67,9 +70,12 @@ func GetTimer():
 	
 func SetMaxTimer(seconds):
 	if not _game_started:
-		if seconds > 15:
-			seconds = 15;
-			print("MicrogameJamController.SetMaxTimer(seconds) called with a seconds value > 15. Setting to 15.");
+		if seconds > MAX_TIMER_VALUE:
+			seconds = MAX_TIMER_VALUE;
+			print("MicrogameJamController.SetMaxTimer(seconds) called with a seconds value > " + str(MAX_TIMER_VALUE) + ". Setting to " + str(MAX_TIMER_VALUE) + "s.");
+		if seconds < MIN_TIMER_VALUE:
+			seconds = MIN_TIMER_VALUE;
+			print("MicrogameJamController.SetMaxTimer(seconds) called with a seconds value < " + str(MIN_TIMER_VALUE) + ". Setting to " + str(MIN_TIMER_VALUE) + "s.");
 		if _is_game:
 			JavaScript.eval('parent.GameInterface.setMaxTimer(' + seconds + ');');
 		else:
