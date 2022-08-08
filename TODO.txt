@@ -1,6 +1,7 @@
 - WinWithTransition() or LoseWithTransition()?
 - Minify all .js and .css for web build?
 - Difficulty increment code (set difficulty to 1 if the browser doesn't detect the game as having been played before?)
+- Some kind of volume slider (at least for main menu stuff?). Could work with other games' audio, but that could be inconsistent.
 
 Future Improvements:
 - Upgrade to typescript?
