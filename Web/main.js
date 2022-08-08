@@ -3,7 +3,7 @@ var GameSound = new AudioManager();
 var masterVolume = 1;
 
 window.onload = function(){
-    GameSound.play("theme", masterVolume * 0.2, false, true);
+    GameSound.play("theme", masterVolume * 0.6, false, true);
     
     for (const button of document.getElementsByTagName("button")) {
         button.addEventListener("mouseover", function(){
@@ -24,7 +24,7 @@ function startMicrogames(){
     document.getElementById("menu").setAttribute("hidden", "");
     document.getElementById("transitionContainer").removeAttribute("hidden");
     GameSound.play("buttonClick", masterVolume, true, false, function(){
-        GameSound.play("winJingle", masterVolume * 0.4, true);
+        GameSound.play("winJingle", masterVolume * 0.8, true);
     });
     loadGame();
 }
@@ -36,9 +36,9 @@ function gameStarted(){
 
 function transition(didWin){
     if (didWin){
-        GameSound.play("winJingle", masterVolume * 0.4, true);
+        GameSound.play("winJingle", masterVolume * 0.8, true);
     } else {
-        GameSound.play("loseJingle", masterVolume * 0.4, true);
+        GameSound.play("loseJingle", masterVolume * 0.8, true);
     }
     document.getElementById("transitionContainer").removeAttribute("hidden");
     if (didWin){
