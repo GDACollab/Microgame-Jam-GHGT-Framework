@@ -23,7 +23,9 @@ function startMicrogames(){
         () => {transition(true);}, () => {transition(false);});
     document.getElementById("menu").setAttribute("hidden", "");
     document.getElementById("transitionContainer").removeAttribute("hidden");
-    GameSound.play("winJingle", true);
+    GameSound.play("buttonClick", masterVolume, true, false, function(){
+        GameSound.play("winJingle", masterVolume * 0.4, true);
+    });
     loadGame();
 }
 
@@ -34,9 +36,9 @@ function gameStarted(){
 
 function transition(didWin){
     if (didWin){
-        GameSound.play("winJingle", masterVolume, true);
+        GameSound.play("winJingle", masterVolume * 0.4, true);
     } else {
-        GameSound.play("loseJingle", masterVolume, true);
+        GameSound.play("loseJingle", masterVolume * 0.4, true);
     }
     document.getElementById("transitionContainer").removeAttribute("hidden");
     if (didWin){
