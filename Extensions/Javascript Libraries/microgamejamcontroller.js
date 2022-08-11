@@ -4,6 +4,11 @@ var MicrogameJamController = (function() {
 
     var time = Date.now();
     var gameStarted = false;
+    var gameOver = false;
+
+    var defaultDifficulty = 1;
+    var defaultLives = 3;
+    var allowAutoRestarts = true;
 
     var maxSeconds = 15;
 
@@ -13,7 +18,7 @@ var MicrogameJamController = (function() {
     }
 
     function StartGame(){
-        if(gameStarted == false){
+        if(gameStarted == false){ // Can be called twice by failsafe, so insures games starts only once
             if (isGame) {
                 parent.GameInterface.gameStart();
             }
@@ -23,8 +28,8 @@ var MicrogameJamController = (function() {
         }
     };
 
-    // Failsafe - After 3 seconds, without SetMaxTimer call, game will still start
-    setTimeout(StartGame, 3000);
+    // Failsafe - After half a second, without SetMaxTimer call, game will still start
+    setTimeout(StartGame, 500);
 
     function CheckGameOver() {
         if(GetTimer() <= 0){
@@ -33,21 +38,34 @@ var MicrogameJamController = (function() {
         }
     }
     
+    // Check game over every second.
     var myLoop = setInterval(CheckGameOver, 1000);
+
+    function RestartGame(){
+        if(allowAutoRestarts){
+            alert("Auto Restarting Controller...");
+
+            gameOver = false;
+            gameStarted = false;
+            StartGame();
+        }else{
+            alert("Auto Restarting Not Enabled. Enable in microgamejamcontorller.js");
+        }
+    }
 
     return {
         GetLives: function(){
             if (isGame){
                 return parent.GameInterface.getLives();
             } else {
-                return 3;
+                return defaultLives;
             }
         },
         GetDifficulty: function(){
             if (isGame) {
                 return parent.GameInterface.getDifficulty();
             } else {
-                return 1;
+                return defaultDifficulty;
             }
         },
         GetTimer: function(){
@@ -58,20 +76,34 @@ var MicrogameJamController = (function() {
             }
         },
         WinGame: function(){
-            if (isGame) {
-                parent.GameInterface.winGame();
-            } else {
-                alert("Game won!");
+            if(gameOver == false){
+                gameOver = true;
+
+                if (isGame) {
+                    parent.GameInterface.winGame();
+                } else {
+                    alert("Game won!");
+                    RestartGame();
+                }
             }
         },
         LoseGame: function(){
-            if (isGame) {
-                parent.GameInterface.loseGame();
-            } else {
-                alert("Game lost!");
+            if(gameOver == false){
+                gameOver = true;
+
+                if (isGame) {
+                    parent.GameInterface.loseGame();
+                } else {
+                    alert("Game lost!");
+                    RestartGame();
+                }
             }
         },
         SetMaxTimer: function(seconds){
+            if(gameStarted){ return; }
+            seconds = Math.max(5,seconds)
+            seconds = Math.min(15,seconds)
+
             if (isGame) {
                 parent.GameInterface.setMaxTimer(seconds);
             } else {
