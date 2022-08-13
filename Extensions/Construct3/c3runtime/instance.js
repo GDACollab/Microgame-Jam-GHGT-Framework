@@ -57,6 +57,7 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 
 	_GetTimer(){
 		if (this._isGame) {
+			console.log("timer is currently" + this.GameInterface.getTimer());
 			return this.GameInterface.getTimer();
 		} else {
 			return this._maxTimer - Math.floor((Date.now() - this._timer)/1000);
@@ -65,7 +66,9 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 
 	_WinGame() {
 		if (this._isGame) {
+			console.log("game won");
 			this.GameInterface.winGame();
+			
 		} else {
 			alert("Game won!");
 		}
@@ -73,7 +76,9 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 
 	_LoseGame() {
 		if (this._isGame) {
+			console.log("game lost");
 			this.GameInterface.loseGame();
+			
 		} else {
 			alert("Game lost!");
 		}
@@ -81,6 +86,7 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 
 	_SetMaxTimer(seconds){
 		if (this._isGame) {
+			console.log("max timer set to " + seconds);
 			this.GameInterface.setMaxTimer(seconds);
 		} else {
 			this._maxTimer = seconds;
@@ -122,7 +128,7 @@ self.IMicrogameJamControllerInstance = class IMicrogameJamControllerInstance ext
 	constructor()
 	{
 		super();
-		
+
 		// Map by SDK instance
 		map.set(this, self.IInstance._GetInitInst().GetSdkInstance());
 	}
