@@ -21,6 +21,7 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 			{
 				this.GameInterface = data["interface"];
 				this._isGame = this.GameInterface !== undefined && this.GameInterface !== null;
+				console.log("found interface");
 			})
 		);
 
@@ -30,6 +31,7 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 			this._timer = Date.now();
 			if (this._isGame) {
 				this.GameInterface.gameStart();
+				console.log("starting game!");
 			}
 		});
 	}
@@ -41,6 +43,7 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 
 	_GetLives() {
 		if (this._isGame){
+			log("getting lives");
 			return this.GameInterface.getLives();
 		} else {
 			return 3;
@@ -90,6 +93,7 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 			this.GameInterface.setMaxTimer(seconds);
 		} else {
 			this._maxTimer = seconds;
+			this._timer = Date.now();
 		}
 	}
 
