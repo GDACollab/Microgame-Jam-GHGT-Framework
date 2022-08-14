@@ -1,5 +1,4 @@
 var MicrogameJamController = (function() {
-    // TODO: Fix to match extension requirements.
     var isGame = parent.GameInterface !== undefined;
 
     var time = Date.now();
@@ -10,6 +9,7 @@ var MicrogameJamController = (function() {
     var defaultLives = 3;
     var allowAutoRestarts = true;
 
+    var savedCallback;
     var maxSeconds = 15;
 
     // Insures default time is set correctly
@@ -19,10 +19,12 @@ var MicrogameJamController = (function() {
 
     function StartGame(){
         if(gameStarted == false){ // Can be called twice by failsafe, so insures games starts only once
+            
+            time = Date.now();
             if (isGame) {
                 parent.GameInterface.gameStart();
             }
-            time = Date.now();
+            
 
             gameStarted = true;
         }
@@ -45,6 +47,7 @@ var MicrogameJamController = (function() {
         if(allowAutoRestarts){
             alert("Auto Restarting Controller...");
 
+            savedCallback();
             gameOver = false;
             gameStarted = false;
             StartGame();
@@ -99,8 +102,11 @@ var MicrogameJamController = (function() {
                 }
             }
         },
-        SetMaxTimer: function(seconds){
+        SetMaxTimer: function(seconds, startGameCallback){
+            savedCallback = startGameCallback;
+
             if(gameStarted){ return; }
+            
             seconds = Math.max(5,seconds)
             seconds = Math.min(15,seconds)
 
