@@ -25,6 +25,21 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
         parent.GameInterface.setMaxTimer(maxSeconds);
     }
 
+    // Checks to see canvas has correct resolution
+    window.addEventListener('load', (event) => {
+        var canvasList = document.getElementsByTagName("canvas");
+
+        if(canvasList.length > 0){
+            var canvas = canvasList[0];
+            if(canvas.width > 960 || canvas.height > 540){
+                console.error("Canvas exceeds 960 by 540 limit");
+            }
+        }else{
+            console.error("No Canvas Found.");
+        }
+        
+      });
+      
     /**
      * Handles inital setup, called by SetMaxTimer
      */
