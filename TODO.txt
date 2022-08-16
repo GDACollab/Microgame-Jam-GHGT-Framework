@@ -4,6 +4,10 @@
 - Some kind of volume slider (at least for main menu stuff?). Could work with other games' audio, but that could be inconsistent.
 
 Future Improvements:
+- More Twine Story Formats
+
+- Fix Harlowe implementation to directly add macros (somewhat difficult).
+
 - Upgrade to typescript?
 
 - Transition animator workflow
