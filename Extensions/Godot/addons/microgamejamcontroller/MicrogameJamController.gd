@@ -28,6 +28,9 @@ func WinGame():
 				get_tree().change_scene_to(_current_scene.filename);
 			_game_ended = false;
 			_dev_timer = _max_time;
+			_game_started = false;
+			yield(get_tree(), "idle_frame");
+			_game_started = true;
 	else:
 		print("[Microgame Jam Controller] Attempted to call WinGame() after game has ended.");
 
@@ -94,6 +97,8 @@ func _ready():
 		yield(get_tree(), "idle_frame");
 		_current_scene = get_tree().get_current_scene();
 		_dev_timer = _max_time;
+
+	_game_started = true;
 
 func _process(delta):
 	if not _is_game and not _game_ended:

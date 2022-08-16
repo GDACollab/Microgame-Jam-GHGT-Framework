@@ -6,7 +6,7 @@
 Future Improvements:
 - More Twine Story Formats
 
-- Fix Harlowe implementation to directly add macros (somewhat difficult).
+- Fix Harlowe implementation to directly add macros (somewhat difficult). Although, maybe not. You can just look at the source code for https://github.com/ChapelR/harlowe-macro-api/blob/master/src/macro.js and modify it for the latest version of Harlowe: https://foss.heptapod.net/games/harlowe/-/blob/branch/default/js/macros.js
 
 - Upgrade to typescript?
 
