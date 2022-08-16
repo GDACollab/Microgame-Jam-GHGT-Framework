@@ -1,6 +1,10 @@
 --- Microgame Jam 2022 Credits ---
 
 Tyler K. - Project Lead, Lead Programmer, Contributor to Unity, Godot, PICO-8, Twine, and Javascript Extensions
+Calex R. - Construct 3 Extension Programmer
+Jonah R. - Javascript Extension Programmer
+Niklas T. - PICO-8 Extension Programmer
+Ryan M. - Twine Extension Programmer
 Sophie M. - Win Sound, Lose Sound, Button Sounds
 Dylan M. - Microgame Jam Theme
 ChapelR (https://github.com/ChapelR/) - Harlowe Macro API used for reference

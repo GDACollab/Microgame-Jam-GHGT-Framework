@@ -2,7 +2,7 @@ extends Node
 
 # Set this to set the difficulty you get from GetDifficulty() when the full Microgame Jam Controller is not detected.
 # (I.E., for dev builds or solo web builds)
-var dev_difficulty = 3;
+var dev_difficulty = 1;
 # Set this to set the lives you get from GetLives() when the full Microgame Jam Controller is not detected
 # (I.E., for dev builds or solo web builds)
 var dev_lives = 3;
