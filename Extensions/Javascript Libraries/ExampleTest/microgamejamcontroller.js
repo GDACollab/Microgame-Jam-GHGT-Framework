@@ -27,17 +27,21 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
 
     // Checks to see canvas has correct resolution
     window.addEventListener('load', (event) => {
-        var canvasList = document.getElementsByTagName("canvas");
 
-        if(canvasList.length > 0){
-            var canvas = canvasList[0];
-            if(canvas.width > 960 || canvas.height > 540){
-                console.error("Canvas exceeds 960 by 540 limit");
+        var FoundSize = false;
+
+        const allInBody = document.querySelectorAll('body > *');
+
+        for (const element of allInBody) {
+            if(element.width == 960 && element.height == 540){
+                FoundSize = true;
+                break;
             }
-        }else{
-            console.error("No Canvas Found.");
         }
-        
+
+        if(FoundSize == false){
+            console.error("Canvas is not 960 by 540");
+        }
       });
       
     /**
