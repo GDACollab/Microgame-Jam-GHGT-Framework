@@ -1,11 +1,9 @@
 // Should be inserted into your Story Javascript
-var isGame;
 try {
-     if(isGame = parent.GameInterface !== undefined && parent.GameInterface !== null)
-     {isGame = true}
+     var isGame = parent.GameInterface !== undefined && parent.GameInterface !== null;
   }
   catch(ex) {
-    isGame = false;
+    var isGame = false;
   }
 var time = Date.now();
 var maxSeconds = 15;
