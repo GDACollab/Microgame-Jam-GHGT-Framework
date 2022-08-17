@@ -43,7 +43,7 @@ How to use the extension!
 
 	SetMaxTimer(A);
 
-	Parameter A -- how many seconds the game will last (5 min, 15 max)
+	Parameter A -- how many seconds the game will last (5 seconds min, 15 seconds max)
 	
 2. Now find when the player wins and loses.
 
