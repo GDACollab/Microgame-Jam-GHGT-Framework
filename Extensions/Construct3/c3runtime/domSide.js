@@ -23,16 +23,79 @@
         constructor(iRuntime)
         {
             super(iRuntime, DOM_COMPONENT_ID);
-
+            console.log("DOM constructed");
             this.AddRuntimeMessageHandlers([
-                ["get-interface", () => this._getInterface()]
+                ["get-interface", () => this._getInterface()],
+                ["set-max-timer", (duration) => this._setMaxTimer(duration)],
+                ["get-timer", () => this._getTimer()],
+                ["get-max-timer", () => this._getMaxTimer()],
+                ["start-game", () => this._startGame()],
+                ["win-game", () => this._winGame()],
+                ["lose-game", () => this._loseGame()],
+                ["get-lives", () => this._getLives()],
+                ["get-difficulty", () => this._getDifficulty()],
+                ["verify", () => this._verify()]
+                
             ]);
         }
 
+        _verify(){
+            if(parent.GameInterface != null){
+                return{
+                    "value": true 
+                };
+            }
+            return{
+                "value": false 
+            };
+            
+        }
+
         _getInterface() {
+            console.log("grabbing interface");
             return {
                 "interface": parent.GameInterface
             };
+        }
+
+        _winGame(){
+            parent.GameInterface.winGame();
+        }
+
+        _loseGame(){
+            parent.GameInterface.loseGame();
+        }
+
+        _setMaxTimer(duration){
+            parent.GameInterface.setMaxTimer(duration);
+        }
+
+        _getMaxTimer(){
+            return{
+                "max-timer": Math.floor(parent.GameInterface._maxTimer)
+            };
+        }
+
+        _getTimer(){
+            return{
+                "timer": Math.floor(parent.GameInterface.getTimer())
+            };
+        }
+
+        _getDifficulty(){
+            return{
+                "difficulty": parent.GameInterface.getDifficulty()
+            };
+        }
+
+        _getLives(){
+            return{
+                "lives": parent.GameInterface.getLives()
+            };
+        }
+
+        _startGame(){
+            parent.GameInterface.gameStart();
         }
 
 
