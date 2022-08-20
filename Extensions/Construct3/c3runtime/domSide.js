@@ -78,7 +78,7 @@
 
         _getTimer(){
             return{
-                "timer": Math.floor(parent.GameInterface.getTimer())
+                "timer": parent.GameInterface.getTimer()
             };
         }
 
