@@ -61,7 +61,8 @@ code:
 
 ```
 function _update()   
-  if(microgamejamcontroller:gettimer() >= microgamejamcontroller.max_time) then           microgamejamcontroller:losegame()   
+  if(microgamejamcontroller:gettimer() >= microgamejamcontroller.max_time) then
+    microgamejamcontroller:losegame()   
   end 
 end
 ```
@@ -69,9 +70,10 @@ end
 4.  (Optional) If you want to make your game easier or harder depending
     on the difficulty level, call
 
-```if microgamejamcontroller:getdifficulty() == X then 
+```
+if microgamejamcontroller:getdifficulty() == X then 
   --Insert code here 
-  end
+end
 ```
 
 Where X is the difficulty number between integers 1-3.
