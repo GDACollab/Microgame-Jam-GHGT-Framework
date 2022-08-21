@@ -83,7 +83,7 @@ public class MicrogameJamController : MonoBehaviour {
             }
             _endGameLocked = true;
         } else {
-            Debug.LogWarning("Something tried to call LoseGame() after game has already ended.");
+            Debug.LogWarning("Something tried to call WinGame() after game has already ended.");
         }
     }
 
