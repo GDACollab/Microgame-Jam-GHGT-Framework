@@ -21,7 +21,7 @@ mergeInto(LibraryManager.library, {
     },
 
     GameExists: function(){
-        return "GameInterace" in parent !== undefined && parent.GameInterface !== null;
+        return "GameInterace" in parent && parent.GameInterface !== null;
     },
 
     StartGame: function(){
