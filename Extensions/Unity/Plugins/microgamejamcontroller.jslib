@@ -22,7 +22,7 @@ mergeInto(LibraryManager.library, {
 
     GameExists: function(){
         return "GameInterace" in parent !== undefined && parent.GameInterface !== null;
-    }
+    },
 
     StartGame: function(){
         parent.GameInterface.gameStart();
@@ -30,5 +30,5 @@ mergeInto(LibraryManager.library, {
 
     SetTimerMax: function(time){
         parent.GameInterface.setMaxTimer(time);
-    },
+    }
 });
