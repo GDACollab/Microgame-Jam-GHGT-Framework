@@ -31,6 +31,9 @@ public class MicrogameJamController : MonoBehaviour {
     [DllImport("__Internal")]
     private static extern void SetTimerMax(float time);
 
+    [DllImport("__Internal")]
+    private static extern bool GameExists();
+
     private float _time;
 
     private float _maxTime = MAX_TIME_ALLOWED;
