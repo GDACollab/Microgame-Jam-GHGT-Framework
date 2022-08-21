@@ -162,8 +162,7 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
         /**
          * Set the maximum number of seconds for the game to run for (used by getTimer())
          * @param seconds - new max seconds to set, max 15, min 5.
-         * @param startGameCallback - start method to call in your own code when the game restarts
-         * @returns 
+         * @param startGameCallback - start function to call in your own code when the game restarts
          */
         SetMaxTimer: function(seconds, startGameCallback){
             console.log("Staging 1");
