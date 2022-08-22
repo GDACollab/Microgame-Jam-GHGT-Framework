@@ -124,7 +124,7 @@ public class MicrogameJamController : MonoBehaviour {
         if (_isInGame){
             return Timer();
         } else {
-            return _time;
+            return _maxTime - _time;
         }
     }
 
