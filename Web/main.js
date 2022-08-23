@@ -1,3 +1,5 @@
+const DEBUG_DIFFICULTY = -1;
+
 var GameSound = new AudioManager();
 
 var masterVolume = 1;
@@ -18,8 +20,7 @@ window.onload = function(){
 
 function startMicrogames(){
     GameSound.stop("theme");
-    GameInterface.init(gameStarted,
-        () => {transition(true);}, () => {transition(false);});
+    GameInterface.init(gameStarted, transition);
     document.getElementById("menu").setAttribute("hidden", "");
     document.getElementById("transitionContainer").removeAttribute("hidden");
     GameSound.play("buttonClick", masterVolume, true, false, function(){
@@ -33,9 +34,17 @@ function gameStarted(){
     document.getElementById("game").removeAttribute("hidden");
 }
 
-function transition(didWin){
+// TODO: Make game picking more robust, add difficulty increases, etc.
+function transition(didWin, modifyDifficulty){
     // Because Twine saves things to the session:
     sessionStorage.removeItem("Saved Session");
+
+    // Difficulty change:
+    if (DEBUG_DIFFICULTY >= 1 && DEBUG_DIFFICULTY <= 3 && Number.isInteger(DEBUG_DIFFICULTY)) {
+        modifyDifficulty(DEBUG_DIFFICULTY);
+    } else {
+        modifyDifficulty(1);
+    }
     
     if (didWin){
         GameSound.play("winJingle", masterVolume * 0.8, true);

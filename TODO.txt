@@ -1,7 +1,5 @@
 For working with Harlowe: https://github.com/ChapelR/harlowe-macro-api/blob/master/src/macro.js and https://foss.heptapod.net/games/harlowe/-/blob/branch/default/js/macros.js are pretty useful references.
 
-
-
 - WinWithTransition() or LoseWithTransition()?
 - Minify all .js and .css for web build?
 - Difficulty increment code (set difficulty to 1 if the browser doesn't detect the game as having been played before?)

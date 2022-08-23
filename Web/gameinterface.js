@@ -9,9 +9,16 @@ var GameInterface = (function() {
     var _currTimer = 0;
     var _gameEnd = false;
     var _gameStartCallback = function(){};
-    var _winCallback = function(){};
-    var _loseCallback = function(){};
+    var _gameEndCallback = function(didWin, modifyDifficulty){};
     var _update = function(){};
+
+    var _gameEnded = function(didWin) {
+        _gameEnd = true;
+        _maxTimer = MAX_ALLOWED_TIMER;
+        _gameEndCallback(didWin, function(difficultySet) {
+            _difficulty = difficultySet;
+        });
+    };
 
     return {
         getLives: function(){
@@ -33,9 +40,7 @@ var GameInterface = (function() {
 
         winGame: function(){
             if (!_gameEnd){
-                _gameEnd = true;
-                _maxTimer = MAX_ALLOWED_TIMER;
-                _winCallback();
+                _gameEnded(true);
             } else {
                 console.warn("Something tried to call winGame() after game has already ended.");
             }
@@ -44,9 +49,7 @@ var GameInterface = (function() {
 
         loseGame: function(){
             if (!_gameEnd){
-                _gameEnd = true;
-                _maxTimer = MAX_ALLOWED_TIMER;
-                _loseCallback();
+                _gameEnded(false);
             } else {
                 console.warn("Something tried to call loseGame() after game has already ended.");
             }

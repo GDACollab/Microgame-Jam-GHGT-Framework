@@ -1,4 +1,3 @@
-// This is NOT part of the extension (actually, Imma move this out of the extensions folder and into the web folder).
 // This is used for communicating with PICO8 games and setting information to the relevant GPIO pins.
 
 class PicoInterface {

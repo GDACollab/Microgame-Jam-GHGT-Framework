@@ -7,7 +7,6 @@ var gamesList = {
     "Pico8 MGG22 Test": "mgg_test.html",
 };
 
-// TODO: Make game picking more robust, add difficulty increases, etc.
 function loadGame(){
     let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];
     if (DEBUG_TEST !== "") {
