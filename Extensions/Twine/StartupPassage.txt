@@ -1,7 +1,0 @@
-Place the below text in a unattached Twine Passage with the tag 'startup':
-
-(set: $WinGame to (macro: [<script>setTimeout(() => {if ($isGame){parent.gameInterface.winGame()} else {alert("Game Won!");}}, 500)</script> (output-data: "")]))
-
-(set: $LoseGame to (macro: [<script>setTimeout(() => {if ($isGame){parent.gameInterface.loseGame()} else {alert("Game Lost...");}}, 500)</script> (output-data: "")]))
-
-(set: $SetMaxTimer to (macro: num-type _t, [(output-data: "")]))

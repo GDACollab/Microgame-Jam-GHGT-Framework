@@ -10,7 +10,7 @@ var maxSeconds = 15;
 var gameOver = false;
 
 if (isGame) {
-    parent.GameInterface.gameStart();
+  setTimeout(parent.GameInterface.gameStart(), 1000);
 }
 
 function updateVariables() {
