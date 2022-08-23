@@ -34,6 +34,9 @@ function gameStarted(){
 }
 
 function transition(didWin){
+    // Because Twine saves things to the session:
+    sessionStorage.removeItem("Saved Session");
+    
     if (didWin){
         GameSound.play("winJingle", masterVolume * 0.8, true);
     } else {

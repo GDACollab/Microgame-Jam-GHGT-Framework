@@ -4,10 +4,10 @@
 // Should be inserted into your Story Javascript:
 var isGame = parent.GameInterface !== undefined && parent.GameInterface !== null;
 var time = Date.now();
-var maxSeconds = 20;
+var maxSeconds = 15;
 
 if (isGame) {
-    parent.GameInterface.gameStart();
+    setTimeout(function(){ parent.GameInterface.gameStart()}, 1000);
 }
 
 function updateVariables() {
