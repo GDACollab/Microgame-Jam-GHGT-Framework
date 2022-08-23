@@ -88,10 +88,9 @@ var GameInterface = (function() {
             return;
         },
 
-        init(gameStartCallback, winCallback, loseCallback){
+        init(gameStartCallback, gameEndCallback){
             _gameStartCallback = gameStartCallback;
-            _winCallback = winCallback;
-            _loseCallback = loseCallback;
+            _gameEndCallback = gameEndCallback;
         }
     };
 
