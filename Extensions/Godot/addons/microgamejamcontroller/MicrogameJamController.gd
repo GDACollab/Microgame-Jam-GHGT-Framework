@@ -22,6 +22,7 @@ func WinGame():
 		if _is_game:
 			JavaScript.eval('parent.GameInterface.winGame();');
 		else:
+			print("Game Won! Restarting...");
 			if (_current_scene == get_tree().get_current_scene()):
 				get_tree().reload_current_scene();
 			else:
@@ -30,6 +31,7 @@ func WinGame():
 			_dev_timer = _max_time;
 			_game_started = false;
 			yield(get_tree(), "idle_frame");
+			_current_scene = get_tree().get_current_scene();
 			_game_started = true;
 	else:
 		print("[Microgame Jam Controller] Attempted to call WinGame() after game has ended.");
@@ -43,10 +45,15 @@ func LoseGame():
 			print("Game Lost! Restarting...");
 			if (_current_scene == get_tree().get_current_scene()):
 				get_tree().reload_current_scene();
+				_current_scene = get_tree().get_current_scene();
 			else:
 				get_tree().change_scene_to(_current_scene.filename);
 			_game_ended = false;
 			_dev_timer = _max_time;
+			_game_started = false;
+			yield(get_tree(), "idle_frame");
+			_current_scene = get_tree().get_current_scene();
+			_game_started = true;
 	else:
 		print("[Microgame Jam Controller] Attempted to call LoseGame() after game has ended.");
 

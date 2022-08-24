@@ -21,3 +21,5 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Asynchronous loading across extensions. Requires analysis of each engine though, and finding the exact point in their .wasm or .js file to pause until they're ready to play. Honestly it would be a huge pain, and we'd end up losing support for a lot of .JS engines (since we'd have to each configure them manually). Possible idea: Run the iframes in some kind of VM, find the exact point where "gameStart" is ready to go, then load that state into the iframe? I have no idea how that'd work in-browser though. I mean, if there were some way to pause iframes, it would be a whole lot simpler.
 
 - Same as above, but for changing volume for each iframe?
+
+- NPM package for developers to test their games within the framework?
