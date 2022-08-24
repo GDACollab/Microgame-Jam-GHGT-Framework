@@ -1,5 +1,3 @@
-const DEBUG_DIFFICULTY = -1;
-
 var GameSound = new AudioManager();
 
 var masterVolume = 1;

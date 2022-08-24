@@ -1,10 +1,14 @@
 const MAX_ALLOWED_TIMER = 15;
 const MIN_ALLOWED_TIMER = 5;
+const DEBUG_DIFFICULTY = -1;
 
 // Based on https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 var GameInterface = (function() {
     var _lives = 3;
     var _difficulty = 1;
+    if (DEBUG_DIFFICULTY >= 1 && DEBUG_DIFFICULTY <= 3 && Number.isInteger(DEBUG_DIFFICULTY)) {
+        _difficulty = DEBUG_DIFFICULTY;
+    }
     var _maxTimer = MAX_ALLOWED_TIMER;
     var _currTimer = 0;
     var _gameEnd = false;
