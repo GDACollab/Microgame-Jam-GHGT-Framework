@@ -26,7 +26,7 @@ public class MicrogameJamController : MonoBehaviour {
     private static extern float Timer();
 
     [DllImport("__Internal")]
-    private static extern bool StartGame();
+    private static extern void StartGame();
 
     [DllImport("__Internal")]
     private static extern void SetTimerMax(float time);
@@ -45,17 +45,19 @@ public class MicrogameJamController : MonoBehaviour {
     private bool _endGameLocked = false;
 
     // For dev mode:
-    private Scene _startScene;
+    private int _startSceneBuildIndex;
 
-    // This way, you can call SetMaxTimer in the start function BEFORE gameStart is called.
-    private void Start(){
-        DontDestroyOnLoad(this.gameObject);
+    private void Awake(){
         #if UNITY_WEBGL && !UNITY_EDITOR
             _isInGame = GameExists();
         #else
             // isInGame is false by default.
             _time = 0.0f;
         #endif
+    }
+
+    // This way, you can call SetMaxTimer in the start function BEFORE gameStart is called.
+    private void Start(){
         StartCoroutine(GameStartDelay());
     }
 
@@ -65,23 +67,23 @@ public class MicrogameJamController : MonoBehaviour {
         if (_isInGame) {
             StartGame();
         } else {
-            _startScene = SceneManager.GetActiveScene();
+            _startSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
         }
     }
 
     public void WinGame(){
         if (!_endGameLocked){
+            _endGameLocked = true;
             if (_isInGame){
                 Win();
             } else {
                 // Synchronous, because what else is there to do?
                 Debug.Log("Game won. Reloading...");
-                SceneManager.LoadScene(_startScene.buildIndex);
+                SceneManager.LoadScene(_startSceneBuildIndex);
                 _endGameLocked = false;
                 _timeChangesLocked = false;
                 _time = 0.0f;
             }
-            _endGameLocked = true;
         } else {
             Debug.LogWarning("Something tried to call WinGame() after game has already ended.");
         }
@@ -89,16 +91,16 @@ public class MicrogameJamController : MonoBehaviour {
 
     public void LoseGame(){
         if (!_endGameLocked){
+            _endGameLocked = true;
             if (_isInGame){
                 Lose();
             } else {
                 Debug.Log("Game lost. Reloading...");
-                SceneManager.LoadScene(_startScene.buildIndex);
+                SceneManager.LoadScene(_startSceneBuildIndex);
                 _endGameLocked = false;
                 _timeChangesLocked = false;
                 _time = 0.0f;
             }
-            _endGameLocked = true;
         } else {
             Debug.LogWarning("Something tried to call LoseGame() after game has already ended.");
         }
