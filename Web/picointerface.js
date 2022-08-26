@@ -17,6 +17,46 @@ class PicoInterface {
             p8Button.click();
         }
 
+        // Intercept keyboard events (for rebinding):
+        document.getElementById("game").contentWindow.addListener("keydown", function(e){
+            if (!e.picoInterface && (e.key == 'x' || e.key == 'z')){
+                e.preventDefault();
+            }
+
+            if (e.key == ' '){
+                document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
+                    key: 'x',
+                    picoInterface: true
+                }));
+
+                document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent('keydown', {
+                    key: 'z',
+                    picoInterface: true
+                }));
+            }
+        });
+
+        document.getElementById("game").contentWindow.addListener("keyup", function(e){
+            if (!e.picoInterface && (e.key == 'x' || e.key == 'z')){
+                e.preventDefault();
+            }
+
+            if (e.key == ' '){
+                document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent('keyup', {
+                    key: 'x',
+                    shiftKey: false,
+                    ctrlKey: false,
+                    metaKey: false,
+                    picoInterface: true
+                }));
+
+                document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent('keyup', {
+                    key: 'z',
+                    picoInterface: true
+                }));
+            }
+        });
+        
 
         // Mute sound (That start-up sound that plays every time and gets annoying fast):
         document.getElementById("game").contentWindow.pico8_audio_context.suspend();
