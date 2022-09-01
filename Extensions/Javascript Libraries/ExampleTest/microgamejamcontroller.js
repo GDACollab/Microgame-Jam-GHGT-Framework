@@ -60,7 +60,7 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
         }
     };
 
-    // Failsafe - After half a second, without SetMaxTimer call, game will still start
+    // After half a second game will start
     setTimeout(StartGame, 500);
 
     /**
@@ -183,7 +183,6 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
             } else {
                 maxSeconds = seconds;
             }
-            StartGame();
         }
     };
 });
