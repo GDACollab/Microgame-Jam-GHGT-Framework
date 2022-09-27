@@ -1,11 +1,14 @@
-Microgame Jam JavaScript Extension How-To
+Microgame Jam JavaScript Extension
+
+Preface Note: If your using a JavaScript game engine like Phaser, please refer
+		  to the slide show for alternative instructions.
 - - - - - - - - - - - - - - - - - - - - - - -
 
 Included in the Javascript Libraries Zip is...
 
 "microgamejamcontroller.js" - the actual extension, the only file you need
 "ExampleTest" folder - an example use of this extension
-"README.txt" - this how-to guide!
+"README.txt" - this function guide!
 
 - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -50,19 +53,31 @@ How to use extension.
 	You don't need to call "LoseGame()" if the only time the player loses is when the clock runs out.
 
 3. Ok now you have a Microgame!
+  
+- - - - - - - - - - - - - - - - - - - - - - -
+
+Here are the functions available to you!
+
+	test.SetMaxTimer(A,B)
+
+	Parameter A -- How many seconds the game will last (5 min, 15 max)
+	Parameter B -- This takes a single function name that you want to be called on game restart, like a start method.
+		This parameter is not necessary to use but helps if you need to reset variables in your game on restart.
+
+	test.GetLives() - Returns the number of lives available
+
+	test.GetDifficulty() - Returns the current difficulty level (between 1 and 3)
+
+	test.GetTimer() - Returns the number of seconds until loseGame() is automatically called.
+
+	test.WinGame() - Sends callback to main webpage/other js files to tell them that we won the game.
+	
+	test.LoseGame() - Sends callback to main webpage/other js files to tell them that we lost the game.
 
 - - - - - - - - - - - - - - - - - - - - - - -
 
-Here are some Helper Functions for your use:
+Note: "test" variable name can be replaced with whatever name you want!
 
-	jamController.GetLives() - Returns the number of lives available
-	jamController.GetDifficulty() - Returns the current difficulty level (between 1 and 3)
-	jamController.GetTimer() - Returns the number of seconds until loseGame() is automatically called.
-	jamController.WinGame() - Sends callback to main webpage/other js files to tell them that we won the game.
-	jamController.LoseGame() - Sends callback to main webpage/other js files to tell them that we lost the game.
 
-- - - - - - - - - - - - - - - - - - - - - - -
-
-Note: "jamController" variable name can be replaced with whatever name you want!
 
 

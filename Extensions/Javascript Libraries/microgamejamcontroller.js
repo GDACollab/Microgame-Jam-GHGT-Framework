@@ -60,7 +60,7 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
         }
     };
 
-    // Failsafe - After half a second, without SetMaxTimer call, game will still start
+    // After half a second game will start
     setTimeout(StartGame, 500);
 
     /**
@@ -80,15 +80,15 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
             if (isGame) {
                 parent.GameInterface.loseGame();
             } else {
-                alert("Game lost!");
-                RestartGame();
+                console.log("Game lost!");
+                setTimeout(RestartGame, 500);
             }
         }
     };
 
     function RestartGame(){
         if(allowAutoRestarts){
-            alert("Auto Restarting Controller...");
+            console.log("Auto Restarting Controller...");
 
             if(typeof savedCallback !== 'undefined'){
             savedCallback();
@@ -98,7 +98,7 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
             gameStarted = false;
             StartGame();
         }else{
-            alert("Auto Restarting Not Enabled. Enable in microgamejamcontorller.js");
+            console.log("Auto Restarting Not Enabled. Enable in microgamejamcontorller.js");
         }
     }
 
@@ -139,9 +139,11 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
                 if (isGame) {
                     parent.GameInterface.winGame();
                 } else {
-                    alert("Game won!");
-                    RestartGame();
+                    console.log("Game won!");
+                    setTimeout(RestartGame, 500);
                 }
+            }else{
+                console.warn("Called WinGame() multiple times.");
             }
         },
 
@@ -153,9 +155,11 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
                 if (isGame) {
                     parent.GameInterface.loseGame();
                 } else {
-                    alert("Game lost!");
-                    RestartGame();
+                    console.log("Game lost!");
+                    setTimeout(RestartGame, 500);
                 }
+            }else{
+                console.warn("Called LoseGame() multiple times.");
             }
         },
 
@@ -179,7 +183,6 @@ var MicrogameJamController = (function(defaultDifficulty,defaultLives,allowAutoR
             } else {
                 maxSeconds = seconds;
             }
-            StartGame();
         }
     };
 });
