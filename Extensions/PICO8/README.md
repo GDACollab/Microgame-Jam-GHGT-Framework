@@ -35,7 +35,7 @@ After this is included, the Microgame Controller will be installed and ready to 
 
 How to use the Microgame Jam Controller
 
-1. In the "_init()" function, type the following command to set the maximum timer amount in your microgame. This should be anywhere from 5 to 15seconds. Setting all of your initial state variables in _init() is very important as it will also be how you restart your game!
+1. In the "_init()" function, type the following command to set the maximum timer amount in your microgame. This should be anywhere from 5 to 15 seconds. Setting all of your initial state variables in _init() is very important as it will also be how you restart your game!
 
 ```
 function _init() 

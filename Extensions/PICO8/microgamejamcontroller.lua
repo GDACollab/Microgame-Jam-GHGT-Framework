@@ -24,10 +24,8 @@ microgamejamcontroller = {
     gameover = false
 }
 
-poke(0x5f82, 1)
-
-if (microgamejamcontroller.is_game) then
-    microgamejamcontroller.setmaxtimer(microgamejamcontroller.max_time)
+function microgamejamcontroller:gamestart()
+    poke(0x5f82, 1)
 end
 
 function microgamejamcontroller:getlives()
@@ -98,6 +96,7 @@ end
 
 function microgamejamcontroller:resetcontroller()
     self.gameover = false
+    poke(0x5f82, 0)
 end
 
 function microgamejamcontroller:setdefaultlives(numLives)
