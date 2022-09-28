@@ -113,7 +113,7 @@ function padZero(str, len) {
 }
 
 // From https://stackoverflow.com/questions/13070054/convert-rgb-strings-to-hex-in-javascript
-function rgbToHex(rgb){
+function rgbToHex(rgb
    var rgbNoParen = rgb.split("(")[1].split(")")[0];
    var separate = rgbNoParen.split(",");
    // Ignore alpha values:

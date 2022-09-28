@@ -17,13 +17,13 @@ How to embed extension in your Gamemaker 2 Project.
 
 2. In this menu, select the "MicroGameJamExtension.yymps" package.
 
-3. You now can import any of the package files, included are:
+3. You now can import the package files, included are:
 
 	Files Crucial to the Extension,
 
 	Extensions > MicroGameJamController
-	Scripts 	 > gmcallback_debugSettings
-	Scripts 	 > gmcallback_restartGame
+	Objects 	 > Windows_tester
+	Scripts 	 > MicroGameJam Scripts Folder
 
 	Example files,
 
@@ -57,9 +57,16 @@ How to use the extension!
 
 4. When you run on the HTML5 Target, the Game will give you a prompt when you lose or win, and on restart!
 
+5. If you would like to test on windows, add the windows_tester object into your room.
+
 - - - - - - - - - - - - - - - - - - - - - - -
 
+
 Here are some Helper Functions for your use:
+
+	SetMaxTimer(A);
+
+	Parameter A -- how many seconds the game will last (5 seconds min, 15 seconds max)
 
 	GetLives() - Returns the number of lives available
 	GetDifficulty() - Returns the current difficulty level (between 1 and 3)

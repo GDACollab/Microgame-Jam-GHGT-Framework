@@ -1,17 +1,28 @@
 const MAX_ALLOWED_TIMER = 15;
 const MIN_ALLOWED_TIMER = 5;
+const DEBUG_DIFFICULTY = -1;
 
 // Based on https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 var GameInterface = (function() {
     var _lives = 3;
     var _difficulty = 1;
+    if (DEBUG_DIFFICULTY >= 1 && DEBUG_DIFFICULTY <= 3 && Number.isInteger(DEBUG_DIFFICULTY)) {
+        _difficulty = DEBUG_DIFFICULTY;
+    }
     var _maxTimer = MAX_ALLOWED_TIMER;
     var _currTimer = 0;
     var _gameEnd = false;
     var _gameStartCallback = function(){};
-    var _winCallback = function(){};
-    var _loseCallback = function(){};
+    var _gameEndCallback = function(didWin, modifyDifficulty){};
     var _update = function(){};
+
+    var _gameEnded = function(didWin) {
+        _gameEnd = true;
+        _maxTimer = MAX_ALLOWED_TIMER;
+        _gameEndCallback(didWin, function(difficultySet) {
+            _difficulty = difficultySet;
+        });
+    };
 
     return {
         getLives: function(){
@@ -33,9 +44,7 @@ var GameInterface = (function() {
 
         winGame: function(){
             if (!_gameEnd){
-                _gameEnd = true;
-                _maxTimer = MAX_ALLOWED_TIMER;
-                _winCallback();
+                _gameEnded(true);
             } else {
                 console.warn("Something tried to call winGame() after game has already ended.");
             }
@@ -44,9 +53,7 @@ var GameInterface = (function() {
 
         loseGame: function(){
             if (!_gameEnd){
-                _gameEnd = true;
-                _maxTimer = MAX_ALLOWED_TIMER;
-                _loseCallback();
+                _gameEnded(false);
             } else {
                 console.warn("Something tried to call loseGame() after game has already ended.");
             }
@@ -85,10 +92,9 @@ var GameInterface = (function() {
             return;
         },
 
-        init(gameStartCallback, winCallback, loseCallback){
+        init(gameStartCallback, gameEndCallback){
             _gameStartCallback = gameStartCallback;
-            _winCallback = winCallback;
-            _loseCallback = loseCallback;
+            _gameEndCallback = gameEndCallback;
         }
     };
 

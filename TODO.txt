@@ -1,3 +1,5 @@
+For working with Harlowe: https://github.com/ChapelR/harlowe-macro-api/blob/master/src/macro.js and https://foss.heptapod.net/games/harlowe/-/blob/branch/default/js/macros.js are pretty useful references.
+
 - WinWithTransition() or LoseWithTransition()?
 - Minify all .js and .css for web build?
 - Difficulty increment code (set difficulty to 1 if the browser doesn't detect the game as having been played before?)
@@ -5,8 +7,6 @@
 
 Future Improvements:
 - More Twine Story Formats
-
-- Fix Harlowe implementation to directly add macros (somewhat difficult). Although, maybe not. You can just look at the source code for https://github.com/ChapelR/harlowe-macro-api/blob/master/src/macro.js and modify it for the latest version of Harlowe: https://foss.heptapod.net/games/harlowe/-/blob/branch/default/js/macros.js
 
 - Upgrade to typescript?
 
@@ -21,3 +21,5 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Asynchronous loading across extensions. Requires analysis of each engine though, and finding the exact point in their .wasm or .js file to pause until they're ready to play. Honestly it would be a huge pain, and we'd end up losing support for a lot of .JS engines (since we'd have to each configure them manually). Possible idea: Run the iframes in some kind of VM, find the exact point where "gameStart" is ready to go, then load that state into the iframe? I have no idea how that'd work in-browser though. I mean, if there were some way to pause iframes, it would be a whole lot simpler.
 
 - Same as above, but for changing volume for each iframe?
+
+- NPM package for developers to test their games within the framework?
