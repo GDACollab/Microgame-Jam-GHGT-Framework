@@ -17,13 +17,18 @@ microgamejamcontroller = {
     is_game = peek(0x5f80) == 1,
     lives = 3,
     difficulty = 1,
+    lastrestart = 0,
     timer = time(),
-    max_time = 20,
+    max_time = 15,
     win = false,
     gameover = false
 }
 
 poke(0x5f82, 1)
+
+if (microgamejamcontroller.is_game) then
+    microgamejamcontroller.setmaxtimer(microgamejamcontroller.max_time)
+end
 
 function microgamejamcontroller:getlives()
     -- I forgot how much LUA sucks for not using curly braces.
@@ -31,6 +36,7 @@ function microgamejamcontroller:getlives()
     if (self.is_game) then
         self.lives = peek(0x5f83)
     end
+    
     return self.lives
 end
 
@@ -45,35 +51,68 @@ function microgamejamcontroller:gettimer()
     if(self.is_game) then
         self.timer = peek(0x5f85)
     else
-        --self.timer = self.max_time - flr(time() - self.timer)
-        self.timer = time()
+        self.timer = self.max_time - (time() - self.lastrestart)
     end
     return self.timer
 end
 
 function microgamejamcontroller:wingame()
-    if (self.is_game) then
+    if (not self.gameover) then
+      self.gameover = true
+      if (self.is_game) then
         poke(0x5f86, 255)
-    elseif (not self.gameover) then
-        self.gameover = true
+      else
         self.win = true
+        self.lastrestart = time()
+      end
     end
 end
 
 function microgamejamcontroller:losegame()
-    if (self.is_game) then
+    if (not self.gameover) then
+      self.gameover = true
+      if (self.is_game) then
         poke(0x5f86, 1)
-    elseif (not self.gameover) then
-        self.gameover = true
+      else
         self.win = false
+        self.lastrestart = time()
+      end
     end
 end
 
 function microgamejamcontroller:setmaxtimer(seconds)
+    newmaxseconds = seconds
+    if newmaxseconds < 5 then newmaxseconds = 5 end
+    if newmaxseconds > 15 then newmaxseconds = 15 end
+
     if (self.is_game) then
-        poke(0x5f81, seconds)
+        poke(0x5f81, newmaxseconds)
     end
-    self.max_time = seconds
+    self.max_time = newmaxseconds
+end
+
+--Dev Mode Functions
+function microgamejamcontroller:gameisover()
+    return self.gameover
+end
+
+function microgamejamcontroller:resetcontroller()
+    self.gameover = false
+end
+
+function microgamejamcontroller:setdefaultlives(numLives)
+    if numLives < 1 then numLives = 1 end
+    if (not self.is_game) then
+        self.lives = flr(numLives)
+    end
+end
+
+function microgamejamcontroller:setdefaultdifficulty(diffNumber)
+    if diffNumber < 1 then diffNumber = 1 end
+    if diffNumber > 3 then diffNumber = 3 end
+    if (not self.is_game) then
+        self.difficulty = flr(diffNumber)
+    end
 end
 
 function microgamejamcontroller:drawgameresult()
