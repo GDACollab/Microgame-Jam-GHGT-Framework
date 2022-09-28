@@ -1,13 +1,28 @@
+const MAX_ALLOWED_TIMER = 15;
+const MIN_ALLOWED_TIMER = 5;
+const DEBUG_DIFFICULTY = -1;
+
 // Based on https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 var GameInterface = (function() {
     var _lives = 3;
     var _difficulty = 1;
-    var _maxTimer = 20;
+    if (DEBUG_DIFFICULTY >= 1 && DEBUG_DIFFICULTY <= 3 && Number.isInteger(DEBUG_DIFFICULTY)) {
+        _difficulty = DEBUG_DIFFICULTY;
+    }
+    var _maxTimer = MAX_ALLOWED_TIMER;
     var _currTimer = 0;
+    var _gameEnd = false;
     var _gameStartCallback = function(){};
-    var _winCallback = function(){};
-    var _loseCallback = function(){};
+    var _gameEndCallback = function(didWin, modifyDifficulty){};
     var _update = function(){};
+
+    var _gameEnded = function(didWin) {
+        _gameEnd = true;
+        _maxTimer = MAX_ALLOWED_TIMER;
+        _gameEndCallback(didWin, function(difficultySet) {
+            _difficulty = difficultySet;
+        });
+    };
 
     return {
         getLives: function(){
@@ -28,43 +43,58 @@ var GameInterface = (function() {
         },
 
         winGame: function(){
-            clearInterval(_update);
-            _winCallback();
+            if (!_gameEnd){
+                _gameEnded(true);
+            } else {
+                console.warn("Something tried to call winGame() after game has already ended.");
+            }
             return;
         },
 
         loseGame: function(){
-            clearInterval(_update);
-            _loseCallback();
+            if (!_gameEnd){
+                _gameEnded(false);
+            } else {
+                console.warn("Something tried to call loseGame() after game has already ended.");
+            }
             return;
         },
 
         gameStart: function(){
             _currTimer = Date.now();
             var self = this;
-            _update = setInterval(function(){
-                console.log(self.getTimer());
-                if (self.getTimer() <= 0){
+            _gameEnd = false;
+            _update = function() {
+                document.getElementById("timerFull").style.left = "-" + ((1 - self.getTimer()/_maxTimer) * 100) + "%";
+                if (self.getTimer() <= 0) {
                     self.loseGame();
                 }
-            }, 100);
+                if (!_gameEnd){
+                    window.requestAnimationFrame(_update);
+                }
+            };
             _gameStartCallback();
+            window.requestAnimationFrame(_update);
             return;
         },
 
         setMaxTimer: function(time){
-            _maxTimer = time;
+            console.log("setMaxTimer called: " + time + "s");
+            if (time > MAX_ALLOWED_TIMER) {
+                _maxTimer = MAX_ALLOWED_TIMER;
+                console.warn("Someone tried to set max timer to " + time + "s. Setting to " + MAX_ALLOWED_TIMER + "s instead.");
+            } else if (time < MIN_ALLOWED_TIMER) {
+                _maxTimer = MIN_ALLOWED_TIMER;
+                console.warn("Someone tried to set max timer to " + time + "s. Setting to " + MIN_ALLOWED_TIMER + "s instead.");
+            } else {
+                _maxTimer = time;
+            }
             return;
         },
 
-        getMaxTimer: function(){
-            return _maxTimer;
-        },
-
-        init(gameStartCallback, winCallback, loseCallback){
+        init(gameStartCallback, gameEndCallback){
             _gameStartCallback = gameStartCallback;
-            _winCallback = winCallback;
-            _loseCallback = loseCallback;
+            _gameEndCallback = gameEndCallback;
         }
     };
 

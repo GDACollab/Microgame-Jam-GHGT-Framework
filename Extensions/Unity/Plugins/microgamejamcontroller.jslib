@@ -20,16 +20,15 @@ mergeInto(LibraryManager.library, {
         return parent.GameInterface.getTimer();
     },
 
+    GameExists: function(){
+        return "GameInterface" in parent && parent.GameInterface !== null;
+    },
+
     StartGame: function(){
-        if ("GameInterace" in parent !== undefined && parent.GameInterface !== null) {
-            parent.GameInterface.gameStart();
-            return true;
-        } else {
-            return false;
-        }
+        parent.GameInterface.gameStart();
     },
 
     SetTimerMax: function(time){
         parent.GameInterface.setMaxTimer(time);
-    },
+    }
 });

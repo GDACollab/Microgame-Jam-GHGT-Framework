@@ -1,10 +1,14 @@
 using UnityEngine;
 using System.Runtime.InteropServices;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MicrogameJamController : MonoBehaviour {
+    const float MIN_TIME_ALLOWED = 5;
+    const float MAX_TIME_ALLOWED = 15;
 
     [Range(1, 3)]
-    public int defaultDifficulty;
+    public int defaultDifficulty = 1;
 
     [DllImport("__Internal")]
     private static extern void Win();
@@ -22,49 +26,88 @@ public class MicrogameJamController : MonoBehaviour {
     private static extern float Timer();
 
     [DllImport("__Internal")]
-    private static extern bool StartGame();
+    private static extern void StartGame();
 
     [DllImport("__Internal")]
     private static extern void SetTimerMax(float time);
 
-    private float time;
+    [DllImport("__Internal")]
+    private static extern bool GameExists();
 
-    private float maxTime = 20.0f;
+    private float _time;
 
-    private bool isInGame = false;
+    private float _maxTime = MAX_TIME_ALLOWED;
 
-    private bool gameOver = false;
+    private bool _timeChangesLocked = false;
 
-    private void Start(){
+    private bool _isInGame = false;
+
+    private bool _endGameLocked = false;
+
+    // For dev mode:
+    private int _startSceneBuildIndex;
+
+    private void Awake(){
         #if UNITY_WEBGL && !UNITY_EDITOR
-            isInGame = StartGame();
+            _isInGame = GameExists();
         #else
-            time = 0.0f;
+            // isInGame is false by default.
+            _time = 0.0f;
         #endif
     }
 
-    public void WinGame(){
-        if (isInGame){
-            Win();
+    // This way, you can call SetMaxTimer in the start function BEFORE gameStart is called.
+    private void Start(){
+        StartCoroutine(GameStartDelay());
+    }
+
+    IEnumerator GameStartDelay() {
+        yield return new WaitForEndOfFrame();
+        _timeChangesLocked = true;
+        if (_isInGame) {
+            StartGame();
         } else {
-            time = 0.0f;
-            gameOver = true;
+            _startSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
         }
-        Debug.Log("Game won.");
+    }
+
+    public void WinGame(){
+        if (!_endGameLocked){
+            _endGameLocked = true;
+            if (_isInGame){
+                Win();
+            } else {
+                // Synchronous, because what else is there to do?
+                Debug.Log("Game won. Reloading...");
+                SceneManager.LoadScene(_startSceneBuildIndex);
+                _endGameLocked = false;
+                _timeChangesLocked = false;
+                _time = 0.0f;
+            }
+        } else {
+            Debug.LogWarning("Something tried to call WinGame() after game has already ended.");
+        }
     }
 
     public void LoseGame(){
-        if (isInGame){
-            Lose();
+        if (!_endGameLocked){
+            _endGameLocked = true;
+            if (_isInGame){
+                Lose();
+            } else {
+                Debug.Log("Game lost. Reloading...");
+                SceneManager.LoadScene(_startSceneBuildIndex);
+                _endGameLocked = false;
+                _timeChangesLocked = false;
+                _time = 0.0f;
+            }
         } else {
-            time = 0.0f;
-            gameOver = true;
+            Debug.LogWarning("Something tried to call LoseGame() after game has already ended.");
         }
-        Debug.Log("Game lost.");
     }
 
     public int GetDifficulty() {
-        if (isInGame) {
+        if (_isInGame) {
             return Difficulty();
         } else {
             return defaultDifficulty;
@@ -72,7 +115,7 @@ public class MicrogameJamController : MonoBehaviour {
     }
 
     public int GetLives(){
-        if (isInGame){
+        if (_isInGame){
             return Lives();
         } else {
             return 3;
@@ -80,28 +123,36 @@ public class MicrogameJamController : MonoBehaviour {
     }
 
     public float GetTimer(){
-        if (isInGame){
+        if (_isInGame){
             return Timer();
         } else {
-            return time;
+            return _maxTime - _time;
         }
     }
 
-    public bool IsInWebGL(){
-        return isInGame;
-    }
-
-    public void SetMaxTimer(float time){
-        if (isInGame) {
-            SetTimerMax(time);
+    public void SetMaxTimer(float seconds){
+        if (!_timeChangesLocked){
+            if (seconds > MAX_TIME_ALLOWED){
+                Debug.LogWarning("SetMaxTimer() of " + seconds + "s > " + MAX_TIME_ALLOWED + "s. Max timer set to " + MAX_TIME_ALLOWED + "s.");
+                seconds = MAX_TIME_ALLOWED;
+            } else if (seconds < MIN_TIME_ALLOWED) {
+                Debug.LogWarning("SetMaxTimer() of " + seconds +"s < " + MIN_TIME_ALLOWED + "s. Max timer set to " + MIN_TIME_ALLOWED + "s.");
+                seconds = MIN_TIME_ALLOWED;
+            }
+            if (_isInGame) {
+                SetTimerMax(seconds);
+            } else {
+                _maxTime = seconds;
+            }
+        } else {
+            Debug.LogWarning("SetMaxTimer(" + seconds + " seconds) call failed. Called AFTER Start(). Any changes to the maximum amount of allowed time must be made during the Start function in MonoBehaviour.");
         }
     }
 
     private void Update(){
-        if(!isInGame && !gameOver){
-            time += Time.deltaTime;
-            if (time > maxTime){
-                gameOver = true;
+        if(!_isInGame && !_endGameLocked){
+            _time += Time.deltaTime;
+            if (_time > _maxTime){
                 Debug.Log("Reached time limit!");
                 LoseGame();
             }
