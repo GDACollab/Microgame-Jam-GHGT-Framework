@@ -8,9 +8,6 @@ Files
     the functions you will need to communicate with the microgame
     interface. **This is the file you will need to import and use in
     your microgame!**
--   "picointerface.js" - Communicates with the Pico-8 controller and
-    sends relevant information to the main microgame jam interface by
-    setting GPIO pins. You don't need to worry about how this works!
 -   "README.txt" - ur already here lmao
 
 ------------------------------------------------------------------------
