@@ -35,11 +35,12 @@ After this is included, the Microgame Controller will be installed and ready to 
 
 How to use the Microgame Jam Controller
 
-1. In the "_init()" function, type the following command to set the maximum timer amount in your microgame. This should be anywhere from 5 to 20 seconds.
+1. In the "_init()" function, type the following command to set the maximum timer amount in your microgame. This should be anywhere from 5 to 15seconds. Setting all of your initial state variables in _init() is very important as it will also be how you restart your game!
 
 ```
 function _init() 
   microgamejamcontroller:setmaxtimer(X) 
+  --Code here abour player variables, sprite positions, etc.
 end 
 ```
 
@@ -55,19 +56,43 @@ microgame will be.
 
 ```microgamejamcontroller:losegame()```
 
-Your game MUST also call the lose game function if the player runs out
-of time. To add this condition, in the "_update()" function, add this
-code:
+4. Due to the way Pico-8 works, you will need to add a few extra lines of code in your _update() function to set up automatic win/lose behaviors, as well as restart your game in dev testing.
+
+The piece of code below will automatically reset the game and ensure that the player loses upon the timer reaching zero. This code MUST be used in order for your game to work in the web build.
 
 ```
-function _update()   
-  if(microgamejamcontroller:gettimer() >= microgamejamcontroller.max_time) then
-    microgamejamcontroller:losegame()   
-  end 
+if(microgamejamcontroller:gettimer() <= 0) then
+  microgamejamcontroller:losegame()
 end
 ```
 
-4.  (Optional) If you want to make your game easier or harder depending
+This piece of code is optional, but will restart the game upon winning or losing, and reset the controller to play again while dev testing. 
+
+```
+if microgamejamcontroller:gameisover() then
+  _init()
+  microgamejamcontroller:resetcontroller()
+end
+```
+
+5. (Optional) Dev Testing Help 
+
+To test whether your game is correctly working, a few dev functions are included to print microgame jam controller data directly to your screen. Here is a sample, used in the "_draw()" function. 
+
+The code below will print the last win/lose state of the game (defaulted to a loss until the game is won), then the in-game timer, the lives, and the difficulty. Remember to comment out or delete this code when publishing your game!
+
+```
+function _draw()
+  cls()
+  map(0,0)
+  microgamejamcontroller:drawgameresult()
+  print("timer: " .. microgamejamcontroller:gettimer(), 20, 10)
+  print("lives: " .. microgamejamcontroller:getlives(), 20, 20)
+  print("diff: " .. microgamejamcontroller:getdifficulty(), 20, 30)
+end
+```
+
+6.  (Optional) If you want to make your game easier or harder depending
     on the difficulty level, call
 
 ```
@@ -85,18 +110,26 @@ be set automatically.
 
 List of all Microgame Jam Controller functions:
 
+Main Functions:
 -   microgamejamcontroller:getlives() - Returns the number of lives
     available
 -   microgamejamcontroller:getdifficulty() - Returns the current
     difficulty level (between 1 and 3)
 -   microgamejamcontroller:gettimer() - Returns the number of seconds
-    since the microgame has started.
--   microgamejamcontroller:wingame() - Sends callback to main microgame
+    since the microgame has started or restarted.
+-   microgamejamcontroller:wingame() - Tells the main microgame
     jam interface that the game has been won. Use this when the player
     has met the win condition.
--   microgamejamcontroller:losegame() - Sends callback to main microgame
+-   microgamejamcontroller:losegame() - Tells the main microgame
     jam interface that the game has been lost. Use this when the player
-    has met the lose condition (if your game has one).
+    has met the lose condition (if your game has one other than the timer).
+-   microgamejamcontroller:setmaxtimer(seconds) - Sets the starting timer value (between 5-15), which can be called in _init() to set your own timer length
+
+Dev Testing Functions:
+-   microgamejamcontroller:gameisover() - Returns game over status of the game. Used to check to see if the game should be reset in dev mode.
+-   microgamejamcontroller:resetcontroller() - Resets the controller's state to be used again after a reset. Must be called after checking if the game is over and calling _init() to reset.
+-   microgamejamcontroller:setdefaultlives(numLives) - Sets the default number of lives to the parameter "numLives" in dev mode
+-   microgamejamcontroller:setdefaultdifficulty(diffNumber) - Sets the default difficulty to the parameter "diffNumber" in dev mode
 -   microgamejamcontroller:drawgameresult() - Optional debug function to
     be called in the function \"\_draw()\" to print the outcome of the
     game to the screen.
