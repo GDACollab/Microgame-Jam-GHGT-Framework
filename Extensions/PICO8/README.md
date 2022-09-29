@@ -32,7 +32,7 @@ After this is included, the Microgame Controller will be installed and ready to 
 
 How to use the Microgame Jam Controller
 
-1. In the "_init()" function, type the following command to set the maximum timer amount in your microgame. This should be anywhere from 5 to 15seconds. Setting all of your initial state variables in _init() is very important as it will also be how you restart your game!
+1. In the "_init()" function, type the following command to set the maximum timer amount in your microgame. This should be anywhere from 5 to 15 seconds. Setting all of your initial state variables in _init() is very important as it will also be how you restart your game!
 
 ```
 function _init() 
@@ -44,16 +44,33 @@ end
 Parameter X will be replaced by the number of maximum seconds your
 microgame will be.
 
-2.  Whenever your player reaches the win condition of your microgame,
+2. Once your timer is set up, there are a few extra lines of code you will need to add to make sure your game starts *after* the timer, creating a small "buffer" window. Don't worry too much about this works - just copy and paste the code in the correct function.
+
+Anywhere in "_init()," type
+
+```
+game_started = false
+```
+Then, in "_update()," add these lines at the very top.
+
+```
+if not game_started and time() > .1 then
+  game_started = true
+  microgamejamcontroller:gamestart()
+end
+```
+Once this is done, you will not need to worry about the buffer any longer - the game should start as intended!
+
+3.  Whenever your player reaches the win condition of your microgame,
     call
 
 ```microgamejamcontroller:wingame()```
 
-3.  If your game has a lose condition, call
+4.  If your game has a lose condition, call
 
 ```microgamejamcontroller:losegame()```
 
-4. Due to the way Pico-8 works, you will need to add a few extra lines of code in your _update() function to set up automatic win/lose behaviors, as well as restart your game in dev testing.
+5. Due to the way Pico-8 works, you will need to add a few extra lines of code in your _update() function to set up automatic win/lose behaviors, as well as restart your game in dev testing.
 
 The piece of code below will automatically reset the game and ensure that the player loses upon the timer reaching zero. This code MUST be used in order for your game to work in the web build.
 
@@ -63,7 +80,7 @@ if(microgamejamcontroller:gettimer() <= 0) then
 end
 ```
 
-This piece of code is optional, but will restart the game upon winning or losing, and reset the controller to play again while dev testing. 
+This piece of code is optional but highly recommended, and will restart the game upon winning or losing, as well as reset the controller to play again while dev testing. 
 
 ```
 if microgamejamcontroller:gameisover() then
@@ -72,7 +89,7 @@ if microgamejamcontroller:gameisover() then
 end
 ```
 
-5. (Optional) Dev Testing Help 
+6. (Optional) Dev Testing Help 
 
 To test whether your game is correctly working, a few dev functions are included to print microgame jam controller data directly to your screen. Here is a sample, used in the "_draw()" function. 
 
@@ -89,7 +106,7 @@ function _draw()
 end
 ```
 
-6.  (Optional) If you want to make your game easier or harder depending
+7.  (Optional) If you want to make your game easier or harder depending
     on the difficulty level, call
 
 ```
@@ -108,6 +125,7 @@ be set automatically.
 List of all Microgame Jam Controller functions:
 
 Main Functions:
+-   microgamejamcontroller:gamestart() - Starts the game
 -   microgamejamcontroller:getlives() - Returns the number of lives
     available
 -   microgamejamcontroller:getdifficulty() - Returns the current
