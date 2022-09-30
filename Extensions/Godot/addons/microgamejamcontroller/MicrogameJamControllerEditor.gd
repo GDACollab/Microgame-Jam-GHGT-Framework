@@ -44,7 +44,7 @@ func _enter_tree():
 	add_autoload_singleton("MicrogameJamController", "res://addons/microgamejamcontroller/MicrogameJamController.gd")
 	add_tool_menu_item("Microgame Jam Controller Settings Update", self, "_update_settings");
 
-func _update_settings():
+func _update_settings(t):
 	print("[Microgame Jam Controller Editor] Updating settings to match recommend Microgame Jam settings...");
 	ProjectSettings.set_setting("display/window/size/width", 960);
 	ProjectSettings.set_setting("display/window/size/height", 540);
