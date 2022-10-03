@@ -40,10 +40,13 @@
         }
 
         _verify(){
-            if(parent.GameInterface != null){
-                return{
-                    "value": true 
-                };
+            try {
+                if(parent.GameInterface != null){
+                    return{
+                        "value": true 
+                    };
+                }
+            } catch(e){
             }
             return{
                 "value": false 
