@@ -39,7 +39,7 @@ public class MicrogameJamSetup
         bool sizeMatches = PlayerSettings.defaultWebScreenHeight == 540 && PlayerSettings.defaultWebScreenWidth == 960;
         bool templateMatches = PlayerSettings.WebGL.template == "APPLICATION:Minimal";
         bool backgroundMatches = PlayerSettings.runInBackground == true;
-        bool buildTargetMatches = EditorUserBuildSettings.activeBuildTarget == BuildTarget.WebGL && EditorUserBuildSettings.GetPlatformSettings(BuildPipeline.GetBuildTargetName(BuildTarget.WebGL), "CodeOptimization") == "Size";
+        bool buildTargetMatches = EditorUserBuildSettings.selectedBuildTargetGroup == BuildTargetGroup.WebGL && EditorUserBuildSettings.GetPlatformSettings(BuildPipeline.GetBuildTargetName(BuildTarget.WebGL), "CodeOptimization") == "Size";
         bool compressionMatches = PlayerSettings.WebGL.compressionFormat == WebGLCompressionFormat.Gzip;
         return sizeMatches && templateMatches && buildTargetMatches && compressionMatches && backgroundMatches;
     }
