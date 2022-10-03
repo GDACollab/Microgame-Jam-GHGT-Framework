@@ -23,10 +23,10 @@ mergeInto(LibraryManager.library, {
     GameExists: function(){
         var gameExists = false;
         try {
+            if (parent.document.domain == )
             gameExists = "GameInterface" in parent && parent.GameInterface !== null
         }
         catch (e) {
-            gameExists = false;
         }
         return gameExists;
     },
