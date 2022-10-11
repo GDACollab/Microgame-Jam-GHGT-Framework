@@ -1,11 +1,20 @@
 // Pick a game to repeatedly test:
 const DEBUG_TEST = "";
 
-// Add games to be loaded here:
-var gamesList = {
-    "GimmeFive": "index.html",
-    "Pico8 MGG22 Test": "mgg_test.html",
-};
+const CONFIG_FILE = "./games/config.txt";
+// Add games to be loaded here (CONFIG_FILE adds stuff automatically):
+var gamesList = {};
+
+fetch(CONFIG_FILE).then(function(response){
+    response.text().then(function(text){
+        var games = text.replaceAll('\r', '');
+        games = games.split('\n');
+        games.forEach(function(game){
+            var url = game.split("/");
+            gamesList[url[0]] = url[1];
+        });
+    });
+});
 
 function loadGame(){
     let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];

@@ -1,3 +1,4 @@
 .vscode/tasks.json
 Web/games/*
 Web/assets/*
+!Web/games/*config*
