@@ -64,6 +64,9 @@ if (!!navigator.getGamepads) {
     var keysDown = new Set();
     window.setInterval(function(){
         for (var gamepad of navigator.getGamepads()) {
+            if (gamepad === null){
+                continue;
+            }
             // Press "Up Arrow":
             if (gamepad.buttons[12].value > 0 || gamepad.axes[1] < -0.2 || gamepad.axes[3] < -0.2){
                 // Send keydown event to the window of the iframe:
