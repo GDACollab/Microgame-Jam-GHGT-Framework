@@ -1,5 +1,7 @@
-// Pick a game to repeatedly test:
+// Pick a game to repeatedly test. Set "sequential" to go through all the games in order:
 const DEBUG_TEST = "";
+
+var debug_index = 0;
 
 const CONFIG_FILE = "./games/config.txt";
 // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
@@ -19,7 +21,14 @@ fetch(CONFIG_FILE).then(function(response){
 function loadGame(){
     let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];
     if (DEBUG_TEST !== "") {
-        gameToLoad = DEBUG_TEST; 
+        if (DEBUG_TEST === "sequential"){
+            gameToLoad = Object.keys(gamesList)[debug_index];
+            debug_index++;
+        } else {
+            gameToLoad = DEBUG_TEST;
+        }
+        
+        console.log("DEBUG TESTING: " + gameToLoad + " - " + gamesList[gameToLoad]);
     }
     let gameURL = "./games/" + gameToLoad + "/" + gamesList[gameToLoad];
     document.getElementById("game").src = gameURL;
