@@ -12,7 +12,8 @@ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var regex = {
 	section: /^\s*\[\s*([^\]]*)\s*\]\s*$/,
 	param: /^\s*([\w\.\-\_]+)\s*=\s*(.*?)\s*$/,
-	comment: /^\s*;.*$/
+	comment: /^\s*;.*$/,
+	commentEOL: /\s*;.*$/
 };
 
 function parseIni(text){
@@ -24,6 +25,8 @@ function parseIni(text){
 			return;
 		}else if(regex.param.test(line)){
 			var match = line.match(regex.param);
+			// Remove comments:
+			match[2] = match[2].replace(regex.commentEOL, "");
 			if(section){
 				value[section][match[1]] = match[2];
 			}else{
@@ -37,6 +40,25 @@ function parseIni(text){
 			section = null;
 		};
 	});
+
+	// Add sub-sections:
+	for (var sectionName in value) {
+		var parentage = sectionName.split(".");
+		if (parentage.length > 1){
+			var section = value[sectionName];
+			var traverse = value;
+			parentage.forEach(function(parentName, index){
+				if (traverse[parentName] === undefined) {
+					traverse[parentName] = {};
+				}
+				if (index < parentage.length - 1) {
+					traverse = traverse[parentName];
+				}
+			});
+			traverse[parentage[parentage.length - 1]] = section;
+			delete value[sectionName];
+		}
+	}
 	return value;
 }
 
