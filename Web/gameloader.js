@@ -3,20 +3,8 @@ const DEBUG_TEST = "";
 
 var debug_index = 0;
 
-const CONFIG_FILE = "./games/config.txt";
 // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
-var gamesList = {};
-
-fetch(CONFIG_FILE).then(function(response){
-    response.text().then(function(text){
-        var games = text.replaceAll('\r', '');
-        games = games.split('\n');
-        games.forEach(function(game){
-            var url = game.split("/");
-            gamesList[url[0]] = url[1];
-        });
-    });
-});
+var gamesList = ini["Games"];
 
 function loadGame(){
     let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];
@@ -39,7 +27,7 @@ function loadGame(){
         
         console.log("DEBUG TESTING: " + gameToLoad + " - " + gamesList[gameToLoad]);
     }
-    let gameURL = "./games/" + gameToLoad + "/" + gamesList[gameToLoad];
+    let gameURL = "./jam-version-assets/games/" + gameToLoad + "/" + gamesList[gameToLoad];
     document.getElementById("game").src = gameURL;
 }
 

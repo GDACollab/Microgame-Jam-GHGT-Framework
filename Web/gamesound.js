@@ -1,16 +1,10 @@
 class AudioManager {
     constructor(){
-        this._sounds = {
-            "theme": "theme.ogg",
-            "buttonHover": "sfx_buttonHover.ogg",
-            "buttonClick": "sfx_button.ogg",
-            "winJingle": "winJingle.wav",
-            "loseJingle": "loseJingle.wav"
-        };
+        this._sounds = ini["Sounds"];
 
         for (var soundKey in this._sounds){
             var sound = this._sounds[soundKey];
-            this._sounds[soundKey] = new Audio("./assets/sounds/" + sound);
+            this._sounds[soundKey] = new Audio("./jam-version-assets/sounds/" + sound);
             this._sounds[soundKey].autoplay = false;
         }
     }
