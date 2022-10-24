@@ -29,6 +29,7 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 						console.log("construct3 - starting game!");
 						
 						// this._runtime.AddLoadPromise(this.PostToDOMAsync("start-game"));
+						// TODO: This is way too long of a delay. Need to fix.
 						setTimeout(() => {
 							this._isGame = true;
 							this._runtime.AddLoadPromise(this.PostToDOMAsync("start-game"));

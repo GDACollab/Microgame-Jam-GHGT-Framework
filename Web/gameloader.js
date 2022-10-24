@@ -22,8 +22,17 @@ function loadGame(){
     let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];
     if (DEBUG_TEST !== "") {
         if (DEBUG_TEST === "sequential"){
+            document.body.onkeyup = function(event){
+                if (event.key === "1") {
+                    debug_index++;
+                    transition(true, function(){});
+                }
+            }
             gameToLoad = Object.keys(gamesList)[debug_index];
             debug_index++;
+            if (debug_index > Object.keys(gamesList).length) {
+                debug_index = 0;
+            }
         } else {
             gameToLoad = DEBUG_TEST;
         }
