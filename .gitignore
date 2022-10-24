@@ -2,3 +2,4 @@
 Web/games/*
 Web/jam-version-assets/*
 !Web/jam-version-assets/*config*
+!Web/jam-version-assets/version-style.css

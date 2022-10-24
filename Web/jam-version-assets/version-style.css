@@ -1,0 +1,14 @@
+@keyframes wave {
+    from {
+        transform: rotate(-4deg);
+    }
+
+    to {
+        transform: rotate(20deg);
+    }
+}
+
+#gda-chan-arm {
+    animation: wave 2s infinite alternate;
+    transform-origin: 100% 100%;
+}

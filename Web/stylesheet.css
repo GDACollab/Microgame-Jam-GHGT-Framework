@@ -13,6 +13,9 @@ iframe {
 
 #menu {
     z-index: 2;
+    overflow: hidden;
+    max-width: 960px;
+    max-height: 540px;
 }
 
 #menu, #transitionContainer{
@@ -53,4 +56,9 @@ iframe, #gameContainer {
     position: absolute;
     height: 100%;
     width: 100%;
+}
+
+/* Regex stuff:*/
+[id*="Button"]:hover {
+    cursor: pointer;
 }

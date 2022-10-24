@@ -2,26 +2,25 @@ var masterVolume = 1;
 var GameSound;
 
 var ini;
+getConfig("./jam-version-assets/config.ini").then(function(res){
+    ini = res;
+    GameSound = new AudioManager();
+    initGameLoader();
 
-window.onload = function(){
-    getConfig("./jam-version-assets/config.ini").then(function(res){
-        ini = res;
-        GameSound = new AudioManager();
-        initGameLoader();
+    initMainMenu();
 
-        GameSound.play("theme", masterVolume * 0.6, false, true);
-    
-        for (const button of document.getElementsByTagName("button")) {
-            button.addEventListener("mouseover", function(){
-                GameSound.play("buttonHover", masterVolume, true);
-            });
+    GameSound.play("theme", masterVolume * 0.6, false, true);
 
-            button.addEventListener("onclick", function(){
-                GameSound.play("buttonClick", masterVolume, true);
-            });
-        }
-    });
-}
+    for (const button of document.getElementsByTagName("button")) {
+        button.addEventListener("mouseover", function(){
+            GameSound.play("buttonHover", masterVolume, true);
+        });
+
+        button.addEventListener("onclick", function(){
+            GameSound.play("buttonClick", masterVolume, true);
+        });
+    }
+});
 
 function startMicrogames(){
     GameSound.stop("theme");
