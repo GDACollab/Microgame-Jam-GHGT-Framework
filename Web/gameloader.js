@@ -2,9 +2,12 @@
 const DEBUG_TEST = "";
 
 var debug_index = 0;
+var gamesList = {};
 
-// Add games to be loaded here (CONFIG_FILE adds stuff automatically):
-var gamesList = ini["Games"];
+function initGameLoader(){
+    // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
+    gamesList = ini["Games"];
+}
 
 function loadGame(){
     let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];

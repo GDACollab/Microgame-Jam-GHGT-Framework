@@ -41,14 +41,8 @@ function parseIni(text){
 }
 
 // Own code starts here:
-class ConfigFile {
-    constructor(link) {
-        await this._readFile(link);
-    }
-
-    async _readFile(link){
-        var data = await fetch(link);
-        var text = await data.response.text();
-        this.config = parseIni(text);
-    }
+async function getConfig(link){
+	var data = await fetch(link);
+	var text = await data.text();
+	return parseIni(text);
 }
