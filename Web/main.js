@@ -7,7 +7,7 @@ getConfig("./jam-version-assets/config.ini").then(function(res){
     GameSound = new AudioManager();
     initGameLoader();
 
-    initMainMenu();
+    initMenus();
 
     GameSound.play("theme", masterVolume * 0.6, false, true);
 
