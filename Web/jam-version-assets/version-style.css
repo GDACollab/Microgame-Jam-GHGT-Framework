@@ -31,8 +31,8 @@ Here's how it works:*/
 
 Define a global animation (this will be dictated by Javascript). Just like with CSS, you set what happens at each point. EXCEPT! It's now a little more... funky.
 
-We now have some custom properties (using CSS variables):*/
-@keyframes winAnimation {
+First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to evaluate it). We now have some custom properties (using CSS variables):*/
+@keyframes CCSSGLOBALwinAnimation {
     0% {
         /*--time: represents the time at which this should start happening:*/
         --time: 0s;
