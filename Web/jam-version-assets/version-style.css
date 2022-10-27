@@ -12,3 +12,80 @@
     animation: wave 2s infinite alternate;
     transform-origin: 100% 100%;
 }
+
+/* We have custom CSS, we have custom config.ini files, but now we need custom sort-of almost CSS.
+
+Because of the way certain animations have to work (transition animations, life animations, etc.), we need precise control over the timing of each animation.
+Precision timing is something CSS sucks at. BUT! We can use Javascript to read CSS rules. So this is where we introduce
+
+
+COOL CASCADING STYLESHEETS (CCSS)
+
+Which is a framework for introducing exact timings into one animation (with the Javascript Animation API stringing everything together).
+
+I've attempted to design this similarly to how you might use a timeline in Unity, Blender, or some video editing software. Just with more text than you might expect from those things.
+
+Here's how it works:*/
+
+/*Before we get started, I highly encourage you test out this whole system by turning on the debug mode. That can be found in the config.ini file (just search for debug). Experiment!
+
+Define a global animation (this will be dictated by Javascript). Just like with CSS, you set what happens at each point. EXCEPT! It's now a little more... funky.
+
+We now have some custom properties (using CSS variables):*/
+@keyframes winAnimation {
+    0% {
+        /*--time: represents the time at which this should start happening:*/
+        --time: 0s;
+        /*--ANIM-animation-name: represents a list of animations (separated by spaces), with the time it should take those animations to play represented at the end. 
+        After the seconds, you use the CSS identifier of what element you want this to apply to. Use config.ini to find each image's ID/class.*/
+        --ANIM-paper-1-enter: paperEnter1 0.5s .win-transition-art#yellow-bg;
+        --ANIM-paper-2-enter: paperEnter2 1.7s .transition-art#background-1;
+        --ANIM-paper-3-enter: paperEnter3 2s .transition-art#background-paper;
+    }
+    10% {
+        /*Because of the way CSS works, we can't create custom keyframe definitions. So when creating a new keyframe, just pick the next nearest number. In game development, people often do steps by 10 so they can add intermediate values. That's what I'm doing here.
+        
+        This is just the next step of animations, and it triggers at:*/
+        --time: 1.8s; /* This amount of seconds.*/
+        /*So we can have the lives enter while the background paper is coming in. This will apply to all transition-lives-art defined in config.ini*/
+        --ANIM-lives-enter: livesEnter 1s .transition-lives-art;
+    }
+}
+
+/*Then, you create a subset of the animations you made below, and those will play as intended to your applied elements.
+
+This is re-usable too (if you want)! Just create a new --ANIM-animation-name somewhere in your global or local animations, and name this as a new animation with a new duration. You can even set a new element to re-apply this to.
+
+--ANIM-animation-name is also a local variable to each element. So while you should use a unique animation-name every time, you can create identical animation-names in new keyframes without necessarily worrying about duplicate issues.*/
+@keyframes paperEnter2{
+    /*If you want to trigger new animations WITHIN animations, all you have to do is use the --ANIM-animation-name property, same as with the global animation.
+    Although in this case, you can't specify the exact time when you want things to trigger, because you've already defined the duration for this animation in the global
+    animation. You can't re-define it here.
+    
+    Additionally, we'll be assigning this animation to an actual object, so you can't just add weird syntax and expect it to work as normal. So you'll just have to make do with triggering it at the precise percentages of this animation.*/
+    from {
+        transform: translateX(1000);
+    }
+    to {
+        transform: translateX(0);
+        --ANIM-gda-chan-enter: gdaChanEnter 0.5s .transition-art#gda-chan-idle;
+    }
+}
+
+@keyframes paperEnter1{
+    from {
+        transform: translateX(-1000);
+    }
+    to {
+        transform: translate(0);
+    }
+}
+
+@keyframes paperEnter3 {
+    from {
+        transform: translateY(-1000);
+    }
+    to {
+        transform: translateY(0);
+    }
+}

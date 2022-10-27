@@ -44,7 +44,8 @@ function initTransitions(){
     var defaultTransition = new ArtCreator("transitionContainer", ini["Transitions"], "transition-art", "transitions");
     defaultTransition.drawArt();
 
-    var livesTransition = new ArtCreator("transitionContainer", ini["Transitions"]["Lives"], "transition-art", "transitions");
+    // TODO: Fix this, it doesn't work for lives:
+    var livesTransition = new ArtCreator("transitionContainer", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
     livesTransition.drawArt();
 
     var winTransition = new ArtCreator("winTransition", ini["Transitions"]["Win"], "win-transition-art", "transitions/win");
