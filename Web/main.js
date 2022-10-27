@@ -1,13 +1,28 @@
 var masterVolume = 1;
 var GameSound;
+var GameAnimation;
 
 var ini;
 getConfig("./jam-version-assets/config.ini").then(function(res){
     ini = res;
     GameSound = new AudioManager();
+    GameAnimation = new AnimationManager(document.getElementById("version-style").href);
+
     initGameLoader();
 
-    initMenus();
+    if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
+        initMenus();
+    }
+
+    GameAnimation.evaluateSheet();
+
+    if (ini["Transitions"].debug === "win") {
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALwinAnimation");
+    }
+
+    if (ini["Transitions"].debug === "lose"){
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALloseAnimation");
+    }
 
     GameSound.play("theme", masterVolume * 0.6, false, true);
 
