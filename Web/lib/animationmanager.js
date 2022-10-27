@@ -1,3 +1,21 @@
+function evaluateCCSSANIM(animProp){
+    var animDat = {};
+
+    var animProps = animProp.split(" ");
+
+    // It's always first the name of the animation to play, then how long it lasts:
+    animDat.animName = animProps[0].replace(" ", "");
+    animDat.duration = parseInt(animProps[1].replace(/ |s/, ""));
+
+    // Everything else is selectors:
+    animDat.selectors = [];
+    for (var i = 2; i < animProps.length; i++){
+        animDat.selectors.push(animProps[i].replace(" ", ""));
+    }
+
+    return animDat;
+}
+
 // Regular CSS animation with some CCSS properties to use.
 class CCSSAnimation {
     // Takes a CSSKeyframesRule class as input.
@@ -10,7 +28,7 @@ class CCSSAnimation {
 
             for (var styleName in frame.style) {
                 if (styleName.substring(0, 7) === "--ANIM-") {
-                    animationList.push(styleName);
+                    animationList.push(evaluateAnimProp(frame.style[styleName]));
                 }
             }
 
@@ -37,21 +55,7 @@ class CCSSGlobalAnimation {
             // We can't trigger CCSSGLOBAL animations from within other Global animations. We assume regular CSS Animations (with potential CCSSAnimation properties) from now on:
             for (var styleName in frame.style) {
                 if(styleName.substring(0, 7) === "--ANIM-") {
-                    var animDat = {};
-
-                    var animProps = keyframe.style[data].split(" ");
-
-                    // It's always first the name of the animation to play, then how long it lasts:
-                    animDat.animName = animProps[0].replace(" ", "");
-                    animDat.duration = parseInt(animProps[1].replace(/ |s/, ""));
-
-                    // Everything else is selectors:
-                    animDat.selectors = [];
-                    for (var i = 2; i < animProps.length; i++){
-                        animDat.selectors.push(animProps[i].replace(" ", ""));
-                    }
-
-                    animations.push(animDat);
+                    animations.push(evaluateCCSSANIM(frame.style[styleName]));
                 }
             }
 
@@ -87,6 +91,6 @@ class AnimationManager {
     }
 
     playKeyframedAnimation(name){
-        
+
     }
 }
