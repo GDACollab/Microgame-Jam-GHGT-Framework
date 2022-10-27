@@ -23,7 +23,7 @@ class ArtCreator {
                 }
                 var img = document.createElement("img");
                 img.src = "jam-version-assets/art/" + this._srcDir + "/" + art.img;
-                img.class = this._className;
+                img.className = this._className;
                 img.id = artName;
                 img.style = `position: absolute; left: ${offset[0]}px; top: ${offset[1]}px; z-index: ${offset[2]};`
                 this._element.appendChild(img);
@@ -56,6 +56,8 @@ function initTransitions(){
 }
 
 function initMenus(){
-    initMainMenu();
+    if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
+        initMainMenu();
+    }
     initTransitions();
 }

@@ -62,9 +62,10 @@ class CCSSAnimation extends CCSSAnimationBase {
             var fraction = parseInt(frame.keyText.replace("%", ""))/100;
             var animationList = [];
 
-            for (var styleName in frame.style) {
+            for (var i = 0; i < frame.style.length; i++) {
+                var styleName = frame.style[i];
                 if (styleName.substring(0, 7) === "--ANIM-") {
-                    animationList.push(this.evaluateCCSSAnimProp(frame.style[styleName]));
+                    animationList.push(this.evaluateCCSSAnimProp(frame.style.getPropertyValue(styleName)));
                 }
             }
 
@@ -75,7 +76,7 @@ class CCSSAnimation extends CCSSAnimationBase {
     frameUpdate(time) {
         // Adjust so that time works in percentages:
         var totalPlayTime = (time - this.currTime)/this.duration; 
-        super.frameUpdate(totalPlayTime);
+        return super.frameUpdate(totalPlayTime);
     }
 
     initPlay(time, duration, elements){
@@ -99,16 +100,17 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         super(cssRule);
 
         for (var frame of cssRule.cssRules) {
-            var time = parseInt(frame.style["--time"].replace(/ |s/, ""));
+            var time = parseInt(frame.style.getPropertyValue("--time").replace(/ |s/, ""));
 
             var timeDat = {time: time};
 
             var animations = [];
 
             // We can't trigger CCSSGLOBAL animations from within other Global animations. We assume regular CSS Animations (with potential CCSSAnimation properties) from now on:
-            for (var styleName in frame.style) {
+            for (var i = 0; i < frame.style.length; i++) {
+                var styleName = frame.style[i];
                 if(styleName.substring(0, 7) === "--ANIM-") {
-                    animations.push(this.evaluateCCSSAnimProp(frame.style[styleName]));
+                    animations.push(this.evaluateCCSSAnimProp(frame.style.getPropertyValue(styleName)));
                 }
             }
 
@@ -120,7 +122,7 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
 
     frameUpdate(time){
         var totalPlayTime = time - this.currTime;
-        super.frameUpdate(totalPlayTime);
+        return super.frameUpdate(totalPlayTime);
     }
 }
 
@@ -177,7 +179,7 @@ class AnimationManager {
             }
         }
 
-        requestAnimationFrame(this.frameUpdate)
+        requestAnimationFrame(this.frameUpdate.bind(this))
     }
 
     playKeyframedAnimation(name){
@@ -187,7 +189,7 @@ class AnimationManager {
             // Performance.now() is an acceptable substitute for the timestamp from frameUpdate, see https://stackoverflow.com/questions/38360250/requestanimationframe-now-vs-performance-now-time-discrepancy
             this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now());
             if (this.currAnimations.length === 1) {
-                requestAnimationFrame(frameUpdate);
+                requestAnimationFrame(this.frameUpdate.bind(this));
             }
         } else {
             console.warn(name + " is not the name of a valid CCSSGLOBAL animation.");

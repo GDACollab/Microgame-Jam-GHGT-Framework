@@ -10,9 +10,7 @@ getConfig("./jam-version-assets/config.ini").then(function(res){
 
     initGameLoader();
 
-    if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
-        initMenus();
-    }
+    initMenus();
 
     GameAnimation.evaluateSheet();
 
