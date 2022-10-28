@@ -33,7 +33,7 @@ class CCSSAnimationBase {
             var styleName = frame.style[i];
             if (styleName.substring(0, 7) === "--ANIM-") {
                 var fullAnimName = styleName.substring(7);
-                var isAnimProp = /-animation-(timing-function|delay|direction|fill-mode|play-state)$/.exec(fullAnimName);
+                var isAnimProp = /-animation-(timing-function|delay|direction|iteration-count|play-state)$/.exec(fullAnimName);
                 if(isAnimProp) {
                     var actualAnimName = fullAnimName.substring(0, isAnimProp.index);
                     var propName = isAnimProp[1];
@@ -59,12 +59,9 @@ class CCSSAnimationBase {
         return animationStore;
     }
 
-    frameUpdate(totalPlayTime){
-        // Should be in chronological order, so we just need to pull the first value:
-        var nextTime = this.playStack[0];
-        
-        // Convert to ms for time comparisons:
-        if (totalPlayTime >= nextTime * 1000) {
+    frameUpdate(totalPlayTime, nextTime){
+        // The offset is used for things like delays.
+        if (totalPlayTime >= nextTime + this.nextTimeOffset) {
             var currAnimDat = this.timeline.get(nextTime);
             this.playStack.shift();
 
@@ -78,6 +75,7 @@ class CCSSAnimationBase {
 
     initPlay(time){
         this.currTime = time;
+        this.nextTimeOffset = 0;
         this.playStack = Array.from(this.timeline.keys());
     }
 }
@@ -94,29 +92,34 @@ class CCSSAnimation extends CCSSAnimationBase {
         for (var frame of cssRule.cssRules) {
             var fraction = parseInt(frame.keyText.replace("%", ""))/100;
 
-            this.timeline.set(fraction, this.readToAnimStore(frame));
+            this.timeline.set(fraction, {fraction: fraction, animations: this.readToAnimStore(frame)});
         }
     }
 
     frameUpdate(time) {
         // Adjust so that time works in percentages:
-        var totalPlayTime = (time - this.currTime)/this.duration; 
-        return super.frameUpdate(totalPlayTime);
+        var totalPlayTime = (time - this.currTime)/(this.duration * 1000);
+
+        // Should be in chronological order, so we just need to pull the first value:
+        var nextTime = this.playStack[0];
+        return super.frameUpdate(totalPlayTime, nextTime);
     }
 
     genProps(animationObj, element) {
-        console.log(element);
-        console.log(animationObj);
         if ("timing-function" in animationObj) {
             element.style.animationTimingFunction = animationObj["timing-function"];
+        }
+
+        if ("delay" in animationObj) {
+            element.style.animationDelay = animationObj["delay"];
         }
 
         if ("direction" in animationObj) {
             element.style.animationDirection = animationObj["direction"];
         }
 
-        if ("fill-mode" in animationObj) {
-            element.style.animationFillMode = animationObj["fill-mode"];
+        if ("iteration-count" in animationObj) {
+            element.style.animationIterationCount = animationObj["iteration-count"];
         }
 
         if ("play-state" in animationObj) {
@@ -127,6 +130,11 @@ class CCSSAnimation extends CCSSAnimationBase {
     initPlay(time, animationObj){
         super.initPlay(time);
 
+        // Add a delay to how we evaluate this animation, so that timing doesn't have to be re-adjusted.
+        if ("delay" in animationObj) {
+            this.nextTimeOffset = parseFloat(animationObj["delay"].replace(/ |s/, ""));
+        }
+
         this.duration = animationObj.duration;
 
         this.elements = [];
@@ -135,18 +143,25 @@ class CCSSAnimation extends CCSSAnimationBase {
         }, this);
 
         this.elements.forEach(function(element){
-            element.style.animation = `${this.name} ${this.duration}s`;
+            element.style.animationName = this.name;
+            element.style.animationDuration = this.duration + "s";
+            
+            // We set fillMode to both so that animation data persists until we clear it:
+            element.style.animationFillMode = "both";
             this.genProps(animationObj, element);
         }, this);
     }
 
-    finish(){
+    clearAnimation(){ //We keep animations so that CSS info can persist after something happens. Call this only after you want to stop ALL animations. 
         this.elements.forEach(function(element) {
-            element.style.animation = "";
             element.style.animationTimingFunction = "";
             element.style.animationDirection = "";
-            element.style.animationFillMode = "";
+            element.style.animationIterationCount = "";
             element.style.animationPlayState = "";
+            element.style.animationDelay = "";
+            element.style.animationName = "";
+            element.style.animationDuration = "";
+            element.style.animationFillMode = "";
         });
     }
 }
@@ -160,7 +175,7 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         super(cssRule);
 
         for (var frame of cssRule.cssRules) {
-            var time = parseInt(frame.style.getPropertyValue("--time").replace(/ |s/, ""));
+            var time = parseFloat(frame.style.getPropertyValue("--time").replace(/ |s/, ""));
 
             var timeDat = {time: time};
 
@@ -173,8 +188,12 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
     }
 
     frameUpdate(time){
-        var totalPlayTime = time - this.currTime;
-        return super.frameUpdate(totalPlayTime);
+        // Because the time we pull from in CSS is in terms of seconds, we convert to that here:
+        var totalPlayTime = (time - this.currTime)/1000;
+
+        // Should be in chronological order, so we just need to pull the first value:
+        var nextTime = this.playStack[0];
+        return super.frameUpdate(totalPlayTime, nextTime);
     }
 }
 
@@ -190,6 +209,7 @@ class AnimationManager {
         } else {
             this.animations = {};
             this.currAnimations = [];
+            this.animationsToClean = [];
         }
     }
 
@@ -227,17 +247,22 @@ class AnimationManager {
                 }
 
                 if (frameUpdateDat.isFinished) {
-                    if (animation instanceof CCSSAnimation){
-                        animation.finish();
-                    }
-                    this.currAnimations.splice(i, 1); 
+                    this.animationsToClean.push(this.currAnimations.splice(i, 1)); 
                     // To account for the offset:
                     i--;
                 }
             }
         }
 
-        requestAnimationFrame(this.frameUpdate.bind(this))
+        if (this.currAnimations.length > 0){
+            requestAnimationFrame(this.frameUpdate.bind(this))
+        } else {
+            this.animationsToClean.forEach(function(animation){
+                if (animation instanceof CCSSAnimation){
+                    animation.clearAnimation();
+                }
+            });
+        }
     }
 
     playKeyframedAnimation(name){

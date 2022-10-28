@@ -42,28 +42,36 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         --time: 0s;
         /*--ANIM-animation-name: represents a list of animations (separated by spaces), with the time it should take those animations to play represented at the end. 
         After the seconds, you use the CSS identifier of what element you want this to apply to. Use config.ini to find each image's ID/class.*/
-        --ANIM-paper-1-enter: paperEnter1 0.5s .win-transition-art#yellow-bg;
+        --ANIM-paper-1-enter: paperEnter1 0.3s .win-transition-art#yellow-bg;
         /*And to make things somewhat easier for you to figure out (plus, parsing it is difficult), you can set:
         
         --ANIM-animation-name-
         
         animation-timing-function
+        animation-delay
         animation-direction
-        animation-fill-mode
+        animation-iteration-count
         animation-play-state
         
-        Some CSS animation properties are excluded because they don't gel with the framework nicely (or are subverted by how it works).*/
-        --ANIM-paper-1-enter-animation-timing-function: ease;
-        --ANIM-paper-2-enter: paperEnter2 1.7s .transition-art#background-1;
-        --ANIM-paper-3-enter: paperEnter3 2s .transition-art#background-paper;
+        Some CSS animation properties are excluded because they don't gel with the framework nicely.*/
+        /*--ANIM-paper-1-enter-animation-timing-function: ease;*/
+        --ANIM-paper-2-enter: paperEnter2 0.4s .transition-art#background-1;
+        --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
     }
     10% {
         /*Because of the way CSS works, we can't create custom keyframe definitions. So when creating a new keyframe, just pick the next nearest number. In game development, people often do steps by 10 so they can add intermediate values. That's what I'm doing here.
         
         This is just the next step of animations, and it triggers at:*/
-        --time: 1.8s; /* This amount of seconds.*/
-        /*So we can have the lives enter while the background paper is coming in. This will apply to all transition-lives-art defined in config.ini*/
+        --time: 0.5s; /* This amount of seconds.*/
+        /*So we can have the lives enter while the background paper is coming in. This will apply to all .transition-lives-art defined in config.ini*/
         --ANIM-lives-enter: livesEnter 1s .transition-lives-art;
+    }
+
+    20% {
+        /*The time we want GDA Chan to start switching poses, so we pull a little rabbit trick.
+        
+        To coordinate the time properly, you will have to set the duration for paperEnter2, as well as the duration for the call for gdaChanEnter in paperEnter2. But it's at least easier than tweaking a bunch of animation-delays, right?*/
+        --time: 0.8s;
     }
 }
 
@@ -79,28 +87,63 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     
     Additionally, we'll be assigning this animation to an actual object, so you can't just add weird syntax and expect it to work as normal. So you'll just have to make do with triggering it at the precise percentages of this animation.*/
     from {
-        transform: translateX(1000px);
+        transform: translate(0, 0);
+    }
+
+    75% {
+        --ANIM-gda-chan-enter: gdaChanEnter 0.3s .transition-art#gda-chan-idle;
+    }
+    
+    to {
+        transform: translate(570px, 0);
+    }
+}
+
+@keyframes gdaChanEnter {
+    from {
+        transform: translate(0, 0);
     }
     to {
-        transform: translateX(0);
-        --ANIM-gda-chan-enter: gdaChanEnter 0.5s .transition-art#gda-chan-idle;
+        transform: translate(0, -430px);
+        
+        /*This will override this animation set by paperEnter2 for .transition-art#gda-chan-idle.*/
+        --ANIM-gda-chan-hide: hideElement 0s .transition-art#gda-chan-idle;
+        --ANIM-gda-chan-replace: gdaChanWinAnticipate 0.5s .win-transition-art#gda-chan-winstance-1;
+        /*Delays are accounted for in timing (the code will treat the duration as longer), so don't worry about adjusting the timings above.*/
+        /*--ANIM-gda-chan-replace-animation-delay: 0.1s;*/
+    }
+}
+
+@keyframes gdaChanWinAnticipate {
+    from {
+        transform: translate(0, -430px) rotate(0);
+    }
+    to {
+        transform: translate(0, -430px) rotate(-15deg);
     }
 }
 
 @keyframes paperEnter1{
     from {
-        transform: translateX(-2000px);
+        transform: translate(0, 0);
     }
     to {
-        transform: translate(0);
+        transform: translate(-960px, 0);
     }
 }
 
 @keyframes paperEnter3 {
     from {
-        transform: translateY(-1000px);
+        transform: translate(0, 0);
     }
     to {
-        transform: translateY(0);
+        transform: translate(200px, 400px);
+    }
+}
+
+/*These keyframes assume the element is already hidden, we're just resetting:*/
+@keyframes hideElement {
+    from {
+        transform: translate(0, 0);
     }
 }
