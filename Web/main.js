@@ -16,10 +16,14 @@ getConfig("./jam-version-assets/config.ini").then(function(res){
 
     if (ini["Transitions"].debug === "win") {
         GameAnimation.playKeyframedAnimation("CCSSGLOBALwinAnimation");
+        document.getElementById("transitionContainer").hidden = false;
+        document.getElementById("winTransition").hidden = false;
     }
 
     if (ini["Transitions"].debug === "lose"){
         GameAnimation.playKeyframedAnimation("CCSSGLOBALloseAnimation");
+        document.getElementById("transitionContainer").hidden = false;
+        document.getElementById("loseTransition").hidden = false;
     }
 
     GameSound.play("theme", masterVolume * 0.6, false, true);

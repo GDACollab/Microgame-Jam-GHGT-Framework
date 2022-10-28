@@ -16,12 +16,14 @@
 /* We have custom CSS, we have custom config.ini files, but now we need custom sort-of almost CSS.
 
 Because of the way certain animations have to work (transition animations, life animations, etc.), we need precise control over the timing of each animation.
-Precision timing is something CSS sucks at. BUT! We can use Javascript to read CSS rules. So this is where we introduce
+Precision timing is something CSS sucks at. You have to juggle setting up a million different animation-delays and so many IDs if you want your animation to play out to your exact standards. And if you change the timing of one element, it changes how everything else plays out.
+
+What if you could set up a global animation to dynamically control when and for how long other animations play for? We can use Javascript to read CSS rules and come up with the timing for us. So this is where we introduce
 
 
 COOL CASCADING STYLESHEETS (CCSS)
 
-Which is a framework for introducing exact timings into one animation (with Javascript stringing everything together).
+Which is a framework for introducing exact timings into one animation that is actually a bunch of smaller animations (with Javascript stringing everything together).
 
 I've attempted to design this similarly to how you might use a timeline in Unity, Blender, or some video editing software. Just with more text than you might expect from those things.
 
@@ -41,6 +43,17 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         /*--ANIM-animation-name: represents a list of animations (separated by spaces), with the time it should take those animations to play represented at the end. 
         After the seconds, you use the CSS identifier of what element you want this to apply to. Use config.ini to find each image's ID/class.*/
         --ANIM-paper-1-enter: paperEnter1 0.5s .win-transition-art#yellow-bg;
+        /*And to make things somewhat easier for you to figure out (plus, parsing it is difficult), you can set:
+        
+        --ANIM-animation-name-
+        
+        animation-timing-function
+        animation-direction
+        animation-fill-mode
+        animation-play-state
+        
+        Some CSS animation properties are excluded because they don't gel with the framework nicely (or are subverted by how it works).*/
+        --ANIM-paper-1-enter-animation-timing-function: ease;
         --ANIM-paper-2-enter: paperEnter2 1.7s .transition-art#background-1;
         --ANIM-paper-3-enter: paperEnter3 2s .transition-art#background-paper;
     }
@@ -66,7 +79,7 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     
     Additionally, we'll be assigning this animation to an actual object, so you can't just add weird syntax and expect it to work as normal. So you'll just have to make do with triggering it at the precise percentages of this animation.*/
     from {
-        transform: translateX(1000);
+        transform: translateX(1000px);
     }
     to {
         transform: translateX(0);
@@ -76,7 +89,7 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
 
 @keyframes paperEnter1{
     from {
-        transform: translateX(-1000);
+        transform: translateX(-2000px);
     }
     to {
         transform: translate(0);
@@ -85,7 +98,7 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
 
 @keyframes paperEnter3 {
     from {
-        transform: translateY(-1000);
+        transform: translateY(-1000px);
     }
     to {
         transform: translateY(0);

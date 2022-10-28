@@ -16,7 +16,7 @@ class CCSSAnimationBase {
 
         // It's always first the name of the animation to play, then how long it lasts:
         animDat.animName = animProps[0].replace(" ", "");
-        animDat.duration = parseInt(animProps[1].replace(/ |s/, ""));
+        animDat.duration = parseFloat(animProps[1].replace(/ |s/, ""));
 
         // Everything else is selectors:
         animDat.selectors = [];
@@ -27,17 +27,50 @@ class CCSSAnimationBase {
         return animDat;
     }
 
+    readToAnimStore(frame){
+        var animationStore = {};
+        for (var i = 0; i < frame.style.length; i++) {
+            var styleName = frame.style[i];
+            if (styleName.substring(0, 7) === "--ANIM-") {
+                var fullAnimName = styleName.substring(7);
+                var isAnimProp = /-animation-(timing-function|delay|direction|fill-mode|play-state)$/.exec(fullAnimName);
+                if(isAnimProp) {
+                    var actualAnimName = fullAnimName.substring(0, isAnimProp.index);
+                    var propName = isAnimProp[1];
+                    if (!(actualAnimName in animationStore)) {
+                        animationStore[actualAnimName] = {};
+                    }
+                    
+                    animationStore[actualAnimName][propName] = frame.style.getPropertyValue(styleName);
+                } else {
+                    if (!(fullAnimName in animationStore)) {
+                        animationStore[fullAnimName] = {};
+                    }
+
+                    var animProps = this.evaluateCCSSAnimProp(frame.style.getPropertyValue(styleName));
+
+                    Object.keys(animProps).forEach(function(propName){
+                        animationStore[fullAnimName][propName] = animProps[propName];
+                    });
+                }
+            }
+        }
+
+        return animationStore;
+    }
+
     frameUpdate(totalPlayTime){
         // Should be in chronological order, so we just need to pull the first value:
         var nextTime = this.playStack[0];
         
-        if (totalPlayTime >= nextTime) {
+        // Convert to ms for time comparisons:
+        if (totalPlayTime >= nextTime * 1000) {
             var currAnimDat = this.timeline.get(nextTime);
-            this.playQueue.shift();
+            this.playStack.shift();
 
-            var isFinished = this.playQueue.length === 0;
+            var isFinished = this.playStack.length === 0;
 
-            return {animations: currAnimDat.animations, isFinished: isFinished};
+            return {animations: (currAnimDat.animations !== undefined) ? currAnimDat.animations : [], isFinished: isFinished};
         }
 
         return null;
@@ -45,7 +78,7 @@ class CCSSAnimationBase {
 
     initPlay(time){
         this.currTime = time;
-        this.playStack = this.timeline.keys();
+        this.playStack = Array.from(this.timeline.keys());
     }
 }
 
@@ -60,16 +93,8 @@ class CCSSAnimation extends CCSSAnimationBase {
 
         for (var frame of cssRule.cssRules) {
             var fraction = parseInt(frame.keyText.replace("%", ""))/100;
-            var animationList = [];
 
-            for (var i = 0; i < frame.style.length; i++) {
-                var styleName = frame.style[i];
-                if (styleName.substring(0, 7) === "--ANIM-") {
-                    animationList.push(this.evaluateCCSSAnimProp(frame.style.getPropertyValue(styleName)));
-                }
-            }
-
-            this.timeline.set(fraction, animationList);
+            this.timeline.set(fraction, this.readToAnimStore(frame));
         }
     }
 
@@ -79,14 +104,49 @@ class CCSSAnimation extends CCSSAnimationBase {
         return super.frameUpdate(totalPlayTime);
     }
 
-    initPlay(time, duration, elements){
+    genProps(animationObj, element) {
+        console.log(element);
+        console.log(animationObj);
+        if ("timing-function" in animationObj) {
+            element.style.animationTimingFunction = animationObj["timing-function"];
+        }
+
+        if ("direction" in animationObj) {
+            element.style.animationDirection = animationObj["direction"];
+        }
+
+        if ("fill-mode" in animationObj) {
+            element.style.animationFillMode = animationObj["fill-mode"];
+        }
+
+        if ("play-state" in animationObj) {
+            element.style.animationPlayState = animationObj["play-state"];
+        }
+    }
+
+    initPlay(time, animationObj){
         super.initPlay(time);
 
-        this.duration = duration;
-        this.elements = elements;
+        this.duration = animationObj.duration;
+
+        this.elements = [];
+        animationObj.selectors.forEach(function(selector){
+            this.elements = this.elements.concat(Array.from(document.querySelectorAll(selector)));
+        }, this);
 
         this.elements.forEach(function(element){
             element.style.animation = `${this.name} ${this.duration}s`;
+            this.genProps(animationObj, element);
+        }, this);
+    }
+
+    finish(){
+        this.elements.forEach(function(element) {
+            element.style.animation = "";
+            element.style.animationTimingFunction = "";
+            element.style.animationDirection = "";
+            element.style.animationFillMode = "";
+            element.style.animationPlayState = "";
         });
     }
 }
@@ -104,17 +164,9 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
 
             var timeDat = {time: time};
 
-            var animations = [];
+            var animationStore = this.readToAnimStore(frame);
 
-            // We can't trigger CCSSGLOBAL animations from within other Global animations. We assume regular CSS Animations (with potential CCSSAnimation properties) from now on:
-            for (var i = 0; i < frame.style.length; i++) {
-                var styleName = frame.style[i];
-                if(styleName.substring(0, 7) === "--ANIM-") {
-                    animations.push(this.evaluateCCSSAnimProp(frame.style.getPropertyValue(styleName)));
-                }
-            }
-
-            timeDat.animations = animations;
+            timeDat.animations = animationStore;
 
             this.timeline.set(time, timeDat);
         }
@@ -134,7 +186,7 @@ class AnimationManager {
             }
         }
         if (this.stylesheet === undefined) {
-            console.error("Could not init AnimationManager for " + stylesheetLink);
+            console.error("[CCSS] Could not init AnimationManager for " + stylesheetLink);
         } else {
             this.animations = {};
             this.currAnimations = [];
@@ -162,17 +214,23 @@ class AnimationManager {
             var frameUpdateDat = animation.frameUpdate(time);
             if (frameUpdateDat !== null) {
                 var animationsToTrigger = frameUpdateDat.animations;
-                animationsToTrigger.forEach(function(animation){
-                    var elements = [];
-                    animation.selectors.forEach(function(selector){
-                        elements.concat(Array.from(document.querySelectorAll(selector)));
-                    });
-                    this.currAnimations.push(this.animations[animation.animName]);
-                    this.currAnimations[this.currAnimations.length - 1].initPlay(animation.duration, elements);
-                });
+                for (var animationName in animationsToTrigger) {
+                    var animation = animationsToTrigger[animationName];
+
+                    var animToPush = this.animations[animation.animName];
+                    if (animToPush === undefined){
+                        console.error("[CCSS] Could not find animation: " + animation.animName + ". Skipping.");
+                    } else {
+                        this.currAnimations.push(animToPush);
+                        this.currAnimations[this.currAnimations.length - 1].initPlay(time, animation);
+                    }
+                }
 
                 if (frameUpdateDat.isFinished) {
-                    this.currAnimations.splice(i, 1);
+                    if (animation instanceof CCSSAnimation){
+                        animation.finish();
+                    }
+                    this.currAnimations.splice(i, 1); 
                     // To account for the offset:
                     i--;
                 }
@@ -192,7 +250,7 @@ class AnimationManager {
                 requestAnimationFrame(this.frameUpdate.bind(this));
             }
         } else {
-            console.warn(name + " is not the name of a valid CCSSGLOBAL animation.");
+            console.warn("[CCSS] " + name + " is not the name of a valid CCSSGLOBAL animation.");
         }
     }
 }
