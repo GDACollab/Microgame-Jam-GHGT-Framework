@@ -110,16 +110,27 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
         --ANIM-gda-chan-hide: hideElement 0s .transition-art#gda-chan-idle;
         --ANIM-gda-chan-replace: gdaChanWinAnticipate 0.5s .win-transition-art#gda-chan-winstance-1;
         /*Delays are accounted for in timing (the code will treat the duration as longer), so don't worry about adjusting the timings above.*/
-        /*--ANIM-gda-chan-replace-animation-delay: 0.1s;*/
+        /*--ANIM-gda-chan-replace-animation-delay: 5s;*/
     }
 }
 
 @keyframes gdaChanWinAnticipate {
     from {
         transform: translate(0, -430px) rotate(0);
+        transform-origin: 100% 100%;
     }
     to {
-        transform: translate(0, -430px) rotate(-15deg);
+        transform: translate(0, -430px) rotate(-5deg);
+        transform-origin: 100% 100%;
+    }
+}
+
+@keyframes gdaWinYay {
+    from {
+
+    }
+    to {
+
     }
 }
 
