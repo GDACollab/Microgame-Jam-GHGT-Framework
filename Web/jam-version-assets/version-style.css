@@ -35,7 +35,7 @@ Define a global animation (this will be dictated by Javascript). Just like with 
 
 First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to evaluate it). We now have some custom properties (using CSS variables):*/
 
-/*Just as a note, while you could theoretically put 25% before 0% or something like that, CCSS assumes your keyframes are in chronological order.*/
+/*Just as a note, while you could theoretically put 25% before 0% or something like that, CCSS assumes your keyframes are in chronological order. Putting them out of order will mess up the code execution.*/
 @keyframes CCSSGLOBALwinAnimation {
     0% {
         /*--time: represents the time at which this should start happening:*/
