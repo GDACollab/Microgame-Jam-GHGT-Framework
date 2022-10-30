@@ -99,6 +99,10 @@ class CCSSAnimation extends CCSSAnimationBase {
     frameUpdate(time) {
         // Adjust so that time works in percentages:
         var totalPlayTime = (time - this.currTime)/(this.duration * 1000);
+        
+        this.elements.forEach(function(element){
+            element.style.setProperty("--anim-time", totalPlayTime); 
+        }, this);
 
         // Should be in chronological order, so we just need to pull the first value:
         var nextTime = this.playStack[0];
