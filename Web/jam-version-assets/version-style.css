@@ -66,6 +66,22 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         /*So we can have the lives enter while the background paper is coming in. This will apply to all .transition-lives-art defined in config.ini*/
         --ANIM-lives-enter: livesEnter 1s .transition-lives-art;
     }
+
+    20% {
+        --time: 1.5s;
+        /*If we don't need to loop (as defined below)*/
+        --post-loop: 40%;
+    }
+    30% {
+        --time: 2s;
+        /* Specify a point (in percentages) where the animation is allowed to loop. Must be an actually defined keyframe with the --time variable.*/
+        --loop: 20%;
+        /*If the animation doesn't need to loop, skip to the next percentage:*/
+        --post-loop: 40%;
+    }
+    40% {
+        --time: 3s;
+    }
     /*You can add more if you want, but generally you can just set up more triggers in the sequence of --ANIM setups. Up to you, really.
     Depends on whether you like setting up a chain of dependencies or being precise with your timing. */
 }
@@ -124,6 +140,8 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
         --ANIM-gda-chan-confetti-2: confetti2-air 0.5s .win-transition-art#green-circle-2;
         --ANIM-gda-chan-confetti-3: confetti3-air 0.5s .win-transition-art#star-1;
         --ANIM-gda-chan-confetti-4: confetti4-air 0.5s .win-transition-art#green-circle-1;
+        --ANIM-gda-chan-confetti-5: confetti5-air 0.6s .win-transition-art#blue-confetti-2;
+        --ANIM-gda-chan-confetti-6: confetti6-air 0.5s .win-transition-art#star-2;
     }
 }
 
@@ -140,13 +158,19 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     }
 }
 
+/*Defining some constants for the animation to use: */
+.win-transition-art#blue-confetti-1 {
+    --height-func: -290px + 382px * (1.55 * var(--anim-time) * var(--anim-time) - 0.9 * var(--anim-time));
+    --bounce-func: -44px + 300px * ((var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+}
+
 @keyframes confetti1-air {
     from {
-        transform: translate(-50px, calc(-290px + 382px * (1.55 * var(--anim-time) * var(--anim-time) - 0.9 * var(--anim-time))));
+        transform: translate(-50px, calc(var(--height-func)));
     }
 
     to {
-        transform: translate(-150px, calc(-290px + 382px * (1.55 * var(--anim-time) * var(--anim-time) - 0.9 * var(--anim-time))));
+        transform: translate(-150px, calc(var(--height-func)));
         --ANIM-gda-chan-confetti-1: confetti1-bounce 0.5s .win-transition-art#blue-confetti-1;
     }
 }
@@ -161,21 +185,26 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     }
     
     10% {
-        transform: translate(-150px, calc(-44px + 300px * ((var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)))));
+        transform: translate(-150px, calc(var(--bounce-func)));
     } 
     
     to {
-        transform: translate(-180px, calc(-44px + 300px * ((var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)))));
+        transform: translate(-180px, calc(var(--bounce-func)));
     }
+}
+
+.win-transition-art#green-circle-2 {
+    --height-func: -320px + 9.8px * 404 * (var(--anim-time) * var(--anim-time) - 0.41 * var(--anim-time)) - 2100px * (var(--anim-time) * var(--anim-time)) * var(--anim-time);
+    --bounce-func: -44px + 450px * ((var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
 }
 
 @keyframes confetti2-air {
     from {
-        transform: translate(-40px, calc(-320px + 9.8px * 404 * (var(--anim-time) * var(--anim-time) - 0.41 * var(--anim-time)) - 2100px * (var(--anim-time) * var(--anim-time)) * var(--anim-time)));
+        transform: translate(-40px, calc(var(--height-func)));
     }
 
     to {
-        transform: translate(-250px, calc(-320px + 9.8px * 404 * (var(--anim-time) * var(--anim-time) - 0.41 * var(--anim-time)) - 2100px * (var(--anim-time) * var(--anim-time)) * var(--anim-time)));
+        transform: translate(-250px, calc(var(--height-func)));
         --ANIM-gda-chan-confetti-2: confetti2-bounce 0.5s .win-transition-art#green-circle-2;
     }
 }
@@ -190,42 +219,52 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     }
     
     10% {
-        transform: translate(-250px, calc(-44px + 450px * ((var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)))));
+        transform: translate(-250px, calc(var(--bounce-func)));
     } 
     
     to {
-        transform: translate(-270px, calc(-44px + 450px * ((var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)))));
+        transform: translate(-270px, calc(var(--bounce-func)));
     }
+}
+
+.win-transition-art#star-1 {
+    --height-func: -260px + 240px * (1.9 * var(--anim-time) * var(--anim-time) - 1.1 * var(--anim-time));
+    --bounce-func: -45px + 300px * ((var(--anim-time) * var(--anim-time)));
 }
 
 @keyframes confetti3-air {
     from {
-        transform: translate(-70px, calc(-260px + 240px * (1.9 * var(--anim-time) * var(--anim-time) - 1.1 * var(--anim-time))));
+        transform: translate(-70px, calc(var(--height-func)));
     }
 
     to {
-        transform: translate(-220px, calc(-260px + 240px * (1.9 * var(--anim-time) * var(--anim-time) - 1.1 * var(--anim-time))));
+        transform: translate(-220px, calc(var(--height-func)));
         --ANIM-gda-chan-confetti3: confetti3-bounce 0.5s .win-transition-art#star-1;
     }
 }
 
 @keyframes confetti3-bounce {
     from {
-        transform: translate(-220px, calc(-45px + 300px * ((var(--anim-time) * var(--anim-time)))));
+        transform: translate(-220px, calc(var(--bounce-func)));
     }
 
     to {
-        transform: translate(-230px, calc(-45px + 300px * ((var(--anim-time) * var(--anim-time)))));
+        transform: translate(-230px, calc(var(--bounce-func)));
     }
+}
+
+.win-transition-art#green-circle-1 {
+    --height-func: -245px + 270px * (1.9 * var(--anim-time) * var(--anim-time) - 1.1 * var(--anim-time));
+    --bounce-func: -29px - 20px * (3 * 100 * (var(--anim-time) * var(--anim-time)) - 1000 * var(--anim-time) * var(--anim-time) * var(--anim-time) - 20 * var(--anim-time));
 }
 
 @keyframes confetti4-air {
     from {
-        transform: translate(50px, calc(-245px + 270px * (1.9 * var(--anim-time) * var(--anim-time) - 1.1 * var(--anim-time))));
+        transform: translate(50px, calc(var(--height-func)));
     }
 
     to {
-        transform: translate(0px, calc(-245px + 270px * (1.9 * var(--anim-time) * var(--anim-time) - 1.1 * var(--anim-time))));
+        transform: translate(0px, calc(var(--height-func)));
         --ANIM-gda-chan-confetti4: confetti4-bounce 1.5s .win-transition-art#green-circle-1;
     }
 }
@@ -233,11 +272,65 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
 @keyframes confetti4-bounce {
     
     from {
-        transform: translate(0px, calc(-29px - 20px * (3 * 100 * (var(--anim-time) * var(--anim-time)) - 1000 * var(--anim-time) * var(--anim-time) * var(--anim-time) - 10 * var(--anim-time))));
+        transform: translate(0px, calc(var(--bounce-func)));
     }
     
     to {
-        transform: translate(-50px, calc(-29px - 20px * (3 * 100 * (var(--anim-time) * var(--anim-time)) - 1000 * var(--anim-time) * var(--anim-time) * var(--anim-time) - 10 * var(--anim-time))));
+        transform: translate(-100px, calc(var(--bounce-func)));
+    }
+}
+
+.win-transition-art#blue-confetti-2 {
+    --height-func: -250px + 300px * (3.5 * var(--anim-time) * var(--anim-time) - 2.8 * var(--anim-time));
+    --bounce-func: -40px + 800px * ((var(--anim-time) * var(--anim-time)) - 0.2 * (var(--anim-time)));
+}
+
+@keyframes confetti5-air {
+    from {
+        transform: translate(60px, calc(var(--height-func)));
+    }
+
+    to {
+        transform: translate(120px, calc(var(--height-func)));
+        --ANIM-gda-chan-confetti5: confetti5-bounce 1s .win-transition-art#blue-confetti-2;
+    }
+}
+
+@keyframes confetti5-bounce {
+    
+    from {
+        transform: translate(120px, calc(var(--bounce-func)));
+    }
+    
+    to {
+        transform: translate(140px, calc(var(--bounce-func)));
+    }
+}
+
+.win-transition-art#star-2 {
+    --height-func: -300px + 300px * (3.5 * var(--anim-time) * var(--anim-time) - 2.8 * var(--anim-time));
+    --bounce-func: -40px + 800px * ((var(--anim-time) * var(--anim-time)) - 0.5 * (var(--anim-time)));
+}
+
+@keyframes confetti6-air {
+    from {
+        transform: translate(50px, calc(var(--height-func)));
+    }
+
+    to {
+        transform: translate(150px, calc(var(--height-func)));
+        --ANIM-gda-chan-confetti6: confetti6-bounce 1s .win-transition-art#star-2;
+    }
+}
+
+@keyframes confetti6-bounce {
+    
+    from {
+        transform: translate(150px, calc(var(--bounce-func)));
+    }
+    
+    to {
+        transform: translate(180px, calc(var(--bounce-func)));
     }
 }
 
