@@ -1,6 +1,8 @@
 class CCSSAnimationBase {
     constructor(cssRule) {
         this.name = cssRule.name;
+        // What animation this belongs to:
+        this.globalParent = "";
 
         // Use a map to guarantee insertion order:
         this.timeline = new Map();
@@ -131,7 +133,8 @@ class CCSSAnimation extends CCSSAnimationBase {
         }
     }
 
-    initPlay(time, animationObj){
+    initPlay(time, animationObj, parent){
+        this.globalParent = parent;
         super.initPlay(time);
 
         // Add a delay to how we evaluate this animation, so that timing doesn't have to be re-adjusted.
@@ -215,7 +218,7 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         }
     }
 
-    frameUpdate(time, shouldLoop){
+    frameUpdate(time){
         // Because the time we pull from in CSS is in terms of seconds, we convert to that here:
         var totalPlayTime = (time - this.currTime)/1000;
 
@@ -224,22 +227,30 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
 
         
         var currFrame = this.timeline.get(nextTime);
-        // Loop if we need to continue:
-        if ("loop" in currFrame && shouldLoop()){
-            var start = this.timeline.get(currFrame.loop).index;
-            var keysToAdd = Array.from(this.timeline.keys()).slice(start, this.timeline.size - this.playStack.length);
-            this.playStack.unshift(keysToAdd);
-            nextTime = this.playStack[0];
-        } else if ("postLoop" in currFrame && !shouldLoop()){
-            var start = this.timeline.get(currFrame.loop).index;
-            this.playStack = Array.from(this.timeline.keys()).slice(start, this.timeline.size);
-            nextTime = this.playStack[0];
+        // Is this a valid frame?
+        if (totalPlayTime >= nextTime + this.nextTimeOffset) {
+            // Loop if we need to continue:
+            if ("loop" in currFrame && this._shouldLoop()){
+                var start = this.timeline.get(currFrame.loop).index;
+                var keysToAdd = Array.from(this.timeline.keys()).slice(start, this.timeline.size - this.playStack.length);
+                this.playStack = keysToAdd.concat(this.playStack);
+                nextTime = this.playStack[0];
+            } else if ("postLoop" in currFrame && !this._shouldLoop()){
+                var start = this.timeline.get(currFrame.postLoop).index;
+                this.playStack = Array.from(this.timeline.keys()).slice(start, this.timeline.size);
+                nextTime = this.playStack[0];
+            }
         }
 
         var returnVal = super.frameUpdate(totalPlayTime, nextTime);
         
 
         return returnVal;
+    }
+
+    initPlay(time, shouldLoop){
+        super.initPlay(time);
+        this._shouldLoop = shouldLoop;
     }
 }
 
@@ -257,6 +268,8 @@ class AnimationManager {
             this.currAnimations = [];
             this.animationsToClean = [];
         }
+
+        this.onFinishes = {};
     }
 
     evaluateSheet(){
@@ -281,19 +294,30 @@ class AnimationManager {
             if (frameUpdateDat !== null) {
                 var animationsToTrigger = frameUpdateDat.animations;
                 for (var animationName in animationsToTrigger) {
-                    var animation = animationsToTrigger[animationName];
+                    var localAnimation = animationsToTrigger[animationName];
 
-                    var animToPush = this.animations[animation.animName];
+                    var animToPush = this.animations[localAnimation.animName];
                     if (animToPush === undefined){
-                        console.error("[CCSS] Could not find animation: " + animation.animName + ". Skipping.");
+                        console.error("[CCSS] Could not find animation: " + localAnimation.animName + ". Skipping.");
                     } else {
                         this.currAnimations.push(animToPush);
-                        this.currAnimations[this.currAnimations.length - 1].initPlay(time, animation);
+                        var parent = animation.globalParent;
+                        if (animation instanceof CCSSGlobalAnimation) {
+                            parent = animation.name;
+                        }
+                        this.currAnimations[this.currAnimations.length - 1].initPlay(time, localAnimation, parent);
                     }
                 }
 
                 if (frameUpdateDat.isFinished) {
-                    this.animationsToClean.push(this.currAnimations.splice(i, 1)); 
+                    var finished = this.currAnimations.splice(i, 1)[0];
+                    if (this.currAnimations.find((anim) => {return anim.name === finished.globalParent || anim.globalParent === finished.name || finished.globalParent === anim.globalParent}) === undefined) {
+                        var toCall = this.onFinishes[finished.globalParent];
+                        delete this.onFinishes[finished.globalParent];
+                        toCall();
+                    }
+
+                    this.animationsToClean.push(finished); 
                     // To account for the offset:
                     i--;
                 }
@@ -311,12 +335,13 @@ class AnimationManager {
         }
     }
 
-    playKeyframedAnimation(name){
+    playKeyframedAnimation(name, shouldLoop, onFinish){
         if (name.substring(0, 10) === "CCSSGLOBAL" && this.animations[name] instanceof CCSSGlobalAnimation) {
             // Duplicate the animation:
             this.currAnimations.push(this.animations[name]);
             // Performance.now() is an acceptable substitute for the timestamp from frameUpdate, see https://stackoverflow.com/questions/38360250/requestanimationframe-now-vs-performance-now-time-discrepancy
-            this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now());
+            this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now(), shouldLoop);
+            this.onFinishes[name] = onFinish;
             if (this.currAnimations.length === 1) {
                 requestAnimationFrame(this.frameUpdate.bind(this));
             }

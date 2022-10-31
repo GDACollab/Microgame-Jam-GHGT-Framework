@@ -71,6 +71,9 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         --time: 1.5s;
         /*If we don't need to loop (as defined below)*/
         --post-loop: 40%;
+        --ANIM-gda-chan-win-twitch: gdaChanWinTwitch 1.2s .win-transition-art#gda-chan-winstance-2;
+        /*We will eventually loop back to here, but the animation's settings won't actually be affected. So we set that here:*/
+        --ANIM-gda-chan-win-twitch-animation-iteration-count: infinite;
     }
 
     30% {
@@ -82,7 +85,11 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
     }
 
     40% {
-        --time: 3s;
+        --time: 2.1s;
+        --ANIM-paper-1-exit: paperExit1 0.5s .win-transition-art#yellow-bg;
+        --ANIM-paper-2-exit: paperExit2 0.5s .transition-art#background-1;
+        --ANIM-paper-3-exit: paperExit3 0.5s .transition-art#background-paper;
+        --ANIM-gda-chan-exit: gdaChanExit 0.5s #gda-chan-winstance-2;
     }
     /*You can add more if you want, but generally you can just set up more triggers in the sequence of --ANIM setups. Up to you, really.
     Depends on whether you like setting up a chain of dependencies or being precise with your timing. */
@@ -109,6 +116,51 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     
     to {
         transform: translate(570px, 0);
+    }
+}
+
+@keyframes paperExit2 {
+    from {
+        transform: translate(570px, 0);
+    }
+    to {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes paperEnter1{
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(-960px, 0);
+    }
+}
+
+@keyframes paperExit1 {
+    from {
+        transform: translate(-960px, 0);
+    }
+    to {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes paperEnter3 {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(200px, 400px);
+    }
+}
+
+@keyframes paperExit3 {
+    from {
+        transform: translate(200px, 400px);
+    }
+    to {
+        transform: translate(0, 0);
     }
 }
 
@@ -157,6 +209,32 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     to {
         /*How I wish CSS had an actual math library. Instead, I have to deal with squaring terms (-430 - (t - 0.5)^2 + 0.25) or something similar, inverted because y is negative.*/
         transform: translate(-40px, calc(-402px + 80px * ((var(--anim-time) * var(--anim-time)) - 0.95 * (var(--anim-time))))) scale(1, 1);
+    }
+}
+
+@keyframes gdaChanWinTwitch {
+    from {
+        transform: translate(-40px, -398px) rotate(0deg);
+        transform-origin: 100% 100%;
+    }
+
+    50% {
+        transform: translate(-40px, -420px) rotate(2deg);
+    }
+    
+    to {
+        transform: translate(-40px, -398px) rotate(0deg);
+        transform-origin: 50% 50%;
+    }
+}
+
+@keyframes gdaChanExit {
+    from {
+        transform: translate(-40px, -398px);
+    }
+
+    to {
+        transform: translate(0, 0);
     }
 }
 
@@ -333,24 +411,6 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     
     to {
         transform: translate(180px, calc(var(--bounce-func)));
-    }
-}
-
-@keyframes paperEnter1{
-    from {
-        transform: translate(0, 0);
-    }
-    to {
-        transform: translate(-960px, 0);
-    }
-}
-
-@keyframes paperEnter3 {
-    from {
-        transform: translate(0, 0);
-    }
-    to {
-        transform: translate(200px, 400px);
     }
 }
 

@@ -2,6 +2,15 @@ var masterVolume = 1;
 var GameSound;
 var GameAnimation;
 
+function debugLoopTransition(isWin){
+    var winOrLose = (isWin)? "win" : "lose";
+    GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, function(){
+        return ini["Transitions"]["debug-loop"] === "true";
+    }, function(){
+        debugLoopTransition(isWin);
+    });
+}
+
 var ini;
 getConfig("./jam-version-assets/config.ini").then(function(res){
     ini = res;
@@ -15,13 +24,13 @@ getConfig("./jam-version-assets/config.ini").then(function(res){
     GameAnimation.evaluateSheet();
 
     if (ini["Transitions"].debug === "win") {
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALwinAnimation");
+        debugLoopTransition(true);
         document.getElementById("transitionContainer").hidden = false;
         document.getElementById("winTransition").hidden = false;
     }
 
     if (ini["Transitions"].debug === "lose"){
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALloseAnimation");
+        debugLoopTransition(false);
         document.getElementById("transitionContainer").hidden = false;
         document.getElementById("loseTransition").hidden = false;
     }
