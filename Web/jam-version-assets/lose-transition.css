@@ -3,6 +3,99 @@
         --time: 0s;
 
         --ANIM-paper-1-enter: paperEnter1 0.3s .lose-transition-art#purple-bg;
+        --ANIM-paper-2-enter: paperLoseEnter2 0.4s .transition-art#background-1;
         --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
+    }
+}
+
+@keyframes paperLoseEnter2 {
+    from {
+        transform: translate(0, 0);
+    }
+    75% {
+        --ANIM-gda-chan-enter: gdaChanLoseEnter 0.3s .transition-art#gda-chan-idle;
+    }
+
+    to {
+        transform: translate(570px, 0);
+    }
+}
+
+@keyframes gdaChanLoseEnter {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(0, -430px);
+        
+        --ANIM-gda-chan-hide: hideElement 0s .transition-art#gda-chan-idle;
+        --ANIM-gda-chan-replace: gdaChanLoseHeartAttack 0.8s .lose-transition-art#gda-chan-losestance-1;
+        
+        --ANIM-gda-chan-lose-confetti-1: pinConfetti1 1s .lose-transition-art#thumbtack-2;
+    }
+}
+
+@keyframes gdaChanLoseHeartAttack {
+    from {
+        transform: translate(-60px, -460px);
+        transform-origin: 100% 100%;
+    }
+    65% {
+        transform: translate(-60px, -460px) rotate(5deg);
+        transform-origin: 100% 100%;
+    }
+    85% {
+        transform: translate(-60px, -460px) rotate(-2deg) scale(1, 0.95);
+        transform-origin: 100% 100%;
+        --ANIM-gda-chan-hide: hideElement 0s .lose-transition-art#gda-chan-losestance-1;
+        --ANIM-gda-chan-lose-flat: gdaChanLoseFlat 1s .lose-transition-art#gda-chan-losestance-2;
+    }
+}
+
+/*So we can have GDA Chan react to being hit on the head :)*/
+.lose-transition-art#gda-chan-losestance-2 {
+    --scale-amount: 0;
+}
+
+@keyframes gdaChanLoseFlat {
+    from {
+        transform: translate(-100px, -290px) scale(1, calc(0.99 + var(--scale-amount)));
+        transform-origin: 100% 100%;
+    }
+
+    to {
+        transform: translate(-100px, -300px) rotate(-2deg) scale(1, calc(1 + var(--scale-amount)));
+        transform-origin: 100% 100%;
+    }
+}
+
+/*More confetti, yay:*/
+
+.lose-transition-art#thumbtack-2 {
+    --height-func: -340px + 1000px * (var(--anim-time) * var(--anim-time) - 0.85 * var(--anim-time));
+    --bounce-func: -190px + 300px * ((var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+}
+
+@keyframes pinConfetti1 {
+    from {
+        transform: translate(10px, calc(var(--height-func)));
+    }
+    to {
+        transform: translate(-70px, calc(var(--height-func)));
+        --ANIM-gda-chan-lose-confetti-1-bounce-1: pinConfetti1-bounce1 1s .lose-transition-art#thumbtack-2;
+        /*Set variables for other objects in animations! Just do --SET-SOME-NAME: var(variableName, selector, value)*/
+        --SET-scale-amount: var(--scale-amount, .lose-transition-art#gda-chan-losestance-2, 1);
+    }
+}
+
+@keyframes pinConfetti1-bounce1 {
+    from {
+        transform: translate(-70px, calc(var(--bounce-func)));
+    }
+    10% {
+        --SET-scale-amount: var(--scale-amount, .lose-transition-art#gda-chan-losestance-2, 0);
+    }
+    to {
+        transform: translate(-140px, calc(var(--bounce-func)));
     }
 }

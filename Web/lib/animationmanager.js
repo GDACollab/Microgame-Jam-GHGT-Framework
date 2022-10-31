@@ -334,7 +334,7 @@ class AnimationManager {
             requestAnimationFrame(this.frameUpdate.bind(this))
         } else {
             this.animationsToClean.forEach(function(animation){
-                if (animation instanceof CCSSAnimation){
+                if (animation instanceof CCSSAnimation && ini["Transitions"]["debug-loop"] !== "pause"){
                     animation.clearAnimation();
                 }
             });

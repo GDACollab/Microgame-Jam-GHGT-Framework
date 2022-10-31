@@ -80,7 +80,7 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     }
 
     75% {
-        --ANIM-gda-chan-enter: gdaChanEnter 0.3s .transition-art#gda-chan-idle;
+        --ANIM-gda-chan-enter: gdaChanWinEnter 0.3s .transition-art#gda-chan-idle;
     }
     
     to {
@@ -88,7 +88,7 @@ This is re-usable too (if you want)! Just create a new --ANIM-animation-name som
     }
 }
 
-@keyframes gdaChanEnter {
+@keyframes gdaChanWinEnter {
     from {
         transform: translate(0, 0);
     }

@@ -5,9 +5,11 @@ var GameAnimation;
 function debugLoopTransition(isWin){
     var winOrLose = (isWin)? "win" : "lose";
     GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, function(){
-        return ini["Transitions"]["debug-loop"] === "true";
+        return ini["Transitions"]["debug-loop"] === "loop-end";
     }, function(){
-        debugLoopTransition(isWin);
+        if (ini["Transitions"]["debug-loop"] === "loop"){
+            debugLoopTransition(isWin);
+        }
     });
 }
 
