@@ -1,0 +1,8 @@
+@keyframes CCSSGLOBALloseAnimation {
+    0% {
+        --time: 0s;
+
+        --ANIM-paper-1-enter: paperEnter1 0.3s .lose-transition-art#purple-bg;
+        --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
+    }
+}

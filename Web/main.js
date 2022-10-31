@@ -21,7 +21,7 @@ getConfig("./jam-version-assets/config.ini").then(function(res){
 
     initMenus();
 
-    GameAnimation.evaluateSheet();
+    GameAnimation.evaluateMainSheet();
 
     if (ini["Transitions"].debug === "win") {
         debugLoopTransition(true);

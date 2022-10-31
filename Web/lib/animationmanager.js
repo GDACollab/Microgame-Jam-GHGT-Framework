@@ -272,16 +272,22 @@ class AnimationManager {
         this.onFinishes = {};
     }
 
-    evaluateSheet(){
-        for(const rule of this.stylesheet.cssRules) {
+    evaluateSheet(stylesheet){
+        for(const rule of stylesheet.cssRules) {
             if (rule instanceof CSSKeyframesRule) {
                 if (rule.name.substring(0, 10) === "CCSSGLOBAL") {
                     this.animations[rule.name] = new CCSSGlobalAnimation(rule);
                 } else {
                     this.animations[rule.name] = new CCSSAnimation(rule);
                 }
+            } else if (rule instanceof CSSImportRule) {
+                this.evaluateSheet(rule.styleSheet);
             }
         }
+    }
+
+    evaluateMainSheet(){
+        this.evaluateSheet(this.stylesheet);
     }
 
     frameUpdate(time){
