@@ -72,13 +72,15 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         /*If we don't need to loop (as defined below)*/
         --post-loop: 40%;
     }
+
     30% {
         --time: 2s;
-        /* Specify a point (in percentages) where the animation is allowed to loop. Must be an actually defined keyframe with the --time variable.*/
+        /* Specify a point (in time) where the animation is allowed to loop. Must be an actually defined keyframe with the --time variable. It will loop until this point. If whatever external logic that controls the animation dictates that the looping is over, then we jump to post-loop.*/
         --loop: 20%;
         /*If the animation doesn't need to loop, skip to the next percentage:*/
         --post-loop: 40%;
     }
+
     40% {
         --time: 3s;
     }

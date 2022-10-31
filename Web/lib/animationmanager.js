@@ -178,26 +178,68 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
     constructor(cssRule){
         super(cssRule);
 
+        var timings = {};
+
+        for (var frame of cssRule.cssRules) {
+            timings[frame.keyText] = parseFloat(frame.style.getPropertyValue("--time").replace(/ |s/, ""));
+        }
+
+        var index = 0;
+
         for (var frame of cssRule.cssRules) {
             var time = parseFloat(frame.style.getPropertyValue("--time").replace(/ |s/, ""));
 
             var timeDat = {time: time};
 
+            var postLoop = frame.style.getPropertyValue("--post-loop");
+
+            if (postLoop !== "") {
+                timeDat.postLoop = timings[postLoop];
+            }
+
+            var loop = frame.style.getPropertyValue("--loop");
+
+            if (loop !== "") {
+                timeDat.loop = timings[loop];
+            }
+
             var animationStore = this.readToAnimStore(frame);
 
             timeDat.animations = animationStore;
+
+            timeDat.index = index;
+
+            index++;
 
             this.timeline.set(time, timeDat);
         }
     }
 
-    frameUpdate(time){
+    frameUpdate(time, shouldLoop){
         // Because the time we pull from in CSS is in terms of seconds, we convert to that here:
         var totalPlayTime = (time - this.currTime)/1000;
 
         // Should be in chronological order, so we just need to pull the first value:
         var nextTime = this.playStack[0];
-        return super.frameUpdate(totalPlayTime, nextTime);
+
+        
+        var currFrame = this.timeline.get(nextTime);
+        // Loop if we need to continue:
+        if ("loop" in currFrame && shouldLoop()){
+            var start = this.timeline.get(currFrame.loop).index;
+            var keysToAdd = Array.from(this.timeline.keys()).slice(start, this.timeline.size - this.playStack.length);
+            this.playStack.unshift(keysToAdd);
+            nextTime = this.playStack[0];
+        } else if ("postLoop" in currFrame && !shouldLoop()){
+            var start = this.timeline.get(currFrame.loop).index;
+            this.playStack = Array.from(this.timeline.keys()).slice(start, this.timeline.size);
+            nextTime = this.playStack[0];
+        }
+
+        var returnVal = super.frameUpdate(totalPlayTime, nextTime);
+        
+
+        return returnVal;
     }
 }
 
