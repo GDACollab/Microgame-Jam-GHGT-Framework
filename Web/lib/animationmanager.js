@@ -17,20 +17,20 @@ class CCSSAnimationBase {
         var animProps = animProp.split(" ");
 
         // It's always first the name of the animation to play, then how long it lasts:
-        animDat.animName = animProps[0].replace(" ", "");
-        animDat.duration = parseFloat(animProps[1].replace(/ |s/, ""));
+        animDat.animName = animProps[0].replaceAll(" ", "");
+        animDat.duration = parseFloat(animProps[1].replaceAll(/ |s/g, ""));
 
         // Everything else is selectors:
         animDat.selectors = [];
         for (var i = 2; i < animProps.length; i++){
-            animDat.selectors.push(animProps[i].replace(" ", ""));
+            animDat.selectors.push(animProps[i].replaceAll(" ", ""));
         }
 
         return animDat;
     }
 
     readToAnimStore(frame){
-        var animationStore = {};
+        var animationStore = {setVariables: {}};
         for (var i = 0; i < frame.style.length; i++) {
             var styleName = frame.style[i];
             if (styleName.substring(0, 7) === "--ANIM-") {
@@ -55,6 +55,11 @@ class CCSSAnimationBase {
                         animationStore[fullAnimName][propName] = animProps[propName];
                     });
                 }
+            } else if (styleName.substring(0, 6) === "--SET-") {
+                var setName = styleName.substring(6);
+
+                var args = frame.style.getPropertyValue(styleName).replaceAll(/var\(|\s+|\)/g, "").split(",");
+                animationStore.setVariables[setName] = {varName: args[0], selector: args[1], value: args[2]};
             }
         }
 
@@ -68,6 +73,15 @@ class CCSSAnimationBase {
             this.playStack.shift();
 
             var isFinished = this.playStack.length === 0;
+
+            if (Object.keys(currAnimDat.animations.setVariables).length > 0) {
+                for (var variableName in currAnimDat.animations.setVariables) {
+                    var variableInfo = currAnimDat.animations.setVariables[variableName];
+                    document.querySelectorAll(variableInfo.selector).forEach(function(element){
+                        element.style.setProperty(variableInfo.varName, variableInfo.value);
+                    });
+                }
+            }
 
             return {animations: (currAnimDat.animations !== undefined) ? currAnimDat.animations : [], isFinished: isFinished};
         }
@@ -139,7 +153,7 @@ class CCSSAnimation extends CCSSAnimationBase {
 
         // Add a delay to how we evaluate this animation, so that timing doesn't have to be re-adjusted.
         if ("delay" in animationObj) {
-            this.nextTimeOffset = parseFloat(animationObj["delay"].replace(/ |s/, ""));
+            this.nextTimeOffset = parseFloat(animationObj["delay"].replaceAll(/ |s/g, ""));
         }
 
         this.duration = animationObj.duration;
@@ -184,13 +198,13 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         var timings = {};
 
         for (var frame of cssRule.cssRules) {
-            timings[frame.keyText] = parseFloat(frame.style.getPropertyValue("--time").replace(/ |s/, ""));
+            timings[frame.keyText] = parseFloat(frame.style.getPropertyValue("--time").replaceAll(/ |s/g, ""));
         }
 
         var index = 0;
 
         for (var frame of cssRule.cssRules) {
-            var time = parseFloat(frame.style.getPropertyValue("--time").replace(/ |s/, ""));
+            var time = parseFloat(frame.style.getPropertyValue("--time").replaceAll(/ |s/g, ""));
 
             var timeDat = {time: time};
 
@@ -300,6 +314,9 @@ class AnimationManager {
             if (frameUpdateDat !== null) {
                 var animationsToTrigger = frameUpdateDat.animations;
                 for (var animationName in animationsToTrigger) {
+                    if (animationName === "setVariables") {
+                        continue;
+                    }
                     var localAnimation = animationsToTrigger[animationName];
 
                     var animToPush = this.animations[localAnimation.animName];

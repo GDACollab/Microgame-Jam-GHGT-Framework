@@ -30,7 +30,14 @@ Which is a framework for introducing exact timings into one animation that is ac
 
 I've attempted to design this similarly to how you might use a timeline in Unity, Blender, or some video editing software. Just with more text than you might expect from those things.
 
-How it works is outlined in comments for win-transition.css.*/
+How it works is outlined in comments for win-transition.css, and a few comments in lose-transition.css.
+
+SOME FEATURES:
+- Control the universal timeline of an animation
+- Play multiple animation simultaneously! (Not that you need to in this project, but who knows if this will ever become its own project).
+- Dynamic length/timeline stuff!
+- Chain CSS animations!
+- Set variables for elements from other CSS animations!*/
 
 
 /*Universal animations to use:*/
