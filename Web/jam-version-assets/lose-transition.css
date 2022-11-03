@@ -33,6 +33,7 @@
         
         --ANIM-gda-chan-lose-confetti-1: pinConfetti1 0.8s .lose-transition-art#thumbtack-2;
         --ANIM-gda-chan-lose-confetti-2: lintConfetti1 1.3s .lose-transition-art#lint-2;
+        --ANIM-gda-chan-lose-confetti-3: yarnConfetti1 0.6s .lose-transition-art#yarn-1;
     }
 }
 
@@ -143,5 +144,40 @@
     }
     to {
         transform: translate(-120px, calc(var(--bounce-func)));
+    }
+}
+
+.lose-transition-art#yarn-1 {
+    --height-func: -360px + 1300px * (0.73 * var(--anim-time) * var(--anim-time) - 0.5 * var(--anim-time));
+    --bounce-func: -61px + 1000px * (0.82 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+    --bounce-func-2: -41px + 800px * (1 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+}
+
+@keyframes yarnConfetti1 {
+    from {
+        transform: translate(10px, calc(var(--height-func)));
+    }
+    to {
+        transform: translate(-250px, calc(var(--height-func)));
+        --ANIM-gda-chan-lose-yarn-1-bounce-1: yarnConfetti1-bounce1 0.6s .lose-transition-art#yarn-1;
+    }
+}
+
+@keyframes yarnConfetti1-bounce1 {
+    from {
+        transform: translate(-250px, calc(var(--bounce-func)));
+    }
+    to {
+        transform: translate(-350px, calc(var(--bounce-func)));
+        --ANIM-gda-chan-lose-yarn-1-bounce-2: yarnConfetti1-bounce2 0.6s .lose-transition-art#yarn-1;
+    }
+}
+
+@keyframes yarnConfetti1-bounce2 {
+    from {
+        transform: translate(-350px, calc(var(--bounce-func-2)));
+    }
+    to {
+        transform: translate(-450px, calc(var(--bounce-func-2)));
     }
 }
