@@ -117,7 +117,7 @@ class CCSSAnimation extends CCSSAnimationBase {
         var totalPlayTime = (time - this.currTime)/(this.duration * 1000);
         
         this.elements.forEach(function(element){
-            element.style.setProperty("--anim-time", totalPlayTime); 
+            element.style.setProperty("--anim-time", Math.min(totalPlayTime, 1));
         }, this);
 
         // Should be in chronological order, so we just need to pull the first value:

@@ -6,6 +6,25 @@
         --ANIM-paper-2-enter: paperLoseEnter2 0.4s .transition-art#background-1;
         --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
     }
+    10% {
+        --time: 2s;
+        --post-loop: 30%;
+        --ANIM-gda-chan-lose-confetti-loop: pinConfetti1 0.8s .lose-transition-art#thumbtack-2;
+    }
+    20% {
+        --time: 2.5s;
+        /*Reset .lose-transition-art#thumbtack-2 so we can loop it.*/
+        --ANIM-gda-chan-lose-confetti-repeat: hideElement 0s .lose-transition-art#thumbtack-2;
+        --loop: 10%;
+        --post-loop: 30%;
+    }
+    30% {
+        --time: 2.6s;
+        --ANIM-paper-1-exit: paperExit1 0.5s .lose-transition-art#purple-bg;
+        --ANIM-paper-2-exit: paperExit2 0.5s .transition-art#background-1;
+        --ANIM-paper-3-exit: paperExit3 0.5s .transition-art#background-paper;
+        --ANIM-gda-chan-exit: gdaChanLoseExit 0.5s .lose-transition-art#gda-chan-losestance-2;
+    }
 }
 
 @keyframes paperLoseEnter2 {
@@ -32,9 +51,11 @@
         --ANIM-gda-chan-replace: gdaChanLoseHeartAttack 0.8s .lose-transition-art#gda-chan-losestance-1;
         
         --ANIM-gda-chan-lose-confetti-1: pinConfetti1 0.8s .lose-transition-art#thumbtack-2;
-        --ANIM-gda-chan-lose-confetti-2: lintConfetti1 1.3s .lose-transition-art#lint-2;
+        --ANIM-gda-chan-lose-confetti-2: lintConfetti1 1.3s .lose-transition-art#lint-1;
         --ANIM-gda-chan-lose-confetti-3: yarnConfetti1 0.8s .lose-transition-art#yarn-1;
         --ANIM-gda-chan-lose-confetti-4: pinConfetti2 0.8s .lose-transition-art#thumbtack-1;
+        --ANIM-gda-chan-lose-confetti-5: lintConfetti2 0.8s .lose-transition-art#lint-2;
+        --ANIM-gda-chan-lose-confetti-6: yarnConfetti2 0.8s .lose-transition-art#yarn-2;
     }
 }
 
@@ -55,6 +76,7 @@
     }
 }
 
+
 /*So we can have GDA Chan react to being hit on the head :)*/
 .lose-transition-art#gda-chan-losestance-2 {
     --scale-amount: 0;
@@ -71,6 +93,16 @@
         transform-origin: 100% 100%;
     }
 }
+
+@keyframes gdaChanLoseExit {
+    from {
+        transform: translate(-100px, -300px) rotate(2deg) scale(1, calc(1 + var(--scale-amount)));
+    }
+    to {
+        transform: translate(0, 0);
+    }
+}
+
 
 /*More confetti, yay:*/
 
@@ -117,7 +149,7 @@
     }
 }
 
-.lose-transition-art#lint-2 {
+.lose-transition-art#lint-1 {
     --height-func: -345px + 920px * (1.16 * var(--anim-time) * var(--anim-time) - 1 * var(--anim-time));
     --bounce-func: -198px + 400px * (1.3 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
 }
@@ -129,7 +161,7 @@
     to {
         transform: translate(-70px, calc(var(--height-func)));
         --SET-scale-amount: var(var(--scale-amount), .lose-transition-art#gda-chan-losestance-2, -0.02);
-        --ANIM-gda-chan-lose-lint-1-bounce-1: lintConfetti1-bounce1 0.6s .lose-transition-art#lint-2;
+        --ANIM-gda-chan-lose-lint-1-bounce-1: lintConfetti1-bounce1 0.6s .lose-transition-art#lint-1;
     }
 }
 
@@ -214,5 +246,53 @@
     }
     to {
         transform: translate(-350px, calc(var(--bounce-func-2)));
+    }
+}
+
+.lose-transition-art#lint-2 {
+    --height-func: -350px + 790px * (1.39 * var(--anim-time) * var(--anim-time) - 1 * var(--anim-time));
+    --bounce-func: -42px + 1000px * (0.9 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+}
+
+@keyframes lintConfetti2 {
+    from {
+        transform: translate(50px, calc(var(--height-func)));
+    }
+    to {
+        transform: translate(60px, calc(var(--height-func)));
+        --ANIM-gda-chan-lose-lint-2-bounce-1: lintConfetti2-bounce1 0.6s .lose-transition-art#lint-2;
+    }
+}
+
+@keyframes lintConfetti2-bounce1 {
+    from {
+        transform: translate(60px, calc(var(--bounce-func)));
+    }
+    to {
+        transform: translate(120px, calc(var(--bounce-func)));
+    }
+}
+
+.lose-transition-art#yarn-2 {
+    --height-func: -370px + 790px * (1.39 * var(--anim-time) * var(--anim-time) - 1 * var(--anim-time));
+    --bounce-func: -62px + 1000px * (0.9 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+}
+
+@keyframes yarnConfetti2 {
+    from {
+        transform: translate(50px, calc(var(--height-func)));
+    }
+    to {
+        transform: translate(110px, calc(var(--height-func)));
+        --ANIM-gda-chan-lose-yarn-2-bounce-1: yarnConfetti2-bounce1 0.6s .lose-transition-art#yarn-2;
+    }
+}
+
+@keyframes yarnConfetti2-bounce1 {
+    from {
+        transform: translate(110px, calc(var(--bounce-func)));
+    }
+    to {
+        transform: translate(150px, calc(var(--bounce-func)));
     }
 }
