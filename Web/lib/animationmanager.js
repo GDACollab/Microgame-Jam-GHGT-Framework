@@ -238,11 +238,22 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
 
         // Should be in chronological order, so we just need to pull the first value:
         var nextTime = this.playStack[0];
-
         
         var currFrame = this.timeline.get(nextTime);
+
+        // We need to be able to transition out of a loop ASAP for loading.
+        if ("postLoop" in currFrame && !this._shouldLoop()) {
+            var start = this.timeline.get(currFrame.postLoop).index;
+
+            // Because we've been looping for who knows how long, we need to treat it as if we were playing the animation normally:
+            this.playStack = Array.from(this.timeline.keys()).slice(start);
+
+            // We don't need to mess with time, since the looping behavior has already done that for us.
+        }
+
         // Is this a valid frame?
         if (totalPlayTime >= nextTime + this.nextTimeOffset) {
+
             // Loop if we need to continue:
             if ("loop" in currFrame && this._shouldLoop()){
                 var start = this.timeline.get(currFrame.loop).index;
@@ -259,16 +270,6 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
                 this.currTime += (totalPlayTime - currFrame.loop) * 1000;
 
                 // Wait until next frame to evaluate the loop.
-                totalPlayTime = 0;
-            } else if ("postLoop" in currFrame && !this._shouldLoop()){
-                var start = this.timeline.get(currFrame.postLoop).index;
-
-                // Because we've been looping for who knows how long, we need to treat it as if we were playing the animation normally:
-                this.playStack = Array.from(this.timeline.keys()).slice(start);
-
-                // We don't need to mess with time, since the looping behavior has already done that for us.
-
-                // Wait until the next frame update to see if we're at the postLoop frame (for post-loop, we treat it as if the looping keyframes don't exist, and we've been playing normally since the start of the loop)
                 totalPlayTime = 0;
             }
         }
@@ -356,7 +357,7 @@ class AnimationManager {
 
                 if (frameUpdateDat.isFinished) {
                     var finished = this.currAnimations.splice(i, 1)[0];
-                    if (this.currAnimations.find((anim) => {return anim.name === finished.globalParent || anim.globalParent === finished.name || finished.globalParent === anim.globalParent}) === undefined) {
+                    if (this.currAnimations.find((anim) => {return anim.name === finished.globalParent || anim.globalParent === finished.name || finished.globalParent === anim.globalParent}) === undefined && finished.globalParent in this.onFinishes) {
                         var toCall = this.onFinishes[finished.globalParent];
                         delete this.onFinishes[finished.globalParent];
                         toCall();
@@ -380,13 +381,15 @@ class AnimationManager {
         }
     }
 
-    playKeyframedAnimation(name, shouldLoop, onFinish){
+    playKeyframedAnimation(name, shouldLoop, onFinish = null){
         if (name.substring(0, 10) === "CCSSGLOBAL" && this.animations[name] instanceof CCSSGlobalAnimation) {
             // Duplicate the animation:
             this.currAnimations.push(this.animations[name]);
             // Performance.now() is an acceptable substitute for the timestamp from frameUpdate, see https://stackoverflow.com/questions/38360250/requestanimationframe-now-vs-performance-now-time-discrepancy
             this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now(), shouldLoop);
-            this.onFinishes[name] = onFinish;
+            if (onFinish !== null){
+                this.onFinishes[name] = onFinish;
+            }
             if (this.currAnimations.length === 1) {
                 requestAnimationFrame(this.frameUpdate.bind(this));
             }
