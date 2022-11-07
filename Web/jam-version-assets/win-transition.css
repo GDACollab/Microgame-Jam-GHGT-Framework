@@ -54,7 +54,9 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
     }
 
     40% {
-        --time: 2.1s;
+        /*We pretend like the "looping" keyframe doesn't exist (so for non-looping animations, it counts as a straightforward transition).
+        The animation code will then pretend as if we've just started from here.*/
+        --time: 1.8s;
         --ANIM-paper-1-exit: paperExit1 0.5s .win-transition-art#yellow-bg;
         --ANIM-paper-2-exit: paperExit2 0.5s .transition-art#background-1;
         --ANIM-paper-3-exit: paperExit3 0.5s .transition-art#background-paper;

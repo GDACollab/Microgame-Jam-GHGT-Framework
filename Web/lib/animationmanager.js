@@ -246,13 +246,30 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
             // Loop if we need to continue:
             if ("loop" in currFrame && this._shouldLoop()){
                 var start = this.timeline.get(currFrame.loop).index;
-                var keysToAdd = Array.from(this.timeline.keys()).slice(start, this.timeline.size - this.playStack.length);
-                this.playStack = keysToAdd.concat(this.playStack);
-                nextTime = this.playStack[0];
+
+                // We've started looping again! Forget the old play stack, we're on this now:
+                this.playStack = Array.from(this.timeline.keys()).slice(start);
+
+                // Reset time back to the start of the loop:
+                
+                // So let's say we start looping at --time=1 seconds or something, and we play for 2 seconds before hitting loop at --time 3 seconds. And so when we hit --loop,
+                // That means we SHOULD rewind time back to 2 seconds. So our totalPlayTime is ~3 seconds, and we want to add time to this.currTime until totalPlayTime 
+                // rewinds to hit 1 seconds.
+                // So we need to rewind by (totalTime - startOfLoop) = (3 - 1) seconds = 2 seconds:
+                this.currTime += (totalPlayTime - currFrame.loop) * 1000;
+
+                // Wait until next frame to evaluate the loop.
+                totalPlayTime = 0;
             } else if ("postLoop" in currFrame && !this._shouldLoop()){
                 var start = this.timeline.get(currFrame.postLoop).index;
-                this.playStack = Array.from(this.timeline.keys()).slice(start, this.timeline.size);
-                nextTime = this.playStack[0];
+
+                // Because we've been looping for who knows how long, we need to treat it as if we were playing the animation normally:
+                this.playStack = Array.from(this.timeline.keys()).slice(start);
+
+                // We don't need to mess with time, since the looping behavior has already done that for us.
+
+                // Wait until the next frame update to see if we're at the postLoop frame (for post-loop, we treat it as if the looping keyframes don't exist, and we've been playing normally since the start of the loop)
+                totalPlayTime = 0;
             }
         }
 
@@ -323,7 +340,12 @@ class AnimationManager {
                     if (animToPush === undefined){
                         console.error("[CCSS] Could not find animation: " + localAnimation.animName + ". Skipping.");
                     } else {
-                        this.currAnimations.push(animToPush);
+                        // Duplicate the object instead of copying a reference. From https://stackoverflow.com/questions/41474986/how-to-clone-a-javascript-es6-class-instance
+                        this.currAnimations.push(Object.assign(Object.create(Object.getPrototypeOf(animToPush)), animToPush));
+
+                        // Uncomment to show that there's a difference for repeat animations (test in loops):
+                        //console.log(this.currAnimations[this.currAnimations.length - 1].currTime);
+                        //console.log(this.animations[localAnimation.animName].currTime);
                         var parent = animation.globalParent;
                         if (animation instanceof CCSSGlobalAnimation) {
                             parent = animation.name;

@@ -7,19 +7,21 @@
         --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
     }
     10% {
-        --time: 2s;
+        --time: 4s;
         --post-loop: 30%;
-        --ANIM-gda-chan-lose-confetti-loop: pinConfetti1 0.8s .lose-transition-art#thumbtack-2;
+        --ANIM-gda-chan-lose-confetti-loop: pinConfetti1-directDrop 0.5s .lose-transition-art#thumbtack-2;
+        --ANIM-gda-chan-flat-lose-idle: gdaChanLoseFlatIdle 6s .lose-transition-art#gda-chan-losestance-2;
+        --ANIM-gda-chan-flat-lose-idle-animation-iteration-count: infinite;
     }
     20% {
-        --time: 2.5s;
+        --time: 7s;
         /*Reset .lose-transition-art#thumbtack-2 so we can loop it.*/
         --ANIM-gda-chan-lose-confetti-repeat: hideElement 0s .lose-transition-art#thumbtack-2;
         --loop: 10%;
         --post-loop: 30%;
     }
     30% {
-        --time: 2.6s;
+        --time: 2.5s;
         --ANIM-paper-1-exit: paperExit1 0.5s .lose-transition-art#purple-bg;
         --ANIM-paper-2-exit: paperExit2 0.5s .transition-art#background-1;
         --ANIM-paper-3-exit: paperExit3 0.5s .transition-art#background-paper;
@@ -94,6 +96,21 @@
     }
 }
 
+@keyframes gdaChanLoseFlatIdle {
+    from {
+        transform: translate(-100px, -300px) rotate(-2deg) scale(1, calc(1 + var(--scale-amount)));
+        transform-origin: 100% 100%;
+    }
+    50% {
+        transform: translate(-100px, -295px) rotate(-1deg) scale(1, calc(1 + var(--scale-amount)));
+        transform-origin: 100% 100%;
+    }
+    to {
+        transform: translate(-100px, -300px) rotate(-2deg) scale(1, calc(1 + var(--scale-amount)));
+        transform-origin: 100% 100%;
+    }
+}
+
 @keyframes gdaChanLoseExit {
     from {
         transform: translate(-100px, -300px) rotate(2deg) scale(1, calc(1 + var(--scale-amount)));
@@ -109,7 +126,8 @@
 .lose-transition-art#thumbtack-2 {
     --height-func: -340px + 1000px * (var(--anim-time) * var(--anim-time) - 0.85 * var(--anim-time));
     --bounce-func: -190px + 1000px * (0.93 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
-    --bounce-2-func: -60px + 500px * (0.93 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time))); 
+    --bounce-2-func: -60px + 500px * (0.93 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+    --drop-func: -600px + 410px * (var(--anim-time) * var(--anim-time));
 }
 
 @keyframes pinConfetti1 {
@@ -118,6 +136,18 @@
     }
     to {
         transform: translate(-70px, calc(var(--height-func)));
+        --ANIM-gda-chan-lose-confetti-1-bounce-1: pinConfetti1-bounce1 1s .lose-transition-art#thumbtack-2;
+        /*Set variables for other objects in animations! Just do --SET-SOME-NAME: var(variableName, selector, value)*/
+        --SET-scale-amount: var(--scale-amount, .lose-transition-art#gda-chan-losestance-2, -0.05);
+    }
+}
+
+@keyframes pinConfetti1-directDrop {
+    from {
+        transform: translate(10px, calc(var(--drop-func)));
+    }
+    to {
+        transform: translate(-70px, calc(var(--drop-func)));
         --ANIM-gda-chan-lose-confetti-1-bounce-1: pinConfetti1-bounce1 1s .lose-transition-art#thumbtack-2;
         /*Set variables for other objects in animations! Just do --SET-SOME-NAME: var(variableName, selector, value)*/
         --SET-scale-amount: var(--scale-amount, .lose-transition-art#gda-chan-losestance-2, -0.05);
