@@ -13,30 +13,53 @@ var regex = {
 	section: /^\s*\[\s*([^\]]*)\s*\]\s*$/,
 	param: /^\s*([\w\.\-\_]+)\s*=\s*(.*?)\s*$/,
 	comment: /^\s*;.*$/,
-	commentEOL: /\s*;.*$/
+	commentEOL: /\s*;.*$/,
+	multiline: /(```)(.*)/
 };
 
 function parseIni(text){
     var value = {};
 	var lines = text.split(/\r\n|\r|\n/);
 	var section = null;
+	var multiline = false;
+	var multilineString = "";
+	var multilineParam = "";
 	lines.forEach(function(line){
-		if(regex.comment.test(line)){
-			return;
-		}else if(regex.param.test(line)){
-			var match = line.match(regex.param);
-			// Remove comments:
-			match[2] = match[2].replace(regex.commentEOL, "");
-			if(section){
-				value[section][match[1]] = match[2];
-			}else{
-				value[match[1]] = match[2];
+		if (multiline && regex.multiline.test(line)) {
+			multiline = !multiline;
+			if (section) {
+				value[section][multilineParam] = multilineString;	
+			} else {
+				value[multilineParam] = multilineString;
 			}
-		}else if(regex.section.test(line)){
+		}
+
+		if (multiline) {
+			multilineString += line + "\n";
+		} else if(regex.comment.test(line)){
+			return;
+		} else if(regex.param.test(line)){
+			var match = line.match(regex.param);
+			if (regex.multiline.test(line)) {
+				multiline = !multiline;
+				if (multiline === true) {
+					multilineString = line.match(regex.multiline)[2];
+					multilineParam = match[1];
+				}
+			} else {
+				// Remove comments:
+				match[2] = match[2].replace(regex.commentEOL, "");
+				if(section){
+					value[section][match[1]] = match[2];
+				}else{
+					value[match[1]] = match[2];
+				}
+			}
+		}else if(!multiline && regex.section.test(line)){
 			var match = line.match(regex.section);
 			value[match[1]] = {};
 			section = match[1];
-		}else if(line.length == 0 && section){
+		}else if(!multiline && line.length == 0 && section){
 			section = null;
 		};
 	});

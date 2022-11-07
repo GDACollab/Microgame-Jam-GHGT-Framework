@@ -25,11 +25,36 @@ class ArtCreator {
                 img.src = "jam-version-assets/art/" + this._srcDir + "/" + art.img;
                 img.className = this._className;
                 img.id = artName;
-                img.style = `position: absolute; left: ${offset[0]}px; top: ${offset[1]}px; z-index: ${offset[2]};`
-                this._element.appendChild(img);
+                
+                
+                img.style = `position: absolute; left: ${offset[0]}px; top: ${offset[1]}px; z-index: ${offset[2]};`;
+
+                if ("div" in art) {
+                    var div = document.getElementById(art.div);
+                    div ??= document.createElement("div");
+                    div.id = art.div;
+                    div.className = this._className;
+                    div.appendChild(img);
+
+                    if (div.parentElement === null) {
+                        this._element.appendChild(div);
+                    }
+                } else {
+                    this._element.appendChild(img);
+                }
                 this.art.push(img);
             }
         }
+    }
+}
+
+var currMenu = "main";
+
+function transitionToCredits() {
+    if (currMenu !== "credits"){
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToCredits", {
+            keepAnims: true
+        });
     }
 }
 
@@ -38,6 +63,7 @@ function initMainMenu(){
     mainMenu.drawArt();
 
     document.getElementById("playButton").onclick = startMicrogames;
+    document.getElementById("creditsButton").onclick = transitionToCredits;
 }
 
 function initTransitions(){

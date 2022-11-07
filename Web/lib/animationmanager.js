@@ -89,10 +89,11 @@ class CCSSAnimationBase {
         return null;
     }
 
-    initPlay(time){
+    initPlay(time, options){
         this.currTime = time;
         this.nextTimeOffset = 0;
         this.playStack = Array.from(this.timeline.keys());
+        this.options = options;
     }
 }
 
@@ -147,9 +148,9 @@ class CCSSAnimation extends CCSSAnimationBase {
         }
     }
 
-    initPlay(time, animationObj, parent){
+    initPlay(time, animationObj, parent, options){
         this.globalParent = parent;
-        super.initPlay(time);
+        super.initPlay(time, options);
 
         // Add a delay to how we evaluate this animation, so that timing doesn't have to be re-adjusted.
         if ("delay" in animationObj) {
@@ -280,9 +281,10 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         return returnVal;
     }
 
-    initPlay(time, shouldLoop){
+    initPlay(time, shouldLoop, options){
         super.initPlay(time);
         this._shouldLoop = shouldLoop;
+        this.options = options;
     }
 }
 
@@ -351,7 +353,8 @@ class AnimationManager {
                         if (animation instanceof CCSSGlobalAnimation) {
                             parent = animation.name;
                         }
-                        this.currAnimations[this.currAnimations.length - 1].initPlay(time, localAnimation, parent);
+                        // Inherit the global parent and animation options.
+                        this.currAnimations[this.currAnimations.length - 1].initPlay(time, localAnimation, parent, animation.options);
                     }
                 }
 
@@ -363,7 +366,10 @@ class AnimationManager {
                         toCall();
                     }
 
-                    this.animationsToClean.push(finished); 
+                    if (!("avoidAnimCleanup" in finished.options && finished.options.avoidAnimCleanup)) {
+                        this.animationsToClean.push(finished); 
+                    }
+
                     // To account for the offset:
                     i--;
                 }
@@ -378,17 +384,29 @@ class AnimationManager {
                     animation.clearAnimation();
                 }
             });
+            this.animationsToClean = [];
         }
     }
 
-    playKeyframedAnimation(name, shouldLoop, onFinish = null){
+    playKeyframedAnimation(name, options){
         if (name.substring(0, 10) === "CCSSGLOBAL" && this.animations[name] instanceof CCSSGlobalAnimation) {
             // Duplicate the animation:
             this.currAnimations.push(this.animations[name]);
             // Performance.now() is an acceptable substitute for the timestamp from frameUpdate, see https://stackoverflow.com/questions/38360250/requestanimationframe-now-vs-performance-now-time-discrepancy
-            this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now(), shouldLoop);
-            if (onFinish !== null){
-                this.onFinishes[name] = onFinish;
+            var shouldLoop = () => {return false;};
+            if ("shouldLoop" in options) {
+                shouldLoop = options.shouldLoop;
+            }
+            
+            var animOptions = {};
+
+            if ("keepAnims" in options) {
+                animOptions["avoidAnimCleanup"] = options.keepAnims;
+            }
+
+            this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now(), shouldLoop, animOptions);
+            if ("onFinish" in options){
+                this.onFinishes[name] = options.onFinish;
             }
             if (this.currAnimations.length === 1) {
                 requestAnimationFrame(this.frameUpdate.bind(this));

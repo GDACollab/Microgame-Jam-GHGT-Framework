@@ -5,13 +5,15 @@ var gameLoaded = false;
 
 function debugLoopTransition(isWin){
     var winOrLose = (isWin)? "win" : "lose";
-    GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, function(){
-        return ini["Transitions"]["debug-loop"] === "loop-end";
-    }, function(){
+    GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, {
+        shouldLoop: function(){
+            return ini["Transitions"]["debug-loop"] === "loop-end";
+        },
+        onFinish: function(){
         if (ini["Transitions"]["debug-loop"] === "loop"){
             debugLoopTransition(isWin);
         }
-    });
+    }});
 }
 
 var ini;
@@ -65,11 +67,14 @@ function startMicrogames(){
     GameSound.play("buttonClick", masterVolume, true, false, function(){
         GameSound.play("winJingle", masterVolume * 0.8, true);
     });
-    GameAnimation.playKeyframedAnimation("CCSSGLOBALwinAnimation", function(){
-        return gameLoaded === false;
-    }, function() {
+    GameAnimation.playKeyframedAnimation("CCSSGLOBALwinAnimation", {
+        shouldLoop: function(){
+            return gameLoaded === false;
+        },
+        onFinish: function() {
         document.getElementById("transitionContainer").setAttribute("hidden", "");
         document.getElementById("winTransition").setAttribute("hidden", "");
+        }
     });
 
     loadGame();
@@ -103,12 +108,15 @@ function transition(didWin, modifyDifficulty){
     document.getElementById("timer").setAttribute("hidden", "");
     document.getElementById("transitionContainer").removeAttribute("hidden");
     document.getElementById(transitionName + "Transition").removeAttribute("hidden");
-    GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", function(){
-        // Loop while our game isn't ready to start.
-        return gameLoaded === false; 
-    }, function () {
+    GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", {
+        shouldLoop: function(){
+            // Loop while our game isn't ready to start.
+            return gameLoaded === false; 
+        },
+        onFinish: function () {
         document.getElementById("transitionContainer").setAttribute("hidden", "");
         document.getElementById("loseTransition").setAttribute("hidden", "");
+        }
     });
 
     loadGame();
