@@ -23,3 +23,8 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Same as above, but for changing volume for each iframe?
 
 - NPM package for developers to test their games within the framework?
+
+Bugs:
+Bob Ross game seems to cause issues with transitions?
+Construct games will still sometimes create alerts?
+Instant lose called for some games (Paint Attack, Bead-Fast)
