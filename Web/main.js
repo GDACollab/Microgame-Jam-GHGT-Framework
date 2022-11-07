@@ -60,6 +60,7 @@ function startMicrogames(){
 
     document.getElementById("transitionContainer").removeAttribute("hidden");
     document.getElementById("winTransition").removeAttribute("hidden");
+    document.getElementById("timer").setAttribute("hidden", "");
 
     GameSound.play("buttonClick", masterVolume, true, false, function(){
         GameSound.play("winJingle", masterVolume * 0.8, true);
@@ -75,8 +76,9 @@ function startMicrogames(){
 }
 
 function gameStarted(){
-    gameLoaded = true;
     document.getElementById("game").removeAttribute("hidden");
+    document.getElementById("timer").removeAttribute("hidden");
+    gameLoaded = true;
 }
 
 // TODO: Make game picking more robust, add difficulty increases, etc.
@@ -98,6 +100,7 @@ function transition(didWin, modifyDifficulty){
 
     GameSound.play(transitionName + "Jingle", masterVolume * 0.8, true);
 
+    document.getElementById("timer").setAttribute("hidden", "");
     document.getElementById("transitionContainer").removeAttribute("hidden");
     document.getElementById(transitionName + "Transition").removeAttribute("hidden");
     GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", function(){

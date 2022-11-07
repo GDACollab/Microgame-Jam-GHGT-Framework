@@ -26,6 +26,12 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         /*--ANIM-paper-1-enter-animation-timing-function: ease;*/
         --ANIM-paper-2-enter: paperWinEnter2 0.4s .transition-art#background-1;
         --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
+
+        --ANIM-white-bg: whiteBG 0s #transitionContainer;
+    }
+    5% {
+        --time: 0.6s;
+        --ANIM-bg: backgroundNone 0s #transitionContainer;
     }
     10% {
         /*Because of the way CSS works, we can't create custom keyframe definitions. So when creating a new keyframe, just pick the next nearest number. In game development, people often do steps by 10 so they can add intermediate values. That's what I'm doing here.
@@ -60,7 +66,10 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         --ANIM-paper-1-exit: paperExit1 0.5s .win-transition-art#yellow-bg;
         --ANIM-paper-2-exit: paperExit2 0.5s .transition-art#background-1;
         --ANIM-paper-3-exit: paperExit3 0.5s .transition-art#background-paper;
+
+        /*Because we set the iteration count for GDA chan to be infinite, we have to make sure that gets reset here:*/
         --ANIM-gda-chan-exit: gdaChanExit 0.5s #gda-chan-winstance-2;
+        --ANIM-gda-chan-exit-animation-iteration-count: 1;
     }
     /*You can add more if you want, but generally you can just set up more triggers in the sequence of --ANIM setups. Up to you, really.
     Depends on whether you like setting up a chain of dependencies or being precise with your timing. */

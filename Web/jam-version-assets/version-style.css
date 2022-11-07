@@ -54,6 +54,22 @@ SOME FEATURES:
 
 /*Universal animations to use:*/
 
+/*Initial loading should have a white background:*/
+@keyframes whiteBG {
+    from {
+        background: white;
+    }
+    to {
+        background: white;
+    }
+}
+
+@keyframes backgroundNone {
+    from {
+        background: none;
+    }
+}
+
 @keyframes paperExit2 {
     from {
         transform: translate(570px, 0);
