@@ -59,8 +59,30 @@ var currMenu = "main";
 
 function transitionToCredits() {
     if (currMenu !== "credits"){
+        currMenu = "credits";
         GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToCredits", {
-            keepAnims: true
+            keepAnims: true,
+            shouldLoop: function(){
+                return currMenu === "credits";
+            },
+            onFinish: function() {
+                document.getElementById("credits-text").style.setProperty("--text-y", 0);
+            }
+        });
+    }
+}
+
+function creditsToMenu(){
+    if (currMenu !== "main") {
+        currMenu = "main";
+        var textY = 0;
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALcreditsToMain", {  
+            frameUpdate: function(){
+                if (currMenu === "main") {
+                    textY -= 50;
+                    document.getElementById("credits-text").style.setProperty("--text-y", textY);
+                }
+            }
         });
     }
 }
@@ -74,6 +96,7 @@ function initMainMenu(){
 
     document.getElementById("playButton").onclick = startMicrogames;
     document.getElementById("creditsButton").onclick = transitionToCredits;
+    document.getElementById("creditsBackButton").onclick = creditsToMenu;
 }
 
 function initTransitions(){

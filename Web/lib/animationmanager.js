@@ -67,6 +67,9 @@ class CCSSAnimationBase {
     }
 
     frameUpdate(totalPlayTime, nextTime){
+        if ("frameUpdate" in this.options) {
+            this.options.frameUpdate();
+        }
         // The offset is used for things like delays.
         if (totalPlayTime >= nextTime + this.nextTimeOffset) {
             var currAnimDat = this.timeline.get(nextTime);
@@ -282,9 +285,8 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
     }
 
     initPlay(time, shouldLoop, options){
-        super.initPlay(time);
+        super.initPlay(time, options);
         this._shouldLoop = shouldLoop;
-        this.options = options;
     }
 }
 
@@ -390,7 +392,7 @@ class AnimationManager {
         }
     }
 
-    playKeyframedAnimation(name, options){
+    playKeyframedAnimation(name, options = {}){
         if (name.substring(0, 10) === "CCSSGLOBAL" && this.animations[name] instanceof CCSSGlobalAnimation) {
             // Duplicate the animation:
             this.currAnimations.push(this.animations[name]);
@@ -404,6 +406,10 @@ class AnimationManager {
 
             if ("keepAnims" in options) {
                 animOptions["avoidAnimCleanup"] = options.keepAnims;
+            }
+
+            if ("frameUpdate" in options) {
+                animOptions["frameUpdate"] = options.frameUpdate;
             }
 
             this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now(), shouldLoop, animOptions);

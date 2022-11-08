@@ -6,6 +6,7 @@
     font-size: 15px;
     color: white;
     font-family: "Open Sans";
+    --text-y: 0;
 }
 
 #credits-text a {
@@ -21,11 +22,29 @@
     }
     10% {
         --time: 0.5s;
+        --post-loop: 30%;
         --ANIM-darken-bg: darkenBackground 1s .menu-art#background;
-        --ANIM-enter-credits: creditsScroll 30s #credits-text;
-        --ANIM-enter-credits-animation-iteration-count: infinite;
-        --ANIM-enter-credits-animation-timing-function: linear;
         --ANIM-credits-back-enter: backButtonAppear 0.5s .credits#creditsBackButton;
+    }
+    15% {
+        --time: 0.6s;
+        --post-loop: 30%;
+        --ANIM-enter-credits: creditsScroll 30s #credits-text;
+        --ANIM-enter-credits-animation-timing-function: linear;
+    }
+    18% {
+        --time: 30.6s;
+        --post-loop: 30%;
+        --ANIM-credits-hide: hideElement 0s #credits-text;
+    }
+    20% {
+        --time: 30.8s;
+        --loop: 15%;
+        --post-loop: 30%;
+    }
+    30% {
+        --time: 1s;
+        --ANIM-credits-hide: hideElement 0s #credits-text;
     }
 }
 
@@ -40,10 +59,10 @@
 
 @keyframes creditsScroll {
     from {
-        transform: translate(0, -10px);
+        transform: translate(0, calc(-10px + 1px * var(--text-y)));
     }
     to {
-        transform: translate(0, -1100px);
+        transform: translate(0, calc(-1200px + 1px * var(--text-y)));
     }
 }
 
@@ -55,6 +74,7 @@
 
 @keyframes backButtonAppear {
     to {
+        transform-origin: 210px 0;
         transform: translate(210px, 0);
     }
 }
@@ -71,10 +91,6 @@
 
 #playButton:hover,#creditsButton:hover {
     transform: scale(0.98) rotate(calc(2deg * var(--rotateDir)));
-}
-
-#creditsBackButton {
-    transform-origin: 210px 0;
 }
 
 #creditsBackButton:hover {
@@ -96,10 +112,31 @@
     }
 }
 
-@keyframes identifier {
-    
+@keyframes CCSSGLOBALcreditsToMain {
+    0% {
+        --time: 0s;
+        --ANIM-lighten-bg: lightenBackground 1s .menu-art#background;
+        --ANIM-exit-credits-back-exit: backButtonDisappear 0.5s .credits#creditsBackButton;
+    }
 }
 
-@keyframes CCSSGLOBALcreditsToMain {
-    
+@keyframes lightenBackground {
+    from {
+        filter: brightness(0.5);
+    }
+}
+
+@keyframes backButtonDisappear {
+    from {
+        transform: translate(210px, 0);
+    }
+    to {
+        transform: translate(-300px, 0);
+    }
+}
+
+@keyframes creditsDisappear {
+    from {
+        transform: translate(0, -250px);
+    }
 }
