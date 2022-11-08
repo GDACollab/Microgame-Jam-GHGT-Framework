@@ -58,7 +58,6 @@ function startMicrogames(){
 
     GameSound.stop("theme");
     GameInterface.init(gameStarted, transition);
-    document.getElementById("menu").setAttribute("hidden", "");
 
     document.getElementById("transitionContainer").removeAttribute("hidden");
     document.getElementById("winTransition").removeAttribute("hidden");
@@ -72,10 +71,13 @@ function startMicrogames(){
             return gameLoaded === false;
         },
         onFinish: function() {
-        document.getElementById("transitionContainer").setAttribute("hidden", "");
-        document.getElementById("winTransition").setAttribute("hidden", "");
+            document.getElementById("transitionContainer").setAttribute("hidden", "");
+            document.getElementById("winTransition").setAttribute("hidden", "");
         }
     });
+    setTimeout(function(){
+        document.getElementById("menu").setAttribute("hidden", "");
+    }, 500);
 
     loadGame();
 }

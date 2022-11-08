@@ -1,48 +1,55 @@
 var state = "Main";
 
-class ArtCreator {
+class ElementCreator {
     constructor(elementId, iniObj, className, srcDir){
         this._element = document.getElementById(elementId);
         this._iniObj = iniObj;
         this._className = className;
         this._srcDir = srcDir;
-        this.art = [];
+        this.elements = [];
     }
-    drawArt(){
-        for (var artName in this._iniObj) {
-            var art = this._iniObj[artName];
+    drawElements(){
+        for (var elementName in this._iniObj) {
+            var element = this._iniObj[elementName];
 
-            // If it's actually art:
-            if (typeof art === "object" && "img" in art) {
+            // If it's actually an element:
+            if (typeof element === "object" && ("img" in element || "text" in element)) {
                 var offset = [0, 0, 0];
-                if ("offset" in art) {
-                    offset = art.offset.replace(/\(|\)/, "").split(",");
+                if ("offset" in element) {
+                    offset = element.offset.replace(/\(|\)/, "").split(",");
                     offset.forEach(function(o, i){
                         offset[i] = parseInt(o);
                     });
                 }
-                var img = document.createElement("img");
-                img.src = "jam-version-assets/art/" + this._srcDir + "/" + art.img;
-                img.className = this._className;
-                img.id = artName;
-                
-                
-                img.style = `position: absolute; left: ${offset[0]}px; top: ${offset[1]}px; z-index: ${offset[2]};`;
+                var newElement;
+                if ("img" in element) {
+                    newElement = document.createElement("img");
+                    newElement.src = "jam-version-assets/art/" + this._srcDir + "/" + element.img;
+                } else if ("text" in element) {
+                    newElement = document.createElement("p");
+                    newElement.innerHTML = markdown.render(element.text);
+                }
 
-                if ("div" in art) {
-                    var div = document.getElementById(art.div);
+                newElement.className = this._className;
+                newElement.id = elementName;
+                
+                
+                newElement.style = `position: absolute; left: ${offset[0]}px; top: ${offset[1]}px; z-index: ${offset[2]};`;
+
+                if ("div" in element) {
+                    var div = document.getElementById(element.div);
                     div ??= document.createElement("div");
-                    div.id = art.div;
+                    div.id = element.div;
                     div.className = this._className;
-                    div.appendChild(img);
+                    div.appendChild(newElement);
 
                     if (div.parentElement === null) {
                         this._element.appendChild(div);
                     }
                 } else {
-                    this._element.appendChild(img);
+                    this._element.appendChild(newElement);
                 }
-                this.art.push(img);
+                this.elements.push(newElement);
             }
         }
     }
@@ -59,26 +66,29 @@ function transitionToCredits() {
 }
 
 function initMainMenu(){
-    var mainMenu = new ArtCreator("menu", ini["Menu"], "menu-art", "");
-    mainMenu.drawArt();
+    var mainMenu = new ElementCreator("menu", ini["Menu"], "menu-art", "");
+    mainMenu.drawElements();
+
+    var credits = new ElementCreator("menu", ini["Credits"], "credits", "");
+    credits.drawElements();
 
     document.getElementById("playButton").onclick = startMicrogames;
     document.getElementById("creditsButton").onclick = transitionToCredits;
 }
 
 function initTransitions(){
-    var defaultTransition = new ArtCreator("transitionContainer", ini["Transitions"], "transition-art", "transitions");
-    defaultTransition.drawArt();
+    var defaultTransition = new ElementCreator("transitionContainer", ini["Transitions"], "transition-art", "transitions");
+    defaultTransition.drawElements();
 
     // TODO: Fix this, it doesn't work for lives:
-    var livesTransition = new ArtCreator("transitionContainer", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
-    livesTransition.drawArt();
+    var livesTransition = new ElementCreator("transitionContainer", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
+    livesTransition.drawElements();
 
-    var winTransition = new ArtCreator("winTransition", ini["Transitions"]["Win"], "win-transition-art", "transitions/win");
-    winTransition.drawArt();
+    var winTransition = new ElementCreator("winTransition", ini["Transitions"]["Win"], "win-transition-art", "transitions/win");
+    winTransition.drawElements();
 
-    var loseTransition = new ArtCreator("loseTransition", ini["Transitions"]["Lose"], "lose-transition-art", "transitions/lose");
-    loseTransition.drawArt();
+    var loseTransition = new ElementCreator("loseTransition", ini["Transitions"]["Lose"], "lose-transition-art", "transitions/lose");
+    loseTransition.drawElements();
 }
 
 function initMenus(){

@@ -1,6 +1,6 @@
 @import "win-transition.css";
 @import "lose-transition.css";
-@import "menu-animations.css";
+@import "menus.css";
 
 @keyframes wave {
     from {
@@ -15,18 +15,6 @@
 #gda-chan-arm {
     animation: wave 2s infinite alternate;
     transform-origin: 100% 100%;
-}
-
-#playButton,#creditsButton {
-    transition: 0.5s;
-}
-
-#playButton:hover {
-    transform: scale(0.98) rotate(-2deg);
-}
-
-#creditsButton:hover {
-    transform: scale(0.98) rotate(2deg);
 }
 
 /* We have custom CSS, we have custom config.ini files, but now we need custom sort-of almost CSS.
@@ -56,20 +44,6 @@ SOME FEATURES:
 /*Universal animations to use:*/
 
 /*Initial loading should have a white background:*/
-@keyframes whiteBG {
-    from {
-        background: white;
-    }
-    to {
-        background: white;
-    }
-}
-
-@keyframes backgroundNone {
-    from {
-        background: none;
-    }
-}
 
 @keyframes paperExit2 {
     from {

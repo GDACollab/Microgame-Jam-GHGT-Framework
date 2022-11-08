@@ -26,12 +26,6 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         /*--ANIM-paper-1-enter-animation-timing-function: ease;*/
         --ANIM-paper-2-enter: paperWinEnter2 0.4s .transition-art#background-1;
         --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
-
-        --ANIM-white-bg: whiteBG 0s #transitionContainer;
-    }
-    5% {
-        --time: 0.6s;
-        --ANIM-bg: backgroundNone 0s #transitionContainer;
     }
     10% {
         /*Because of the way CSS works, we can't create custom keyframe definitions. So when creating a new keyframe, just pick the next nearest number. In game development, people often do steps by 10 so they can add intermediate values. That's what I'm doing here.

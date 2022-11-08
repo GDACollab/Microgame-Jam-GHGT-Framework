@@ -315,7 +315,9 @@ class AnimationManager {
                     this.animations[rule.name] = new CCSSAnimation(rule);
                 }
             } else if (rule instanceof CSSImportRule) {
-                this.evaluateSheet(rule.styleSheet);
+                if (window.location.origin === new URL(rule.styleSheet.href).origin) {
+                    this.evaluateSheet(rule.styleSheet);
+                }
             }
         }
     }
