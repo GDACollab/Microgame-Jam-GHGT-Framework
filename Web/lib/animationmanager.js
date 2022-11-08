@@ -252,9 +252,15 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
             // Because we've been looping for who knows how long, we need to treat it as if we were playing the animation normally:
             this.playStack = Array.from(this.timeline.keys()).slice(start);
 
-            // We don't need to mess with time, since the looping behavior has already done that for us.
+            // If we've gone above the current time for the post loop, reset it back to normal:
+            if (totalPlayTime > currFrame.postLoop) {
+                this.currTime += (totalPlayTime - currFrame.postLoop) * 1000;
+            }
         }
 
+        var returnVal = super.frameUpdate(totalPlayTime, nextTime);
+        
+        // We do all this logic AFTER we get the animation data, because we might need some animation data to play right at the end of the loop.
         // Is this a valid frame?
         if (totalPlayTime >= nextTime + this.nextTimeOffset) {
 
@@ -272,14 +278,8 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
                 // rewinds to hit 1 seconds.
                 // So we need to rewind by (totalTime - startOfLoop) = (3 - 1) seconds = 2 seconds:
                 this.currTime += (totalPlayTime - currFrame.loop) * 1000;
-
-                // Wait until next frame to evaluate the loop.
-                totalPlayTime = 0;
             }
         }
-
-        var returnVal = super.frameUpdate(totalPlayTime, nextTime);
-        
 
         return returnVal;
     }
@@ -364,14 +364,21 @@ class AnimationManager {
 
                 if (frameUpdateDat.isFinished) {
                     var finished = this.currAnimations.splice(i, 1)[0];
-                    if (this.currAnimations.find((anim) => {return anim.name === finished.globalParent || anim.globalParent === finished.name || finished.globalParent === anim.globalParent}) === undefined && finished.globalParent in this.onFinishes) {
-                        var toCall = this.onFinishes[finished.globalParent];
-                        delete this.onFinishes[finished.globalParent];
-                        toCall();
-                    }
 
                     if (!("avoidAnimCleanup" in finished.options && finished.options.avoidAnimCleanup)) {
-                        this.animationsToClean.push(finished); 
+                        this.animationsToClean.push(finished);
+                    }
+
+                    if (this.currAnimations.find((anim) => {return anim.name === finished.globalParent || anim.globalParent === finished.name || finished.globalParent === anim.globalParent}) === undefined) {
+                        if (finished.globalParent in this.onFinishes){
+                            var toCall = this.onFinishes[finished.globalParent];
+                            delete this.onFinishes[finished.globalParent];
+                            toCall();
+                        }
+
+                        
+                        var name = (finished.globalParent === "") ? finished.name : finished.globalParent; 
+                        this.cleanAnimsOfName(name);
                     }
 
                     // To account for the offset:
@@ -382,13 +389,6 @@ class AnimationManager {
 
         if (this.currAnimations.length > 0){
             requestAnimationFrame(this.frameUpdate.bind(this))
-        } else {
-            this.animationsToClean.forEach(function(animation){
-                if (animation instanceof CCSSAnimation && ini["Transitions"]["debug-loop"] !== "pause"){
-                    animation.clearAnimation();
-                }
-            });
-            this.animationsToClean = [];
         }
     }
 
@@ -422,5 +422,29 @@ class AnimationManager {
         } else {
             console.warn("[CCSS] " + name + " is not the name of a valid CCSSGLOBAL animation.");
         }
+    }
+
+    cleanAnimsOfName(name){
+        for (var i = 0; i < this.animationsToClean.length; i++) {
+            var anim = this.animationsToClean[i];
+            if (anim.name === name || anim.globalParent === name) {
+                if (anim instanceof CCSSAnimation && ini["Transitions"]["debug-loop"] !== "pause"){
+                    anim.clearAnimation();
+                }
+                this.animationsToClean.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
+    stopAllKeyframedAnimationOf(name) {
+        for (var i = 0; i < this.currAnimations.length; i++) {
+            var anim = this.currAnimations[i];
+            if (anim.name === name || anim.globalParent === name) {
+                this.animationsToClean.push(this.currAnimations.splice(i, 1)[0]);
+                i--;
+            }
+        }
+        this.cleanAnimsOfName(name);
     }
 }

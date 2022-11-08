@@ -32,13 +32,9 @@
         --ANIM-enter-credits: creditsScroll 30s #credits-text;
         --ANIM-enter-credits-animation-timing-function: linear;
     }
-    18% {
-        --time: 30.6s;
-        --post-loop: 30%;
-        --ANIM-credits-hide: hideElement 0s #credits-text;
-    }
     20% {
-        --time: 30.8s;
+        --time: 30.6s;
+        --ANIM-credits-hide: hideElement 0s #credits-text;
         --loop: 15%;
         --post-loop: 30%;
     }
@@ -77,9 +73,12 @@
 }
 
 @keyframes backButtonAppear {
+    from {
+        transform: translate(0, 0);
+    }
     to {
-        transform-origin: 210px 0;
-        transform: translate(210px, 0);
+        transform-origin: 250px 0;
+        transform: translate(250px, 0);
     }
 }
 
@@ -99,7 +98,7 @@
 
 #creditsBackButton:hover {
     scale: 0.98;
-    rotate: -2deg;
+    rotate: 2deg;
 }
 
 .menu-art#playButton{
@@ -122,6 +121,12 @@
         --ANIM-lighten-bg: lightenBackground 1s .menu-art#background;
         --ANIM-exit-credits-back-exit: backButtonDisappear 0.5s .credits#creditsBackButton;
     }
+    10% {
+        --time: 0.5s;
+        --ANIM-title-enter: titleEnter 0.5s .menu-art#title;
+        --ANIM-hi-gda-chan: gdaChanMenuEnter 0.8s .menu-art#gda-chan;
+        --ANIM-enter-menu-buttons: enterMenuButtons 0.6s .menu-art[id*="Button"];
+    }
 }
 
 @keyframes lightenBackground {
@@ -132,7 +137,7 @@
 
 @keyframes backButtonDisappear {
     from {
-        transform: translate(210px, 0);
+        transform: translate(250px, 0);
     }
     to {
         transform: translate(-300px, 0);
@@ -142,5 +147,32 @@
 @keyframes creditsDisappear {
     from {
         transform: translate(0, -250px);
+    }
+}
+
+@keyframes titleEnter {
+    from {
+        transform: translate(-540px, 0);
+    }
+}
+
+@keyframes gdaChanMenuEnter {
+    from {
+        transform: translate(0, 500px) scale(0.5, 1);
+    }
+    80% {
+        transform: translate(0, -50px) scale(1.05);
+    }
+    to {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes enterMenuButtons {
+    from {
+        transform: translate(0, 350px) rotate(calc(30deg * var(--rotateDir)));
+    }
+    to {
+        transform: translate(0, 0) rotate(0);
     }
 }

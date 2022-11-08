@@ -60,15 +60,15 @@ var currMenu = "main";
 function transitionToCredits() {
     if (currMenu !== "credits"){
         currMenu = "credits";
+        // Reset animation:
+        GameAnimation.stopAllKeyframedAnimationOf("CCSSGLOBALmainToCredits");
         GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToCredits", {
             keepAnims: true,
             shouldLoop: function(){
                 return currMenu === "credits";
-            },
-            onFinish: function() {
-                document.getElementById("credits-text").style.setProperty("--text-y", 0);
             }
         });
+        document.getElementById("credits-text").style.setProperty("--text-y", 0);
     }
 }
 
@@ -76,10 +76,13 @@ function creditsToMenu(){
     if (currMenu !== "main") {
         currMenu = "main";
         var textY = 0;
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALcreditsToMain", {  
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALcreditsToMain", {
+            // Kind of a hack-y workaround to get credits off the screen. This is called every frame, so it seems like the credits are hurriedly moved offscreen.
+            // The animation will still be playing (it's really slow, about 30 seconds or so to show all the credits), but it will be offscreen.
+            // We reset the animation if it still happens to be playing by resetting it at roughly the start of CCSSGLOBALcreditsToMain.
             frameUpdate: function(){
                 if (currMenu === "main") {
-                    textY -= 50;
+                    textY -= 20;
                     document.getElementById("credits-text").style.setProperty("--text-y", textY);
                 }
             }
