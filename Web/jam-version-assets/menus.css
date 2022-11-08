@@ -44,6 +44,10 @@
     }
     30% {
         --time: 1s;
+    }
+    40% {
+        /*The looping behavior is bugged here, and even this hack-y solution doesn't work. Need to fix.*/
+        --time: 3s;
         --ANIM-credits-hide: hideElement 0s #credits-text;
     }
 }
