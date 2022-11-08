@@ -56,7 +56,6 @@
 @keyframes backButtonAppear {
     to {
         transform: translate(210px, 0);
-        transform-origin: 210px 0;
     }
 }
 
@@ -72,6 +71,10 @@
 
 #playButton:hover,#creditsButton:hover {
     transform: scale(0.98) rotate(calc(2deg * var(--rotateDir)));
+}
+
+#creditsBackButton {
+    transform-origin: 210px 0;
 }
 
 #creditsBackButton:hover {

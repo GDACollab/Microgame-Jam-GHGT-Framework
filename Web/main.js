@@ -42,12 +42,12 @@ getConfig("./jam-version-assets/config.ini").then(function(res){
 
     GameSound.play("theme", masterVolume * 0.6, false, true);
 
-    for (const button of document.getElementsByTagName("button")) {
+    for (const button of document.querySelectorAll("[id*=\"Button\"]")) {
         button.addEventListener("mouseover", function(){
             GameSound.play("buttonHover", masterVolume, true);
         });
 
-        button.addEventListener("onclick", function(){
+        button.addEventListener("click", function(){
             GameSound.play("buttonClick", masterVolume, true);
         });
     }
