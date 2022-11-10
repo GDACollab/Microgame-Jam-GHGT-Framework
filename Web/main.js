@@ -59,33 +59,39 @@ function startMicrogames(){
     GameSound.stop("theme");
     GameInterface.init(gameStarted, transition);
 
-    document.getElementById("transitionContainer").removeAttribute("hidden");
-    document.getElementById("winTransition").removeAttribute("hidden");
-    document.getElementById("timer").setAttribute("hidden", "");
-
     GameSound.play("buttonClick", masterVolume, true, false, function(){
         GameSound.play("winJingle", masterVolume * 0.8, true);
     });
-    GameAnimation.playKeyframedAnimation("CCSSGLOBALwinAnimation", {
-        shouldLoop: function(){
-            return gameLoaded === false;
-        },
-        onFinish: function() {
-            document.getElementById("transitionContainer").setAttribute("hidden", "");
-            document.getElementById("winTransition").setAttribute("hidden", "");
-        }
-    });
+    
+    playTransition("win");
+
     setTimeout(function(){
         document.getElementById("menu").setAttribute("hidden", "");
     }, 500);
-
-    loadGame();
 }
 
 function gameStarted(){
     document.getElementById("game").removeAttribute("hidden");
     document.getElementById("timer").removeAttribute("hidden");
     gameLoaded = true;
+}
+
+function playTransition(winOrLose){
+    document.getElementById("timer").setAttribute("hidden", "");
+    document.getElementById("transitionContainer").removeAttribute("hidden");
+    document.getElementById(winOrLose + "Transition").removeAttribute("hidden");
+    GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + winOrLose + "Animation", {
+        shouldLoop: function(){
+            // Loop while our game isn't ready to start.
+            return gameLoaded === false; 
+        },
+        onFinish: function () {
+            document.getElementById("transitionContainer").setAttribute("hidden", "");
+            document.getElementById(transitionName + "Transition").setAttribute("hidden", "");
+        }
+    });
+
+    loadGame();
 }
 
 // TODO: Make game picking more robust, add difficulty increases, etc.
@@ -107,21 +113,7 @@ function transition(didWin, modifyDifficulty){
 
     GameSound.play(transitionName + "Jingle", masterVolume * 0.8, true);
 
-    document.getElementById("timer").setAttribute("hidden", "");
-    document.getElementById("transitionContainer").removeAttribute("hidden");
-    document.getElementById(transitionName + "Transition").removeAttribute("hidden");
-    GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", {
-        shouldLoop: function(){
-            // Loop while our game isn't ready to start.
-            return gameLoaded === false; 
-        },
-        onFinish: function () {
-        document.getElementById("transitionContainer").setAttribute("hidden", "");
-        document.getElementById("loseTransition").setAttribute("hidden", "");
-        }
-    });
-
-    loadGame();
+    playTransition(transitionName);
 }
 
 // Gamepads support:

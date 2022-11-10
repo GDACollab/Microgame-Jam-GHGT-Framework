@@ -24,7 +24,9 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 - NPM package for developers to test their games within the framework?
 
+- Change config.ini and CCSS animations to be compiled instead of read on the fly
+
 Bugs:
-Bob Ross game seems to cause issues with transitions?
+Godot games take up most of the browser resources and create animation glitches.
 Construct games will still sometimes create alerts?
 Instant lose called for some games (Paint Attack, Bead-Fast)

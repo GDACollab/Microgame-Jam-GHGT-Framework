@@ -1,12 +1,19 @@
 // Pick a game to repeatedly test. Set "sequential" to go through all the games in order:
-const DEBUG_TEST = "";
+const DEBUG_TEST = "rossfight";
 
 var debug_index = 0;
 var gamesList = {};
+var gamesConfig = {};
 
 function initGameLoader(){
     // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
     gamesList = ini["Games"];
+    gamesConfig = ini["GamesConfig"];
+
+    // Since each item in GamesConfig is a list of games:
+    for (var key in gamesConfig) {
+        gamesConfig[key] = gamesConfig[key].split(",");
+    }
 }
 
 function loadGame(){
@@ -35,8 +42,8 @@ function loadGame(){
 }
 
 function iframeLoaded(){
-    // Focus the iframe so inputs get through:
-    document.getElementById("game").contentWindow.focus();
+    // Click on the iframe so inputs get through:
+    document.getElementById("game").contentWindow.dispatchEvent(new MouseEvent("click"));
 
     // For Unity Exports specifically (minimal Unity HTML templates work good enough, except for when it adds margin):
     document.getElementById("game").contentDocument.body.style.margin = "0";
