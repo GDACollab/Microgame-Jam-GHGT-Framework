@@ -26,7 +26,7 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 - Change config.ini and CCSS animations to be compiled instead of read on the fly
 
-Bugs:
-Godot games take up most of the browser resources and create animation glitches.
-Construct games will still sometimes create alerts?
-Instant lose called for some games (Paint Attack, Bead-Fast)
+To fix right now:
+- Settings menu (volume for main menu? Select microgames, controller remappings)
+- Difficulty changing/game loading logic (Rotating queue of unique games, difficulty increases, difficulty of 1 if it's your first time playing a game)
+- Game over screen on 0 lives

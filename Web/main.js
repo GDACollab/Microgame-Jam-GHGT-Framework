@@ -3,10 +3,7 @@ var GameSound;
 var GameAnimation;
 var gameLoaded = false;
 
-function debugLoopTransition(isWin){
-    var winOrLose = (isWin)? "win" : "lose";
-
-    var numLives = ini["Transitions"]["debug-lives"];
+function setUpLifeCounter(numLives, lostLife) {
     for (var i = 0; i < numLives; i++) {
         document.getElementById("intactLifeDiv" + ((i > 0)? (i - 1) : "")).classList.add("active-lives");
     }
@@ -15,7 +12,7 @@ function debugLoopTransition(isWin){
     var currPar = lostLifeDiv.parentNode;
     lostLifeDiv.parentNode.removeChild(lostLifeDiv);
     
-    if (ini["Transitions"]["debug-life-lost"] === "true") {
+    if (lostLife) {
         document.getElementById("intact-life" + ((numLives > 1) ? (numLives - 2) : "")).style.display = "none";
 
         var div = document.getElementById("intactLifeDiv" + ((numLives > 1) ? (numLives - 2) : ""));
@@ -28,6 +25,24 @@ function debugLoopTransition(isWin){
     } else {
         currPar.appendChild(lostLifeDiv);
     }
+}
+
+function removeLives(numLives, lifeLost){
+    document.querySelectorAll(".active-lives").forEach(function(element){
+        element.classList.remove("active-lives");
+    });
+
+    if (lifeLost){
+        document.getElementById("intact-life" + ((numLives > 1) ? (numLives - 2) : "")).style.display = "inherit";
+    }
+}
+
+function debugLoopTransition(isWin){
+    var winOrLose = (isWin)? "win" : "lose";
+
+    var numLives = ini["Transitions"]["debug-lives"];
+    
+    setUpLifeCounter(numLives, ini["Transitions"]["debug-life-lost"] === "true");
 
     GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, {
         shouldLoop: function(){
@@ -35,13 +50,7 @@ function debugLoopTransition(isWin){
         },
         onFinish: function(){
         if (ini["Transitions"]["debug-loop"] === "loop"){
-            document.querySelectorAll(".active-lives").forEach(function(element){
-                element.classList.remove("active-lives");
-            });
-
-            if (ini["Transitions"]["debug-life-lost"] === "true"){
-                document.getElementById("intact-life" + ((numLives > 1) ? (numLives - 2) : "")).style.display = "inherit";
-            }
+            removeLives(numLives, ini["Transitions"]["debug-life-lost"] === "true");
             GameAnimation.stopAllKeyframedAnimationOf("CCSSGLOBALloseLife");
             debugLoopTransition(isWin);
         }
@@ -117,6 +126,14 @@ function playTransition(winOrLose){
 
     var playTransitionPriorLoaded = false;
 
+    var numLives = GameInterface.getLives();
+    if (winOrLose === "lose") {
+        // This is used purely for animation, so if we've lost a life, we add one to show the losing animation.
+        numLives++;
+    }
+
+    setUpLifeCounter(numLives, winOrLose === "lose");
+
     GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + winOrLose + "Animation", {
         shouldLoop: function(timestamp, animationObj){
             // Should we load when we're looping? If yes, we have to actually wait until we're looping.
@@ -130,6 +147,7 @@ function playTransition(winOrLose){
         onFinish: function () {
             document.getElementById(winOrLose + "Transition").setAttribute("hidden", "");
             document.getElementById("transitionContainer").setAttribute("hidden", "");
+            removeLives(numLives, winOrLose === "lose");
         }
     });
 

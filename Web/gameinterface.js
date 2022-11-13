@@ -52,6 +52,7 @@ var GameInterface = (function() {
         },
 
         loseGame: function(){
+            _lives--;
             if (!_gameEnd){
                 _gameEnded(false);
             } else {
@@ -64,6 +65,7 @@ var GameInterface = (function() {
             _currTimer = Date.now();
             var self = this;
             _gameEnd = false;
+            _lives = 3;
             _update = function() {
                 document.getElementById("timerFull").style.left = "-" + ((1 - self.getTimer()/_maxTimer) * 100) + "%";
                 if (self.getTimer() <= 0) {

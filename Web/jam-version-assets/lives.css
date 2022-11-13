@@ -37,7 +37,7 @@
         /* We want to set some arbitrary delay for the animation of the lives losing to hit right.*/
     }
     10% {
-        --time: 0.35s;
+        --time: 0.65s;
         --ANIM-left-break: leftBreak 0.8s .lost-lives-transition-art#left-heart;
         --ANIM-right-break: rightBreak 0.5s .lost-lives-transition-art#right-heart;
         --ANIM-right-break-animation-timing-function: ease-in;
@@ -45,7 +45,7 @@
 }
 
 .lost-lives-transition-art#left-heart {
-    --height-func: 1000px * (0.63 * var(--anim-time) * var(--anim-time) - 0.2 * var(--anim-time));
+    --height-func: 1000px * (0.8 * var(--anim-time) * var(--anim-time) - 0.2 * var(--anim-time));
     --bounce-func: 430px + 1000px * (0.93 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
 }
 
@@ -54,8 +54,8 @@
         transform: translate(0, calc(var(--height-func)));
     }
     to {
-        transform: translate(-100px, calc(var(--height-func))) rotate(-45deg);
-        --ANIM-left-break-bounce: leftBreak-bounce 0.75s .lost-lives-transition-art#left-heart;
+        transform: translate(-100px, calc(var(--height-func))) rotate(-80deg);
+        --ANIM-hide-self: hideLostLives 0s .lost-lives-transition-art#left-heart;
     }
 }
 
@@ -65,7 +65,6 @@
     }
     to {
         transform: translate(-200px, calc(var(--bounce-func))) rotate(-80deg);
-        --ANIM-hide-self: hideLostLives 0s .lost-lives-transition-art#left-heart;
     }
 }
 
@@ -74,8 +73,8 @@
         transform: translate(0, 0);
     }
     to {
-        transform: translate(100px, 450px) rotate(45deg);
-        --ANIM-right-break-rotate: rightBreak-rotate 0.7s .lost-lives-transition-art#right-heart;
+        transform: translate(100px, 550px) rotate(45deg);
+        --ANIM-hide-self: hideLostLives 0s .lost-lives-transition-art#right-heart;
     }
 }
 
@@ -89,7 +88,6 @@
     }
     to {
         transform: translate(200px, calc(var(--bounce-func))) rotate(360deg);
-        --ANIM-hide-self: hideLostLives 0s .lost-lives-transition-art#right-heart;
     }
 }
 
