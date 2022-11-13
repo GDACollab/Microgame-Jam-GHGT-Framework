@@ -80,18 +80,30 @@ function playTransition(winOrLose){
     document.getElementById("timer").setAttribute("hidden", "");
     document.getElementById("transitionContainer").removeAttribute("hidden");
     document.getElementById(winOrLose + "Transition").removeAttribute("hidden");
+
+    let gameToLoad = getGameToLoad();
+
+    var playTransitionPriorLoaded = false;
+
     GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + winOrLose + "Animation", {
-        shouldLoop: function(){
+        shouldLoop: function(timestamp, animationObj){
+            // Should we load when we're looping? If yes, we have to actually wait until we're looping.
+            if (gamesConfig["play-transition-prior"].includes(gameToLoad) && !playTransitionPriorLoaded && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)) {
+                playTransitionPriorLoaded = true;
+                loadGame(gameToLoad);
+            }
             // Loop while our game isn't ready to start.
             return gameLoaded === false; 
         },
         onFinish: function () {
+            document.getElementById(winOrLose + "Transition").setAttribute("hidden", "");
             document.getElementById("transitionContainer").setAttribute("hidden", "");
-            document.getElementById(transitionName + "Transition").setAttribute("hidden", "");
         }
     });
 
-    loadGame();
+    if (!(gamesConfig["play-transition-prior"].includes(gameToLoad))) {
+        loadGame(gameToLoad);
+    }
 }
 
 // TODO: Make game picking more robust, add difficulty increases, etc.

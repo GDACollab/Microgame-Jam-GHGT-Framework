@@ -77,14 +77,15 @@ function creditsToMenu(){
         currMenu = "main";
         var textY = 0;
         GameAnimation.playKeyframedAnimation("CCSSGLOBALcreditsToMain", {
-            // Kind of a hack-y workaround to get credits off the screen. This is called every frame, so it seems like the credits are hurriedly moved offscreen.
+            // Kind of a hack-y workaround to get credits off the screen. shouldLoop called every frame, so it seems like the credits are hurriedly moved offscreen.
             // The animation will still be playing (it's really slow, about 30 seconds or so to show all the credits), but it will be offscreen.
             // We reset the animation if it still happens to be playing by resetting it at roughly the start of CCSSGLOBALcreditsToMain.
-            frameUpdate: function(){
+            shouldLoop: function(){
                 if (currMenu === "main") {
                     textY -= 20;
                     document.getElementById("credits-text").style.setProperty("--text-y", textY);
                 }
+                return false;
             }
         });
     }

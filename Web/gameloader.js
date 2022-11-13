@@ -16,8 +16,8 @@ function initGameLoader(){
     }
 }
 
-function loadGame(){
-    let gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)];
+function getGameToLoad(){
+    var gameToLoad = Object.keys(gamesList)[Math.floor(Math.random() * Object.keys(gamesList).length)]
     if (DEBUG_TEST !== "") {
         if (DEBUG_TEST === "sequential"){
             document.body.onkeyup = function(event){
@@ -37,6 +37,10 @@ function loadGame(){
         
         console.log("DEBUG TESTING: " + gameToLoad + " - " + gamesList[gameToLoad]);
     }
+    return gameToLoad;
+}
+
+function loadGame(gameToLoad){
     let gameURL = "./jam-version-assets/games/" + gameToLoad + "/" + gamesList[gameToLoad];
     document.getElementById("game").src = gameURL;
 }

@@ -67,9 +67,6 @@ class CCSSAnimationBase {
     }
 
     frameUpdate(totalPlayTime, nextTime){
-        if ("frameUpdate" in this.options) {
-            this.options.frameUpdate();
-        }
         // The offset is used for things like delays.
         if (totalPlayTime >= nextTime + this.nextTimeOffset) {
             var currAnimDat = this.timeline.get(nextTime);
@@ -245,16 +242,22 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         
         var currFrame = this.timeline.get(nextTime);
 
+        var shouldLoop = this._shouldLoop(time, this);
+
         // We need to be able to transition out of a loop ASAP for loading.
-        if ("postLoop" in currFrame && !this._shouldLoop()) {
+        if ("postLoop" in currFrame && !shouldLoop) {
             var start = this.timeline.get(currFrame.postLoop).index;
 
             // Because we've been looping for who knows how long, we need to treat it as if we were playing the animation normally:
             this.playStack = Array.from(this.timeline.keys()).slice(start);
 
             // If we've gone above the current time for the post loop, reset it back to normal:
+            
             if (totalPlayTime > currFrame.postLoop) {
                 this.currTime += (totalPlayTime - currFrame.postLoop) * 1000;
+
+                // Set totalPlayTime to 0 so we evaluate for one more frame.
+                totalPlayTime = 0;
             }
         }
 
@@ -263,9 +266,10 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         // We do all this logic AFTER we get the animation data, because we might need some animation data to play right at the end of the loop.
         // Is this a valid frame?
         if (totalPlayTime >= nextTime + this.nextTimeOffset) {
+            this.currKeyframePlaying = nextTime;
 
             // Loop if we need to continue:
-            if ("loop" in currFrame && this._shouldLoop()){
+            if ("loop" in currFrame && shouldLoop){
                 var start = this.timeline.get(currFrame.loop).index;
 
                 // We've started looping again! Forget the old play stack, we're on this now:
@@ -287,6 +291,7 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
     initPlay(time, shouldLoop, options){
         super.initPlay(time, options);
         this._shouldLoop = shouldLoop;
+        this.currKeyframePlaying = 0;
     }
 }
 
@@ -406,10 +411,6 @@ class AnimationManager {
 
             if ("keepAnims" in options) {
                 animOptions["avoidAnimCleanup"] = options.keepAnims;
-            }
-
-            if ("frameUpdate" in options) {
-                animOptions["frameUpdate"] = options.frameUpdate;
             }
 
             this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now(), shouldLoop, animOptions);
