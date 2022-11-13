@@ -26,6 +26,11 @@ iframe {
     border: none;
 }
 
+/*Disable image highlighting:*/
+img {
+    user-select: none;
+}
+
 /* Display transition on top of everything: */
 #transitionContainer {
     z-index: 5;

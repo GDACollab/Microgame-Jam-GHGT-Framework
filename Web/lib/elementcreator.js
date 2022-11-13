@@ -32,6 +32,7 @@ class ElementCreator {
                 if ("img" in element) {
                     newElement = document.createElement("img");
                     newElement.src = "jam-version-assets/art/" + this._srcDir + element.img;
+                    newElement.draggable = false;
                 } else if ("text" in element) {
                     newElement = document.createElement("p");
                     newElement.innerHTML = markdown.render(element.text);
