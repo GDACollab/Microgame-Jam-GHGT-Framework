@@ -48,6 +48,7 @@ function loadGame(gameToLoad){
 function iframeLoaded(){
     // Click on the iframe so inputs get through:
     document.getElementById("game").contentWindow.dispatchEvent(new MouseEvent("click"));
+    document.getElementById("game").contentWindow.focus();
 
     // For Unity Exports specifically (minimal Unity HTML templates work good enough, except for when it adds margin):
     document.getElementById("game").contentDocument.body.style.margin = "0";
