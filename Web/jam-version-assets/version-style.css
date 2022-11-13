@@ -1,6 +1,7 @@
 @import "win-transition.css";
 @import "lose-transition.css";
 @import "menus.css";
+@import "lives.css";
 
 @keyframes wave {
     from {
