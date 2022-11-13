@@ -4,6 +4,7 @@ const DEBUG_TEST = "";
 var debug_index = 0;
 var gamesList = {};
 var gamesConfig = {};
+var currGame;
 
 function initGameLoader(){
     // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
@@ -43,6 +44,7 @@ function getGameToLoad(){
 function loadGame(gameToLoad){
     let gameURL = "./jam-version-assets/games/" + gameToLoad + "/" + gamesList[gameToLoad];
     document.getElementById("game").src = gameURL;
+    currGame = gameToLoad;
 }
 
 function iframeLoaded(){

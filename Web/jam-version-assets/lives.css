@@ -2,36 +2,32 @@
     --left-offset: 20px;
 }
 
-.lives-transition-art [id*="intact-life"] {
-    --up: 10px;
-    --rot: 1.1deg;
-}
-
 #intactLifeDiv0 {
     --left-offset: 150px;
-}
-
-#intact-life0 {
-    --up: -5px;
-    --rot: -1deg;
 }
 
 #intactLifeDiv1 {
     --left-offset: 300px;
 }
 
-#intact-life1 {
-    --up: -1px;
-    --rot: 0.5deg;
-}
-
 @keyframes livesEnter {
     from {
         transform: translate(var(--left-offset), 0);
-        --ANIM-life-float: livesFloat 1s .lives-transition-art[id*="intact-life"];
+        --ANIM-life-float: livesFloat 1s .lives-transition-art#intact-life;
         --ANIM-life-float-animation-iteration-count: infinite;
         --ANIM-life-float-animation-direction: reverse;
         --ANIM-life-float-animation-timing-function: cubic-bezier(.47,0,.74,.71);
+        
+        --ANIM-life-float-1: livesFloat 0.9s .lives-transition-art#intact-life0;
+        --ANIM-life-float-1-animation-iteration-count: infinite;
+        --ANIM-life-float-1-animation-direction: reverse;
+        --ANIM-life-float-1-animation-timing-function: cubic-bezier(.47,0,.74,.71);
+
+        
+        --ANIM-life-float-2: livesFloat 1.2s .lives-transition-art#intact-life1;
+        --ANIM-life-float-2-animation-iteration-count: infinite;
+        --ANIM-life-float-2-animation-direction: reverse;
+        --ANIM-life-float-2-animation-timing-function: cubic-bezier(.47,0,.74,.71);
     }
     to {
         transform: translate(var(--left-offset), 150px);
@@ -43,7 +39,7 @@
         transform: translate(0, 0) rotate(0deg);
     }
     50% {
-        transform: translate(0, calc(-1 * var(--up))) rotate(calc(3 * var(--rot)));
+        transform: translate(0, -5px);
     }
     to {
         transform: translate(0, 0) rotate(0);

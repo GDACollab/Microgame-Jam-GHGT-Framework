@@ -69,7 +69,13 @@ var GameInterface = (function() {
             _update = function() {
                 document.getElementById("timerFull").style.left = "-" + ((1 - self.getTimer()/_maxTimer) * 100) + "%";
                 if (self.getTimer() <= 0) {
-                    self.loseGame();
+                    if (ini["GamesConfig"]["slightly-more-time"].includes(currGame)) {
+                        if (self.getTimer() <= -0.2){
+                            self.loseGame();
+                        }
+                    } else {
+                        self.loseGame();
+                    }
                 }
                 if (!_gameEnd){
                     window.requestAnimationFrame(_update);
