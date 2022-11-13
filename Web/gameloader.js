@@ -20,17 +20,20 @@ function initGameLoader(){
 
     var gamesSelect = document.getElementById("options-select-games");
     Object.keys(gameNames).forEach((game) => {
+        var p = document.createElement("p");
         enabledGames.add(game);
         var check = document.createElement("input");
         var gameName = gameNames[game];
         check.type = "checkbox";
-        check.id = gameName + "enable";
-        check.name = gameName + "enable";
+        check.id = game + "enable";
+        check.checked = true;
+        check.name = game + "enable";
         var label = document.createElement("label");
         label.innerText = gameName;
-        label.for = gameName + "enable";
-        gamesSelect.appendChild(check);
-        gamesSelect.appendChild(label);
+        label.htmlFor = game + "enable";
+        p.appendChild(check);
+        p.appendChild(label);
+        gamesSelect.appendChild(p);
     });
 }
 

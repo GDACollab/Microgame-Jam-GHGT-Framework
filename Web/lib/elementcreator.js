@@ -50,7 +50,7 @@ class ElementCreator {
                     div.id = element.div;
                     div.className = this._className;
                     // So we can apply z-index:
-                    div.style = `position: absolute; z-index: ${offset[2]}`;
+                    div.style = `position: absolute; z-index: ${offset[2]}; top: 0; left: 0;`;
                     div.appendChild(newElement);
 
                     if (div.parentElement === null) {
