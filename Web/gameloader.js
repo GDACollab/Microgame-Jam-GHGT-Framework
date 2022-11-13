@@ -4,17 +4,34 @@ const DEBUG_TEST = "";
 var debug_index = 0;
 var gamesList = {};
 var gamesConfig = {};
+var enabledGames = new Set();
 var currGame;
 
 function initGameLoader(){
     // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
     gamesList = ini["Games"];
     gamesConfig = ini["GamesConfig"];
+    gameNames = ini["GameNames"];
 
     // Since each item in GamesConfig is a list of games:
     for (var key in gamesConfig) {
         gamesConfig[key] = gamesConfig[key].split(",");
     }
+
+    var gamesSelect = document.getElementById("options-select-games");
+    Object.keys(gameNames).forEach((game) => {
+        enabledGames.add(game);
+        var check = document.createElement("input");
+        var gameName = gameNames[game];
+        check.type = "checkbox";
+        check.id = gameName + "enable";
+        check.name = gameName + "enable";
+        var label = document.createElement("label");
+        label.innerText = gameName;
+        label.for = gameName + "enable";
+        gamesSelect.appendChild(check);
+        gamesSelect.appendChild(label);
+    });
 }
 
 function getGameToLoad(){

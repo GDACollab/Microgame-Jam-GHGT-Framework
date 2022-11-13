@@ -116,7 +116,7 @@ function creditsToMenu(){
             // We reset the animation if it still happens to be playing by resetting it at roughly the start of CCSSGLOBALcreditsToMain.
             shouldLoop: function(){
                 if (currMenu === "main") {
-                    textY -= 40;
+                    textY -= 150;
                     document.getElementById("credits-text").style.setProperty("--text-y", textY);
                 }
                 return false;
