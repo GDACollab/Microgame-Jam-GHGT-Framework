@@ -1,8 +1,16 @@
 @keyframes livesEnter {
     from {
-        transform: translate(0, 0);
+        transform: translate(var(--left-offset), 0);
     }
     to {
-        transform: translate(0, -200px);
+        transform: translate(var(--left-offset), -200px);
     }
+}
+
+#intact-life0 {
+    --left-offset: 50px;
+}
+
+#intact-life1 {
+    --left-offset: 100px;
 }

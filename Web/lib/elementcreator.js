@@ -7,10 +7,17 @@ class ElementCreator {
         this._className = className;
         this._srcDir = srcDir;
         this.elements = [];
+        
+        if (this._srcDir !== "") {
+            this._srcDir += "/";
+        }
     }
     drawElements(){
-        for (var elementName in this._iniObj) {
-            var element = this._iniObj[elementName];
+        var elementsToSearch = Object.entries(this._iniObj);
+
+        for (var i = 0; i < elementsToSearch.length; i++) {
+            var elementName = elementsToSearch[i][0];
+            var element = elementsToSearch[i][1];
 
             // If it's actually an element:
             if (typeof element === "object" && ("img" in element || "text" in element)) {
@@ -24,7 +31,7 @@ class ElementCreator {
                 var newElement;
                 if ("img" in element) {
                     newElement = document.createElement("img");
-                    newElement.src = "jam-version-assets/art/" + this._srcDir + "/" + element.img;
+                    newElement.src = "jam-version-assets/art/" + this._srcDir + element.img;
                 } else if ("text" in element) {
                     newElement = document.createElement("p");
                     newElement.innerHTML = markdown.render(element.text);
@@ -49,7 +56,23 @@ class ElementCreator {
                 } else {
                     this._element.appendChild(newElement);
                 }
+                
                 this.elements.push(newElement);
+
+                var timesToDupe = 0;
+
+                if ("count" in element) {
+                    timesToDupe = parseInt(element.count) - 1;
+                }
+
+                var id = newElement.id;
+
+                for (var j = 0; j < timesToDupe; j++){
+                    var dupe = newElement.cloneNode();
+                    newElement.id = id + j;
+                    newElement.parentNode.appendChild(dupe);
+                    this.elements.push(dupe);
+                }
             }
         }
     }
@@ -82,7 +105,7 @@ function creditsToMenu(){
             // We reset the animation if it still happens to be playing by resetting it at roughly the start of CCSSGLOBALcreditsToMain.
             shouldLoop: function(){
                 if (currMenu === "main") {
-                    textY -= 20;
+                    textY -= 40;
                     document.getElementById("credits-text").style.setProperty("--text-y", textY);
                 }
                 return false;
@@ -107,9 +130,11 @@ function initTransitions(){
     var defaultTransition = new ElementCreator("transitionContainer", ini["Transitions"], "transition-art", "transitions");
     defaultTransition.drawElements();
 
-    // TODO: Fix this, it doesn't work for lives:
-    var livesTransition = new ElementCreator("transitionContainer", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
-    livesTransition.drawElements();
+    var intactLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
+    intactLives.drawElements();
+
+    var lostLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"]["Lost"], "lives-transition-art", "transitions");
+    lostLives.drawElements();
 
     var winTransition = new ElementCreator("winTransition", ini["Transitions"]["Win"], "win-transition-art", "transitions/win");
     winTransition.drawElements();

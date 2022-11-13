@@ -32,8 +32,9 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         
         This is just the next step of animations, and it triggers at:*/
         --time: 0.5s; /* This amount of seconds.*/
-        /*So we can have the lives enter while the background paper is coming in. This will apply to all .transition-lives-art defined in config.ini*/
-        --ANIM-lives-enter: livesEnter 1s .transition-lives-art;
+        /*So we can have the lives enter while the background paper is coming in. This will apply to all .transition-lives-art defined in config.ini.
+        Transition Javascript will set the lives we need to move with the additional ".active-lives" class.*/
+        --ANIM-lives-enter: livesEnter 1s .transition-lives-art.active-lives;
     }
 
     20% {

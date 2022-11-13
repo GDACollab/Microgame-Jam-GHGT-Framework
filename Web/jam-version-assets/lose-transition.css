@@ -6,6 +6,10 @@
         --ANIM-paper-2-enter: paperLoseEnter2 0.4s .transition-art#background-1;
         --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
     }
+    5% {
+        --time: 0.5s;
+        --ANIM-lives-enter: livesEnter 1s .transition-lives-art.active-lives;
+    }
     10% {
         --time: 4s;
         --post-loop: 30%;
