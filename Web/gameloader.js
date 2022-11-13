@@ -1,5 +1,5 @@
 // Pick a game to repeatedly test. Set "sequential" to go through all the games in order:
-const DEBUG_TEST = "rossfight";
+const DEBUG_TEST = "";
 
 var debug_index = 0;
 var gamesList = {};

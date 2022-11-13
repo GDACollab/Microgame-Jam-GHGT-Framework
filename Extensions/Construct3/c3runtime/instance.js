@@ -134,12 +134,14 @@ C3.Plugins.GDACollab_MicrogameJamController.Instance = class SingleGlobalInstanc
 	}
 
 	_WinGame() {
+		// TODO: For win game and lose game, these should be nested if-statements:
 		if (this._isGame && this._gameOver == false) {
 			console.log("game won");
 			this._runtime.AddLoadPromise(this.PostToDOMAsync("win-game"));
 			this._gameOver = true;
 
 		} else {
+			// Otherwise, this._gameOver will be set to true, and we will get alerts.
 			alert("Game won!");
 		}
 	}
