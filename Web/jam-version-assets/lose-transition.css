@@ -7,8 +7,8 @@
         --ANIM-paper-3-enter: paperEnter3 0.6s .transition-art#background-paper;
     }
     5% {
-        --time: 0.5s;
-        --ANIM-lives-enter: livesEnter 1s .transition-lives-art.active-lives;
+        --time: 0.2s;
+        --ANIM-lives-enter: livesEnter 0.2s .active-lives;
     }
     10% {
         --time: 4s;
@@ -30,6 +30,7 @@
         --ANIM-paper-2-exit: paperExit2 0.5s .transition-art#background-1;
         --ANIM-paper-3-exit: paperExit3 0.5s .transition-art#background-paper;
         --ANIM-gda-chan-exit: gdaChanLoseExit 0.5s .lose-transition-art#gda-chan-losestance-2;
+        --ANIM-lives-exit: livesExit 0.2s .active-lives;
         --ANIM-gda-chan-exit-animation-iteration-count: 1;
     }
 }

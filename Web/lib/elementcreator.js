@@ -48,6 +48,8 @@ class ElementCreator {
                     div ??= document.createElement("div");
                     div.id = element.div;
                     div.className = this._className;
+                    // So we can apply z-index:
+                    div.style = `position: absolute; z-index: ${offset[2]}`;
                     div.appendChild(newElement);
 
                     if (div.parentElement === null) {
@@ -69,8 +71,16 @@ class ElementCreator {
 
                 for (var j = 0; j < timesToDupe; j++){
                     var dupe = newElement.cloneNode();
-                    newElement.id = id + j;
-                    newElement.parentNode.appendChild(dupe);
+                    dupe.id = id + j;
+                    if ("individualDiv" in element) {
+                        var dupeDiv = newElement.parentNode.cloneNode();
+                        var dupeDivId = newElement.parentNode.id;
+                        dupeDiv.id = dupeDivId + j;
+                        newElement.parentNode.parentNode.appendChild(dupeDiv);
+                        dupeDiv.appendChild(dupe);
+                    } else {
+                        newElement.parentNode.appendChild(dupe);
+                    }
                     this.elements.push(dupe);
                 }
             }
@@ -133,7 +143,7 @@ function initTransitions(){
     var intactLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
     intactLives.drawElements();
 
-    var lostLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"]["Lost"], "lives-transition-art", "transitions");
+    var lostLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"]["Lost"], "lost-lives-transition-art", "transitions");
     lostLives.drawElements();
 
     var winTransition = new ElementCreator("winTransition", ini["Transitions"]["Win"], "win-transition-art", "transitions/win");

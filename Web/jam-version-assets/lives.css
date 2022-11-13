@@ -3,14 +3,101 @@
         transform: translate(var(--left-offset), 0);
     }
     to {
-        transform: translate(var(--left-offset), -200px);
+        transform: translate(var(--left-offset), 150px);
     }
 }
 
-#intact-life0 {
-    --left-offset: 50px;
+@keyframes livesExit {
+    from {
+        transform: translate(var(--left-offset), 150px);
+    }
+    to {
+        transform: translate(var(--left-offset), 0);
+    }
 }
 
-#intact-life1 {
-    --left-offset: 100px;
+.lives-transition-art {
+    --left-offset: 20px;
+}
+
+#intactLifeDiv0 {
+    --left-offset: 150px;
+}
+
+#intactLifeDiv1 {
+    --left-offset: 300px;
+}
+
+/*Called by Javascript for the lives that will be shown as lost on-screen:*/
+@keyframes CCSSGLOBALloseLife {
+    0% {
+        --time: 0s;
+        /*Reset lost lives (reset positions to zero):*/
+        --ANIM-reset-lost-lives: hideElement 0s .lost-lives-transition-art;
+        /* We want to set some arbitrary delay for the animation of the lives losing to hit right.*/
+    }
+    10% {
+        --time: 0.35s;
+        --ANIM-left-break: leftBreak 0.8s .lost-lives-transition-art#left-heart;
+        --ANIM-right-break: rightBreak 0.5s .lost-lives-transition-art#right-heart;
+        --ANIM-right-break-animation-timing-function: ease-in;
+    }
+}
+
+.lost-lives-transition-art#left-heart {
+    --height-func: 1000px * (0.63 * var(--anim-time) * var(--anim-time) - 0.2 * var(--anim-time));
+    --bounce-func: 430px + 1000px * (0.93 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+}
+
+@keyframes leftBreak {
+    from {
+        transform: translate(0, calc(var(--height-func)));
+    }
+    to {
+        transform: translate(-100px, calc(var(--height-func))) rotate(-45deg);
+        --ANIM-left-break-bounce: leftBreak-bounce 0.75s .lost-lives-transition-art#left-heart;
+    }
+}
+
+@keyframes leftBreak-bounce {
+    from {
+        transform: translate(-100px, calc(var(--bounce-func))) rotate(-45deg);
+    }
+    to {
+        transform: translate(-200px, calc(var(--bounce-func))) rotate(-80deg);
+        --ANIM-hide-self: hideLostLives 0s .lost-lives-transition-art#left-heart;
+    }
+}
+
+@keyframes rightBreak {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(100px, 450px) rotate(45deg);
+        --ANIM-right-break-rotate: rightBreak-rotate 0.7s .lost-lives-transition-art#right-heart;
+    }
+}
+
+.lost-lives-transition-art#right-heart {
+    --bounce-func: 450px + 800px * (1 * (var(--anim-time) * var(--anim-time)) - 0.8 * (var(--anim-time)));
+}
+
+@keyframes rightBreak-rotate {
+    from {
+        transform: translate(100px, calc(var(--bounce-func))) rotate(45deg);
+    }
+    to {
+        transform: translate(200px, calc(var(--bounce-func))) rotate(360deg);
+        --ANIM-hide-self: hideLostLives 0s .lost-lives-transition-art#right-heart;
+    }
+}
+
+@keyframes hideLostLives {
+    from {
+        transform: translate(1000px, 1000px);
+    }
+    to {
+        transform: translate(1000px, 1000px);
+    }
 }

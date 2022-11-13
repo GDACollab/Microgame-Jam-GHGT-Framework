@@ -31,10 +31,10 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         /*Because of the way CSS works, we can't create custom keyframe definitions. So when creating a new keyframe, just pick the next nearest number. In game development, people often do steps by 10 so they can add intermediate values. That's what I'm doing here.
         
         This is just the next step of animations, and it triggers at:*/
-        --time: 0.5s; /* This amount of seconds.*/
-        /*So we can have the lives enter while the background paper is coming in. This will apply to all .transition-lives-art defined in config.ini.
+        --time: 0.2s; /* This amount of seconds.*/
+        /*So we can have the lives enter while the background paper is coming in.
         Transition Javascript will set the lives we need to move with the additional ".active-lives" class.*/
-        --ANIM-lives-enter: livesEnter 1s .transition-lives-art.active-lives;
+        --ANIM-lives-enter: livesEnter 0.2s .active-lives;
     }
 
     20% {
@@ -65,6 +65,7 @@ First of all, it has to begin with CCSSGLOBAL (so that our Javascript knows to e
         /*Because we set the iteration count for GDA chan to be infinite, we have to make sure that gets reset here:*/
         --ANIM-gda-chan-exit: gdaChanExit 0.5s #gda-chan-winstance-2;
         --ANIM-gda-chan-exit-animation-iteration-count: 1;
+        --ANIM-lives-exit: livesExit 0.2s .active-lives;
     }
     /*You can add more if you want, but generally you can just set up more triggers in the sequence of --ANIM setups. Up to you, really.
     Depends on whether you like setting up a chain of dependencies or being precise with your timing. */

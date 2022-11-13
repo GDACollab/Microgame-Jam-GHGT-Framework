@@ -5,12 +5,44 @@ var gameLoaded = false;
 
 function debugLoopTransition(isWin){
     var winOrLose = (isWin)? "win" : "lose";
+
+    var numLives = ini["Transitions"]["debug-lives"];
+    for (var i = 0; i < numLives; i++) {
+        document.getElementById("intactLifeDiv" + ((i > 0)? (i - 1) : "")).classList.add("active-lives");
+    }
+
+    var lostLifeDiv = document.getElementById("lostLifeDiv");
+    var currPar = lostLifeDiv.parentNode;
+    lostLifeDiv.parentNode.removeChild(lostLifeDiv);
+    
+    if (ini["Transitions"]["debug-life-lost"] === "true") {
+        document.getElementById("intact-life" + ((numLives > 1) ? (numLives - 2) : "")).style.display = "none";
+
+        var div = document.getElementById("intactLifeDiv" + ((numLives > 1) ? (numLives - 2) : ""));
+        div.appendChild(lostLifeDiv);
+        
+        // You can manually set delays in the CCSS animation itself:
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALloseLife", {
+            keepAnims: true
+        });
+    } else {
+        currPar.appendChild(lostLifeDiv);
+    }
+
     GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, {
         shouldLoop: function(){
             return ini["Transitions"]["debug-loop"] === "loop-end";
         },
         onFinish: function(){
         if (ini["Transitions"]["debug-loop"] === "loop"){
+            document.querySelectorAll(".active-lives").forEach(function(element){
+                element.classList.remove("active-lives");
+            });
+
+            if (ini["Transitions"]["debug-life-lost"] === "true"){
+                document.getElementById("intact-life" + ((numLives > 1) ? (numLives - 2) : "")).style.display = "inherit";
+            }
+            GameAnimation.stopAllKeyframedAnimationOf("CCSSGLOBALloseLife");
             debugLoopTransition(isWin);
         }
     }});
