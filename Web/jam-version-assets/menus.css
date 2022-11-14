@@ -11,6 +11,37 @@
     --text-y: 0;
 }
 
+#options p {
+    font-family: "Open Sans";
+    color: white;
+}
+
+#options input, #options label {
+    cursor: pointer;
+    accent-color: black;
+}
+
+.googly-eye {
+    background: white;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.googly-eye-center {
+    background: black;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+    left: 15%;
+    top: 15%;
+    position: relative;
+    transition: 0.25s;
+}
+
 #credits-text a {
     color: white;
 }
@@ -47,6 +78,16 @@
         /*The looping behavior is bugged here, and even this hack-y solution doesn't work. Need to fix.*/
         --time: 3s;
         --ANIM-credits-hide: hideElement 0s #credits-text;
+    }
+}
+
+@keyframes CCSSGLOBALmainToOptions {
+    0% {
+        --time: 0s;
+        --ANIM-bye-gda-chan: gdaChanMenuExit 0.8s .menu-art#gda-chan;
+        --ANIM-remove-menu-buttons: removeMenuButtons 0.6s .menu-art[id*="Button"];
+        --ANIM-title-exit: titleExit 0.5s .menu-art#title;
+        --ANIM-darken-bg: darkenBackground 1s .menu-art#background;
     }
 }
 

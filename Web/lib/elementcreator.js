@@ -106,6 +106,15 @@ function transitionToCredits() {
     }
 }
 
+function transitionToOptions() {
+    if(currMenu !== "options") {
+        currMenu = "options";
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToOptions", {
+            keepAnims: true
+        });
+    }
+}
+
 function creditsToMenu(){
     if (currMenu !== "main") {
         currMenu = "main";
@@ -135,6 +144,7 @@ function initMainMenu(){
     document.getElementById("playButton").onclick = startMicrogames;
     document.getElementById("creditsButton").onclick = transitionToCredits;
     document.getElementById("creditsBackButton").onclick = creditsToMenu;
+    document.getElementById("optionsButton").onclick = transitionToOptions;
 }
 
 function initTransitions(){

@@ -38,6 +38,7 @@
         <script src="lib/elementcreator.js"></script>
         <script src="gameinterface.js"></script>
         <script src="gameloader.js"></script>
+        <script src="jam-version-assets/googly-eye.js"></script>
         <script src="main.js"></script>
     </head>
     <body oncontextmenu="return false">
@@ -45,9 +46,21 @@
             Your browser does not support Javascript. You need Javascript support to play GDA's Microgame Jam.
         </noscript>
         <div id="menu">
+            <!-- Options require more fine control than config.ini can provide (config.ini is mostly used for setting up images and text for elementcreator.js to control), so I'm setting it up here entirely in HTML. -->
             <div id="options">
-                <div id="options-select-games">
-                    
+                <div id="other-options">
+                    <div id="volume-control">
+                        <p>Main Menus Volume</p>
+                        <input id="options-volume" type="range" min="1" max="100"/>
+                        <div class="googly-eye" id="options-volume-eye" scale="138">
+                            <div class="googly-eye-center"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="options-select-games" style="position: absolute; top: 10px; display: none;">
+                    <p>
+                        All Games
+                    </p>
                 </div>
             </div>
         </div>
