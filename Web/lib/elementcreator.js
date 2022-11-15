@@ -92,7 +92,8 @@ class ElementCreator {
 var currMenu = "main";
 
 function transitionToCredits() {
-    if (currMenu !== "credits"){
+    if (currMenu === "main"){
+        document.getElementById("backButton").onclick = creditsToMenu;
         currMenu = "credits";
         // Reset animation:
         GameAnimation.stopAllKeyframedAnimationOf("CCSSGLOBALmainToCredits");
@@ -106,30 +107,41 @@ function transitionToCredits() {
     }
 }
 
-function transitionToOptions() {
-    if(currMenu !== "options") {
-        currMenu = "options";
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToOptions", {
-            keepAnims: true
-        });
-    }
-}
-
 function creditsToMenu(){
-    if (currMenu !== "main") {
-        currMenu = "main";
+    if (currMenu === "credits") {
         var textY = 0;
         GameAnimation.playKeyframedAnimation("CCSSGLOBALcreditsToMain", {
             // Kind of a hack-y workaround to get credits off the screen. shouldLoop called every frame, so it seems like the credits are hurriedly moved offscreen.
             // The animation will still be playing (it's really slow, about 30 seconds or so to show all the credits), but it will be offscreen.
             // We reset the animation if it still happens to be playing by resetting it at roughly the start of CCSSGLOBALcreditsToMain.
             shouldLoop: function(){
-                if (currMenu === "main") {
-                    textY -= 150;
-                    document.getElementById("credits-text").style.setProperty("--text-y", textY);
-                }
+                textY -= 150;
+                document.getElementById("credits-text").style.setProperty("--text-y", textY);
                 return false;
+            },
+            onFinish: function(){
+                currMenu = "main";
             }
+        });
+    }
+}
+
+function optionsToMenu() {
+    if (currMenu === "options") {
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALoptionsToMain", {
+            onFinish: function(){
+                currMenu = "main";
+            }
+        });
+    }
+}
+
+function transitionToOptions() {
+    if(currMenu === "main") {
+        document.getElementById("backButton").onclick = optionsToMenu;
+        currMenu = "options";
+        GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToOptions", {
+            keepAnims: true
         });
     }
 }
@@ -143,7 +155,6 @@ function initMainMenu(){
 
     document.getElementById("playButton").onclick = startMicrogames;
     document.getElementById("creditsButton").onclick = transitionToCredits;
-    document.getElementById("creditsBackButton").onclick = creditsToMenu;
     document.getElementById("optionsButton").onclick = transitionToOptions;
 }
 

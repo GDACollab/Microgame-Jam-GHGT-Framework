@@ -438,6 +438,17 @@ class AnimationManager {
         }
     }
 
+    cleanAllAnims() {
+        for (var i = 0; i < this.animationsToClean.length; i++) {
+            var anim = this.animationsToClean[i];
+            if (anim instanceof CCSSAnimation && ini["Transitions"]["debug-loop"] !== "pause") {
+                anim.clearAnimation();
+            }
+            this.animationsToClean.splice(i, 1);
+            i--;
+        }
+    }
+
     stopAllKeyframedAnimationOf(name) {
         for (var i = 0; i < this.currAnimations.length; i++) {
             var anim = this.currAnimations[i];
@@ -447,5 +458,10 @@ class AnimationManager {
             }
         }
         this.cleanAnimsOfName(name);
+    }
+
+    stopAllAnimations() {
+        this.animationsToClean = this.animationsToClean.concat(this.currAnimations.splice(0, this.currAnimations.length - 1));
+        this.cleanAllAnims();
     }
 }

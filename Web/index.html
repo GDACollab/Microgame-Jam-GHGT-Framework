@@ -49,12 +49,16 @@
             <!-- Options require more fine control than config.ini can provide (config.ini is mostly used for setting up images and text for elementcreator.js to control), so I'm setting it up here entirely in HTML. -->
             <div id="options">
                 <div id="other-options">
-                    <div id="volume-control">
-                        <p>Main Menus Volume</p>
+                    <div id="volume-control" style="position: relative; top: -100px;">
+                        <p>Main Menu Volume</p>
                         <input id="options-volume" type="range" min="1" max="100"/>
                         <div class="googly-eye" id="options-volume-eye" scale="138">
                             <div class="googly-eye-center"></div>
                         </div>
+                    </div>
+                    <div id="remap-options">
+                        <div id="remap-game-name">Game Name Here</div>
+                        
                     </div>
                 </div>
                 <div id="options-select-games" style="position: relative; left: 460px; top: 967px; height: 83.3%; overflow-x: hidden; overflow-y: scroll;">
