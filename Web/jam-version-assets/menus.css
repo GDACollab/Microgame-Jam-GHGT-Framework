@@ -11,9 +11,55 @@
     --text-y: 0;
 }
 
-#options p {
+#options {
     font-family: "Open Sans";
-    color: white;
+    color: black;
+    height: 100%;
+}
+
+#options-select-games {
+    background-color: white;
+    width: 500px;
+}
+
+#options-select-games label::selection, #options-select-games p::selection {
+    background-color: yellow;
+    color: black;
+}
+
+#options-select-games p {
+    border: 1px solid blue;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+#options-select-games p:nth-child(2) {
+    border-top: 1px solid blue;
+}
+
+#options-select-games p {
+    cursor: pointer;
+}
+
+#options-select-games p label {
+    border: 1px red;
+    border-left-style: solid;
+    height: 100%;
+    width: 80%;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    margin-left: 2px;
+}
+
+#options-select-games p input[type=checkbox] {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #options input, #options label {
@@ -88,6 +134,20 @@
         --ANIM-remove-menu-buttons: removeMenuButtons 0.6s .menu-art[id*="Button"];
         --ANIM-title-exit: titleExit 0.5s .menu-art#title;
         --ANIM-darken-bg: darkenBackground 1s .menu-art#background;
+    }
+    10% {
+        --time: 0.5s;
+        --ANIM-options-enter: optionsPaperEnter 0.5s #options-select-games;
+        --ANIM-options-back-enter: backButtonAppear 0.5s .credits#creditsBackButton;
+    }
+}
+
+@keyframes optionsPaperEnter {
+    from  {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(0, -960px);
     }
 }
 

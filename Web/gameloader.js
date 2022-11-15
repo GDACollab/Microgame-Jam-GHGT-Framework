@@ -30,7 +30,8 @@ function initGameLoader(){
         check.name = game + "enable";
         var label = document.createElement("label");
         label.innerText = gameName;
-        label.htmlFor = game + "enable";
+        // We want to be able to click each game to set individual settings.
+        // label.htmlFor = game + "enable";
         p.appendChild(check);
         p.appendChild(label);
         gamesSelect.appendChild(p);
