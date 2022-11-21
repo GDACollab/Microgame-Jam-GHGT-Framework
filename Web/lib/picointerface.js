@@ -1,6 +1,4 @@
 // This is used for communicating with PICO8 games and setting information to the relevant GPIO pins.
-export {PicoInterface};
-
 class PicoInterface {
     constructor() {
         this.gameStarted = false;
@@ -28,9 +26,6 @@ class PicoInterface {
         this.pico8_gpio[0] = 1;
         // Set max number of seconds:
         this.pico8_gpio[1] = 15;
-        var update = this.picoUpdate;
-        var self = this;
-        this.internalUpdate = window.setInterval(function () {update(self); }, 100);
     }
 
     picoUpdate(self){
@@ -59,3 +54,5 @@ class PicoInterface {
         }
     }
 }
+
+export {PicoInterface};

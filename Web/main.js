@@ -1,16 +1,19 @@
-import {initMenus} from "./lib/elementcreator.js";
-import {GameLoader, GameLoaderAnimator} from "./gameloader.js";
+import {MicrogameJamMenu} from "./lib/elementcreator.js";
+import {GameLoader} from "./gameloader.js";
 import {AudioManager} from "./lib/gamesound.js";
 import {AnimationManager} from "./lib/animationmanager.js";
 import {getConfig} from "./lib/configloader.js";
 import {initVersionStyle, versionStyleUpdate} from "./jam-version-assets/version-style.js";
+
+// Main game controller.
+// For controlling the primary functions, all calls should get routed throug here.
 
 function debugLoopTransition(isWin){
     var winOrLose = (isWin)? "win" : "lose";
 
     var numLives = ini["Transitions"]["debug-lives"];
     
-    GameLoaderAnimator.setUpLifeCounter.bind(MicrogameJamMainManager.GameLoader, numLives, ini["Transitions"]["debug-life-lost"] === "true");
+    MicrogameJamMainManager.GameLoader.setUpLifeCounter(numLives, ini["Transitions"]["debug-life-lost"] === "true");
 
     MicrogameJamMainManager.GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, {
         shouldLoop: function(){
@@ -18,7 +21,7 @@ function debugLoopTransition(isWin){
         },
         onFinish: function(){
         if (ini["Transitions"]["debug-loop"] === "loop"){
-            GameLoaderAnimator.removeLives(numLives, ini["Transitions"]["debug-life-lost"] === "true");
+            MicrogameJamMainManager.GameLoader.removeLives(numLives, ini["Transitions"]["debug-life-lost"] === "true");
             MicrogameJamMainManager.GameAnimation.stopAllKeyframedAnimationOf("CCSSGLOBALloseLife");
             debugLoopTransition(isWin);
         }
@@ -39,7 +42,8 @@ class MicrogameJam {
 
         this.GameLoader = new GameLoader(this);
 
-        initMenus();
+        this.GameMenus = new MicrogameJamMenu();
+
         document.getElementById("playButton").onclick = this.startMicrogames;
 
         if (ini["Transitions"].debug === "win") {
@@ -79,7 +83,7 @@ class MicrogameJam {
             this.GameSound.play("winJingle", this.masterVolume * 0.8, true);
         });
 
-        this.GameLoader.startLoadingMicrogames();
+        this.GameLoader.transition("win");
 
         setTimeout(function(){
             document.getElementById("menu").setAttribute("hidden", "");
@@ -90,6 +94,8 @@ class MicrogameJam {
         this.GameAnimation.frameUpdate.bind(this.GameAnimation, time)();
 
         versionStyleUpdate(this.#inGame);
+
+        this.GameLoader.loadUpdate();
 
         requestAnimationFrame(this.update.bind(this));
     }

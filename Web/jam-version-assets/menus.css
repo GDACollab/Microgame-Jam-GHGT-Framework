@@ -92,7 +92,7 @@
     color: white;
 }
 
-@keyframes CCSSGLOBALmainToCredits {
+@keyframes CCSSGLOBALmainTocredits {
     0% {
         --time: 0s;
         --ANIM-bye-gda-chan: gdaChanMenuExit 0.8s .menu-art#gda-chan;
@@ -127,7 +127,7 @@
     }
 }
 
-@keyframes CCSSGLOBALcreditsToMain {
+@keyframes CCSSGLOBALcreditsTomain {
     0% {
         --time: 0s;
         --ANIM-lighten-bg: lightenBackground 1s .menu-art#background;
@@ -141,7 +141,7 @@
     }
 }
 
-@keyframes CCSSGLOBALmainToOptions {
+@keyframes CCSSGLOBALmainToptions {
     0% {
         --time: 0s;
         --ANIM-bye-gda-chan: gdaChanMenuExit 0.8s .menu-art#gda-chan;
@@ -165,7 +165,7 @@
     }
 }
 
-@keyframes CCSSGLOBALoptionsToMain {
+@keyframes CCSSGLOBALoptionsTomain {
     0% {
         --time: 0s;
         --ANIM-options-exit: optionsPaperExit 0.5s #options-select-games;

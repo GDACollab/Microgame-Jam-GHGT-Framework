@@ -1,5 +1,5 @@
 import {PicoInterface} from "./lib/picointerface.js";
-export {GameLoader, GameLoaderAnimator};
+// Game loader, for everything to do with transitions: playing animations, playing sounds, selecting the next game, changing difficulty.
 
 class GameLoader {
     #debug_index = 0;
@@ -47,7 +47,9 @@ class GameLoader {
     }
 
     // TODO: Make game picking more robust, add difficulty increases, etc.
+    // Main function where all the loading actually happens.
     transition(didWin){
+        this.picoInterface = undefined;
         this.#gameLoaded = false;
 
         // Because Twine saves things to the session:
@@ -96,7 +98,7 @@ class GameLoader {
         return gameToLoad;
     }
 
-    loadGame(gameToLoad){
+    #loadGameHTML(gameToLoad){
         let gameURL = "./jam-version-assets/games/" + gameToLoad + "/" + this.#gamesList[gameToLoad];
         document.getElementById("game").src = gameURL;
         this.currGame = gameToLoad;
@@ -108,9 +110,10 @@ class GameLoader {
         this.#gameLoaded = true;
     }
 
-    startLoadingMicrogames() {
-        this.#gameLoaded = false;
-        GameLoaderAnimator.animateTransition.bind(this, "win")();
+    loadUpdate() {
+        if (PicoInterface.isPicoRunning()){
+            this.picoInterface.picoUpdate();
+        }
     }
 
     #iframeLoaded() {
@@ -121,15 +124,15 @@ class GameLoader {
         // For Unity Exports specifically (minimal Unity HTML templates work good enough, except for when it adds margin):
         document.getElementById("game").contentDocument.body.style.margin = "0";
         if (PicoInterface.isPicoRunning()){
-            var picoInterface = new PicoInterface();
-            picoInterface.interfaceWithPico();
+            this.picoInterface = new PicoInterface();
+            this.picoInterface.interfaceWithPico();
         }
     }
-};
 
-// Purely for organization. Use .bind(this) when calling from the GameLoader.
-class GameLoaderAnimator {
-    static animateTransition(transitionName) {
+    // ANIMATIONS
+    // -----------------------------------------------------------------------
+
+    animateTransition(transitionName) {
         document.getElementById("timer").setAttribute("hidden", "");
         document.getElementById("transitionContainer").removeAttribute("hidden");
         document.getElementById(transitionName + "Transition").removeAttribute("hidden");
@@ -144,14 +147,14 @@ class GameLoaderAnimator {
             numLives++;
         }
 
-        GameLoaderAnimator.setUpLifeCounter.bind(this, numLives, transitionName === "lose")();
+        this.setUpLifeCounter(numLives, transitionName === "lose");
 
         this.#Controller.GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", {
             shouldLoop: function(timestamp, animationObj){
                 // Should we load when we're looping? If yes, we have to actually wait until we're looping.
                 if (this.#gamesConfig["play-transition-prior"].includes(gameToLoad) && !playTransitionPriorLoaded && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)) {
                     playTransitionPriorLoaded = true;
-                    this.#Controller.GameLoader.loadGame(gameToLoad);
+                    this.#loadGameHTML(gameToLoad);
                 }
                 // Loop while our game isn't ready to start.
                 return this.#gameLoaded === false; 
@@ -159,16 +162,16 @@ class GameLoaderAnimator {
             onFinish: function () {
                 document.getElementById(transitionName + "Transition").setAttribute("hidden", "");
                 document.getElementById("transitionContainer").setAttribute("hidden", "");
-                GameLoaderAnimator.removeLives(numLives, transitionName === "lose");
+                this.removeLives(numLives, transitionName === "lose");
             }
         });
 
         if (!(this.#gamesConfig["play-transition-prior"].includes(gameToLoad))) {
-            loadGame(gameToLoad);
+            this.#loadGameHTML(gameToLoad);
         }
     }
 
-    static setUpLifeCounter(numLives, lostLife) {
+    setUpLifeCounter(numLives, lostLife) {
         for (var i = 0; i < numLives; i++) {
             document.getElementById("intactLifeDiv" + ((i > 0)? (i - 1) : "")).classList.add("active-lives");
         }
@@ -192,7 +195,7 @@ class GameLoaderAnimator {
         }
     }
 
-    static removeLives(numLives, lostLife) {
+    removeLives(numLives, lostLife) {
         document.querySelectorAll(".active-lives").forEach(function(element){
             element.classList.remove("active-lives");
         });
@@ -202,3 +205,5 @@ class GameLoaderAnimator {
         }
     }
 };
+
+export {GameLoader};

@@ -87,96 +87,113 @@ class ElementCreator {
     }
 }
 
-var currMenu = "main";
+class MicrogameJamMenu {
+    #currMenu = "main";
+    #destMenu;
+    #Controller;
 
-function transitionToCredits() {
-    if (currMenu === "main"){
-        document.getElementById("backButton").onclick = creditsToMenu;
-        currMenu = "credits";
-        // Reset animation:
-        GameAnimation.stopAllKeyframedAnimationOf("CCSSGLOBALmainToCredits");
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToCredits", {
-            keepAnims: true,
-            shouldLoop: function(){
-                return currMenu === "credits";
-            }
-        });
-        document.getElementById("credits-text").style.setProperty("--text-y", 0);
+    constructor(Controller){
+        this.#Controller = Controller;
+        if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
+            initMainMenu();
+        }
+        initTransitions();
     }
-}
+    
+    #textY = 0;
 
-function creditsToMenu(){
-    if (currMenu === "credits") {
-        var textY = 0;
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALcreditsToMain", {
-            // Kind of a hack-y workaround to get credits off the screen. shouldLoop called every frame, so it seems like the credits are hurriedly moved offscreen.
-            // The animation will still be playing (it's really slow, about 30 seconds or so to show all the credits), but it will be offscreen.
-            // We reset the animation if it still happens to be playing by resetting it at roughly the start of CCSSGLOBALcreditsToMain.
+    #menuMapping = {
+        "credits": {
             shouldLoop: function(){
-                textY -= 150;
-                document.getElementById("credits-text").style.setProperty("--text-y", textY);
-                return false;
+                return this.#currMenu === "credits";
             },
+            backCallback: this.transitionTo.bind(this, "main")
+        },
+        "options": {
+            backCallback: this.transitionTo.bind(this, "main")
+        },
+        "main": {
             onFinish: function(){
-                currMenu = "main";
+                if (this.#currMenu === "credits"){
+                    document.getElementById("credits-text").style.setProperty("--text-y", 0);
+                }
+                this.#currMenu = "main";
+            },
+            shouldLoop: function(){
+                if (this.#destMenu === "credits"){
+                    this.#textY -= 150;
+                    document.getElementById("credits-text").style.setProperty("--text-y", textY);
+                }
+                return false;
             }
-        });
-    }
-}
+        }
+    };
 
-function optionsToMenu() {
-    if (currMenu === "options") {
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALoptionsToMain", {
-            onFinish: function(){
-                currMenu = "main";
+    transitionTo(menu){
+        this.#textY = 0;
+
+        var animName = `CCSSGLOBAL${this.#currMenu}To${menu}`;
+
+        if (menu !== "main"){
+            document.getElementById("backButton").onclick = this.#menuMapping[this.#currMenu].backCallback;
+        }
+
+        // Are we currently heading AWAY from the main menu, or are we currently at the main menu?
+        if (this.#currMenu === "main" || this.#menu === "main"){
+            this.#destMenu = menu;
+            
+            // We don't want to set the main menu to immediately clear because we want to wait for transitions to play out.
+            if (this.#destMenu !== "main"){
+                this.#currMenu = menu;
             }
-        });
+
+            // Reset animation:
+            this.#Controller.GameAnimation.stopAllKeyframedAnimationOf(animName);
+            this.#Controller.GameAnimation.playKeyframedAnimation(animName, {
+                keepAnims: true,
+                shouldLoop: function() {
+                    if ("shouldLoop" in this.#menuMapping[this.#currMenu]){
+                        return this.#menuMapping[this.#currMenu].shouldLoop();
+                    } else {
+                        return false;
+                    }
+                },
+                onFinish: function(){
+                    if ("onFinish" in this.#menuMapping[this.#currMenu]) {
+                        this.#menuMapping[this.#currMenu].onFinish();
+                    }
+                }
+            });
+        }
+    }
+
+    initMainMenu() {
+        var mainMenu = new ElementCreator("menu", ini["Menu"], "menu-art", "");
+        mainMenu.drawElements();
+    
+        var credits = new ElementCreator("menu", ini["Credits"], "credits", "");
+        credits.drawElements();
+    
+        document.getElementById("creditsButton").onclick = this.transitionTo.bind("credits");
+        document.getElementById("optionsButton").onclick = this.transitionTo.bind("options");
+    }
+
+    initTransitions(){
+        var defaultTransition = new ElementCreator("transitionContainer", ini["Transitions"], "transition-art", "transitions");
+        defaultTransition.drawElements();
+    
+        var intactLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
+        intactLives.drawElements();
+    
+        var lostLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"]["Lost"], "lost-lives-transition-art", "transitions");
+        lostLives.drawElements();
+    
+        var winTransition = new ElementCreator("winTransition", ini["Transitions"]["Win"], "win-transition-art", "transitions/win");
+        winTransition.drawElements();
+    
+        var loseTransition = new ElementCreator("loseTransition", ini["Transitions"]["Lose"], "lose-transition-art", "transitions/lose");
+        loseTransition.drawElements();
     }
 }
 
-function transitionToOptions() {
-    if(currMenu === "main") {
-        document.getElementById("backButton").onclick = optionsToMenu;
-        currMenu = "options";
-        GameAnimation.playKeyframedAnimation("CCSSGLOBALmainToOptions", {
-            keepAnims: true
-        });
-    }
-}
-
-function initMainMenu(){
-    var mainMenu = new ElementCreator("menu", ini["Menu"], "menu-art", "");
-    mainMenu.drawElements();
-
-    var credits = new ElementCreator("menu", ini["Credits"], "credits", "");
-    credits.drawElements();
-
-    document.getElementById("creditsButton").onclick = transitionToCredits;
-    document.getElementById("optionsButton").onclick = transitionToOptions;
-}
-
-function initTransitions(){
-    var defaultTransition = new ElementCreator("transitionContainer", ini["Transitions"], "transition-art", "transitions");
-    defaultTransition.drawElements();
-
-    var intactLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"], "lives-transition-art", "transitions");
-    intactLives.drawElements();
-
-    var lostLives = new ElementCreator("transitionLives", ini["Transitions"]["Lives"]["Lost"], "lost-lives-transition-art", "transitions");
-    lostLives.drawElements();
-
-    var winTransition = new ElementCreator("winTransition", ini["Transitions"]["Win"], "win-transition-art", "transitions/win");
-    winTransition.drawElements();
-
-    var loseTransition = new ElementCreator("loseTransition", ini["Transitions"]["Lose"], "lose-transition-art", "transitions/lose");
-    loseTransition.drawElements();
-}
-
-function initMenus(){
-    if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
-        initMainMenu();
-    }
-    initTransitions();
-}
-
-export {initMenus};
+export {MicrogameJamMenu};
