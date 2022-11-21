@@ -95,9 +95,9 @@ class MicrogameJamMenu {
     constructor(Controller){
         this.#Controller = Controller;
         if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
-            initMainMenu();
+            this.#initMainMenu();
         }
-        initTransitions();
+        this.#initTransitions();
     }
     
     #textY = 0;
@@ -135,11 +135,11 @@ class MicrogameJamMenu {
         var animName = `CCSSGLOBAL${this.#currMenu}To${menu}`;
 
         if (menu !== "main"){
-            document.getElementById("backButton").onclick = this.#menuMapping[this.#currMenu].backCallback;
+            document.getElementById("backButton").onclick = this.#menuMapping[menu].backCallback;
         }
 
         // Are we currently heading AWAY from the main menu, or are we currently at the main menu?
-        if (this.#currMenu === "main" || this.#menu === "main"){
+        if (this.#currMenu === "main" || menu === "main"){
             this.#destMenu = menu;
             
             // We don't want to set the main menu to immediately clear because we want to wait for transitions to play out.
@@ -149,36 +149,39 @@ class MicrogameJamMenu {
 
             // Reset animation:
             this.#Controller.GameAnimation.stopAllKeyframedAnimationOf(animName);
+            var menuMapping = this.#menuMapping;
+            var destMenu = this.#destMenu;
+            var self = this;
             this.#Controller.GameAnimation.playKeyframedAnimation(animName, {
-                keepAnims: true,
+                keepAnims: this.#destMenu !== "main",
                 shouldLoop: function() {
-                    if ("shouldLoop" in this.#menuMapping[this.#currMenu]){
-                        return this.#menuMapping[this.#currMenu].shouldLoop();
+                    if ("shouldLoop" in menuMapping[destMenu]){
+                        return menuMapping[destMenu].shouldLoop.bind(self)();
                     } else {
                         return false;
                     }
                 },
                 onFinish: function(){
-                    if ("onFinish" in this.#menuMapping[this.#currMenu]) {
-                        this.#menuMapping[this.#currMenu].onFinish();
+                    if ("onFinish" in menuMapping[destMenu]) {
+                        menuMapping[destMenu].onFinish.bind(self)();
                     }
                 }
             });
         }
     }
 
-    initMainMenu() {
+    #initMainMenu() {
         var mainMenu = new ElementCreator("menu", ini["Menu"], "menu-art", "");
         mainMenu.drawElements();
     
         var credits = new ElementCreator("menu", ini["Credits"], "credits", "");
         credits.drawElements();
     
-        document.getElementById("creditsButton").onclick = this.transitionTo.bind("credits");
-        document.getElementById("optionsButton").onclick = this.transitionTo.bind("options");
+        document.getElementById("creditsButton").onclick = this.transitionTo.bind(this, "credits");
+        document.getElementById("optionsButton").onclick = this.transitionTo.bind(this, "options");
     }
 
-    initTransitions(){
+    #initTransitions(){
         var defaultTransition = new ElementCreator("transitionContainer", ini["Transitions"], "transition-art", "transitions");
         defaultTransition.drawElements();
     

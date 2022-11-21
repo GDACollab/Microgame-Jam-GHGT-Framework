@@ -42,7 +42,7 @@ class MicrogameJam {
 
         this.GameLoader = new GameLoader(this);
 
-        this.GameMenus = new MicrogameJamMenu();
+        this.GameMenus = new MicrogameJamMenu(this);
 
         document.getElementById("playButton").onclick = this.startMicrogames;
 
