@@ -36,3 +36,5 @@ class AudioManager {
         this._sounds[sound].onended = function(){};
     }
 }
+
+export {AudioManager};

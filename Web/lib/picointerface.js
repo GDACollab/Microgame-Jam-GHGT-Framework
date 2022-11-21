@@ -1,4 +1,5 @@
 // This is used for communicating with PICO8 games and setting information to the relevant GPIO pins.
+export {PicoInterface};
 
 class PicoInterface {
     constructor() {

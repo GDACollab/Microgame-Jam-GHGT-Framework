@@ -1,6 +1,8 @@
 const MAX_ALLOWED_TIMER = 15;
 const MIN_ALLOWED_TIMER = 5;
 const DEBUG_DIFFICULTY = -1;
+// Pick a game to repeatedly test. Set "sequential" to go through all the games in order:
+const DEBUG_TEST = "";
 
 // Based on https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 var GameInterface = (function() {
@@ -12,16 +14,11 @@ var GameInterface = (function() {
     var _maxTimer = MAX_ALLOWED_TIMER;
     var _currTimer = 0;
     var _gameEnd = false;
-    var _gameStartCallback = function(){};
-    var _gameEndCallback = function(didWin, modifyDifficulty){};
-    var _update = function(){};
 
     var _gameEnded = function(didWin) {
         _gameEnd = true;
         _maxTimer = MAX_ALLOWED_TIMER;
-        _gameEndCallback(didWin, function(difficultySet) {
-            _difficulty = difficultySet;
-        });
+        _difficulty = MicrogameJamMainManager.endGame(didWin);
     };
 
     return {
@@ -62,27 +59,9 @@ var GameInterface = (function() {
         },
 
         gameStart: function(){
-            _currTimer = Date.now();
-            var self = this;
             _gameEnd = false;
             _lives = 3;
-            _update = function() {
-                document.getElementById("timerFull").style.left = "-" + ((1 - self.getTimer()/_maxTimer) * 100) + "%";
-                if (self.getTimer() <= 0) {
-                    if (ini["GamesConfig"]["slightly-more-time"].includes(currGame)) {
-                        if (self.getTimer() <= -0.2){
-                            self.loseGame();
-                        }
-                    } else {
-                        self.loseGame();
-                    }
-                }
-                if (!_gameEnd){
-                    window.requestAnimationFrame(_update);
-                }
-            };
-            _gameStartCallback();
-            window.requestAnimationFrame(_update);
+            MicrogameJamMainManager.gameStarted();
             return;
         },
 
@@ -98,11 +77,6 @@ var GameInterface = (function() {
                 _maxTimer = time;
             }
             return;
-        },
-
-        init(gameStartCallback, gameEndCallback){
-            _gameStartCallback = gameStartCallback;
-            _gameEndCallback = gameEndCallback;
         }
     };
 

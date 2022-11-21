@@ -391,10 +391,6 @@ class AnimationManager {
                 }
             }
         }
-
-        if (this.currAnimations.length > 0){
-            requestAnimationFrame(this.frameUpdate.bind(this))
-        }
     }
 
     playKeyframedAnimation(name, options = {}){
@@ -416,9 +412,6 @@ class AnimationManager {
             this.currAnimations[this.currAnimations.length - 1].initPlay(performance.now(), shouldLoop, animOptions);
             if ("onFinish" in options){
                 this.onFinishes[name] = options.onFinish;
-            }
-            if (this.currAnimations.length === 1) {
-                requestAnimationFrame(this.frameUpdate.bind(this));
             }
         } else {
             console.warn("[CCSS] " + name + " is not the name of a valid CCSSGLOBAL animation.");
@@ -465,3 +458,5 @@ class AnimationManager {
         this.cleanAllAnims();
     }
 }
+
+export {AnimationManager};

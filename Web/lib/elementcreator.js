@@ -1,5 +1,3 @@
-var state = "Main";
-
 class ElementCreator {
     constructor(elementId, iniObj, className, srcDir){
         this._element = document.getElementById(elementId);
@@ -153,7 +151,6 @@ function initMainMenu(){
     var credits = new ElementCreator("menu", ini["Credits"], "credits", "");
     credits.drawElements();
 
-    document.getElementById("playButton").onclick = startMicrogames;
     document.getElementById("creditsButton").onclick = transitionToCredits;
     document.getElementById("optionsButton").onclick = transitionToOptions;
 }
@@ -181,3 +178,5 @@ function initMenus(){
     }
     initTransitions();
 }
+
+export {initMenus};

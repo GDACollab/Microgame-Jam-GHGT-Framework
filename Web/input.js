@@ -2,7 +2,6 @@ class MicrogameGamepad {
     constructor(gamepad) {
         this.gamepad = gamepad;
     }
-
     
 }
 

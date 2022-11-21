@@ -7,6 +7,8 @@
 
         <script src="lib/markdown-it.min.js"></script>
         <script>
+            var ini;
+            
             var markdown = window.markdownit({linkify: true});
             var defaultRender = markdown.renderer.rules.link_open || function(tokens, idx, options, env, self) {
                return self.renderToken(tokens, idx, options);
@@ -31,15 +33,8 @@
                 return defaultRender(tokens, idx, options, env, self);
             }
         </script>
-        <script src="lib/configloader.js"></script>
-        <script src="lib/gamesound.js"></script>
-        <script src="lib/picointerface.js"></script>
-        <script src="lib/animationmanager.js"></script>
-        <script src="lib/elementcreator.js"></script>
         <script src="gameinterface.js"></script>
-        <script src="gameloader.js"></script>
-        <script src="jam-version-assets/googly-eye.js"></script>
-        <script src="main.js"></script>
+        <script src="main.js" type="module"></script>
     </head>
     <body oncontextmenu="return false">
         <noscript>
@@ -79,7 +74,7 @@
                 <div id="timerFull" class="timerFill" style="background-color: red;"></div>
             </div>
             <!-- about:blank to avoid browser caches messing with us: -->
-            <iframe id="game" src="about:blank" width="960px" height="540px" scrolling="no" onload="iframeLoaded()"></iframe>
+            <iframe id="game" src="about:blank" width="960px" height="540px" scrolling="no"></iframe>
             <!-- And as a double preventative measure courtesy of https://stackoverflow.com/questions/2648053/preventing-iframe-caching-in-browser -->
             <script>
                 var _theframe = document.getElementById("game");
