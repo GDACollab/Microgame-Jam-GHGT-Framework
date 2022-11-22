@@ -170,6 +170,7 @@ class MicrogameJamMenu {
                     if ("onFinish" in menuMapping[destMenu]) {
                         menuMapping[destMenu].onFinish.bind(self)();
                     }
+                    self.#inputReader.resetMenuInputs();
                 }
             });
         }
@@ -241,8 +242,18 @@ class MicrogameJamMenuInputReader {
         }
         var computedStyle = window.getComputedStyle(element);
         var isWithinBounds = positionDat[0] + element.offsetLeft >= 0 && positionDat[0] + element.offsetLeft <= 960 && positionDat[1] + element.offsetTop >= 0 && positionDat[1] + element.offsetTop <= 540;
+        
+        // Assumes transforms only:
+        var translateMatrix = computedStyle.transform.replace(")", "").split(",");
+        var left = parseInt(translateMatrix[4]);
+        var top = parseInt( translateMatrix[5]);
+        var isWithinCSSBounds = false;
+        if (!isNaN(left) && !isNaN(top)){
+            isWithinCSSBounds = left >= 0 && left <= 960 && top >= 0 && top <= 540;
+        }
+
         var newSum = [positionDat[0] + element.offsetLeft, positionDat[1] + element.offsetTop];
-        if (isWithinBounds && computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer"){
+        if ((isWithinCSSBounds || isWithinBounds) && computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer"){
             this.#selectableElements.push(element);
             element.totalOffset = [positionDat[0] + element.offsetLeft, positionDat[1] + element.offsetTop];
         } else {
@@ -256,11 +267,16 @@ class MicrogameJamMenuInputReader {
     #setUpMenuInputs() {
         var menu = document.getElementById("menu");
         var pos = [0, 0];
-        this.#selectElementRecurse(document.getElementById("menu"), pos);
+        this.#selectElementRecurse(menu, pos);
     }
 
-    #tearDownMenuInputs() {
+    resetMenuInputs() {
+        this.#selectableElements.forEach(function(e){
+            e.classList.remove("hover");
+        });
         this.#selectableElements = [];
+        this.#selectedElement = -1;
+        this.#setUpMenuInputs();
     }
 
     #clearSelect() {
@@ -304,6 +320,10 @@ class MicrogameJamMenuInputReader {
         if (this.#selectedElement === -1) {
             this.#selectedElement = 0;
             this.#selectElement([0, 0]);
+            return;
+        }
+        if (ev.key === " ") {
+            this.#selectableElements[this.#selectedElement].click();
             return;
         }
         this.#clearSelect();
