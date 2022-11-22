@@ -1,9 +1,10 @@
-import {MicrogameJamMenu} from "./lib/elementcreator.js";
+import {MicrogameJamMenu} from "./lib/menumanager.js";
 import {GameLoader} from "./gameloader.js";
 import {AudioManager} from "./lib/gamesound.js";
 import {AnimationManager} from "./lib/animationmanager.js";
 import {getConfig} from "./lib/configloader.js";
 import {initVersionStyle, versionStyleUpdate} from "./jam-version-assets/version-style.js";
+import * as MicrogameInputManager from "./lib/input.js";
 
 // Main game controller.
 // For controlling the primary functions, all calls should get routed throug here.
@@ -58,7 +59,7 @@ class MicrogameJam {
             document.getElementById("loseTransition").hidden = false;
         }
 
-        this.GameSound.play("theme", this.masterVolume * 0.6, false, true);
+        this.GameSound.play("theme", this.masterVolume * 0.3, false, true);
 
         var GameSound = this.GameSound;
         for (const button of document.querySelectorAll("[id*=\"Button\"]")) {
@@ -97,11 +98,14 @@ class MicrogameJam {
 
         this.GameLoader.loadUpdate();
 
+        MicrogameInputManager.updateInput();
+
         requestAnimationFrame(this.update.bind(this));
     }
 
     gameStarted() {
         this.#inGame = true;
+        MicrogameInputManager.gameStartInputUpdate();
         this.GameLoader.gameStarted();
     }
 }

@@ -27,4 +27,4 @@ To fix right now:
 - Game over screen on 0 lives
 - Send any keyboard inputs from the body to the iframe.
 - Minify all .js and .css for web build?
-- NW.js for desktop builds (breaks itch.io's API)
+- NW.js for desktop builds (breaks itch.io's API). Or maybe my itch.io desktop app is broken.

@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    height: 100vh;
-    width: 100vw;
+    height: 540px;
+    width: 960px;
 }
 canvas {
     z-index: 1;
@@ -63,6 +63,6 @@ iframe, #gameContainer {
 }
 
 /* Regex stuff:*/
-[id*="Button"]:hover {
+[id*="Button"] {
     cursor: pointer;
 }

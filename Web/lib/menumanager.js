@@ -1,3 +1,5 @@
+// Handles the creation of the main menu and transition elements.
+// Also handles actual control of the main menu elements.
 class ElementCreator {
     constructor(elementId, iniObj, className, srcDir){
         this._element = document.getElementById(elementId);
@@ -91,6 +93,7 @@ class MicrogameJamMenu {
     #currMenu = "main";
     #destMenu;
     #Controller;
+    #inputReader;
 
     constructor(Controller){
         this.#Controller = Controller;
@@ -98,6 +101,8 @@ class MicrogameJamMenu {
             this.#initMainMenu();
         }
         this.#initTransitions();
+
+        this.#inputReader = new MicrogameJamMenuInputReader();
     }
     
     #textY = 0;
@@ -196,6 +201,124 @@ class MicrogameJamMenu {
     
         var loseTransition = new ElementCreator("loseTransition", ini["Transitions"]["Lose"], "lose-transition-art", "transitions/lose");
         loseTransition.drawElements();
+    }
+}
+
+class MenuVector {
+    constructor(arr) {
+        this.x = arr[0];
+        this.y = arr[1];
+    }
+    dot(otherVector){
+        return this.x * otherVector.x + this.y * otherVector.y;
+    }
+    dist(otherVector) {
+        return Math.sqrt(Math.pow(this.x - otherVector.x, 2) + Math.pow(this.y - otherVector.y, 2));
+    }
+    sub(otherVector) {
+        return new MenuVector([this.x - otherVector.x, this.y - otherVector.y]); 
+    }
+    normalized() {
+        var size = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        return new MenuVector([this.x/size, this.y/size]);
+    }
+}
+
+class MicrogameJamMenuInputReader {
+
+    #selectableElements = [];
+
+    constructor() {
+        this.#setUpMenuInputs();
+        document.body.addEventListener("keydown", this.#readMenuInputs.bind(this));
+    }
+    
+    // Based on the stuff I did for the twine extension.
+
+    #selectElementRecurse(element, positionDat){
+        if (element instanceof Element === false){
+            return;
+        }
+        var computedStyle = window.getComputedStyle(element);
+        var isWithinBounds = positionDat[0] + element.offsetLeft >= 0 && positionDat[0] + element.offsetLeft <= 960 && positionDat[1] + element.offsetTop >= 0 && positionDat[1] + element.offsetTop <= 540;
+        var newSum = [positionDat[0] + element.offsetLeft, positionDat[1] + element.offsetTop];
+        if (isWithinBounds && computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer"){
+            this.#selectableElements.push(element);
+            element.totalOffset = [positionDat[0] + element.offsetLeft, positionDat[1] + element.offsetTop];
+        } else {
+            for (var c in element.children){
+                var child = element.children[c];
+                this.#selectElementRecurse(child, newSum);
+            }
+        }
+    }
+
+    #setUpMenuInputs() {
+        var menu = document.getElementById("menu");
+        var pos = [0, 0];
+        this.#selectElementRecurse(document.getElementById("menu"), pos);
+    }
+
+    #tearDownMenuInputs() {
+        this.#selectableElements = [];
+    }
+
+    #clearSelect() {
+        this.#selectableElements[this.#selectedElement].classList.remove("hover");
+    }
+
+    #selectElement(direction){
+        if (direction[0] !== 0 || direction[1] !== 0) {
+            var oldSelect = this.#selectedElement;
+            this.#selectedElement = -1;
+
+            var closestDist = -1;
+            var dirVec = new MenuVector(direction);
+            var currElement = this.#selectableElements[oldSelect];
+            var currElementVec = new MenuVector(currElement.totalOffset);
+
+            this.#selectableElements.forEach(function(e, index){
+                if (index !== oldSelect) {
+                    var searchLoc = new MenuVector(e.totalOffset);
+                    var searchVec = searchLoc.sub(currElementVec);
+
+                    var dist = dirVec.dist(searchLoc.normalized());
+                    var dot = dirVec.dot(searchVec);
+                    if (dot > 0.5 && (dist < closestDist || closestDist === -1)) {
+                        closestDist = dist;
+                        this.#selectedElement = index;
+                    }
+                }
+            }, this);
+
+            if (this.#selectedElement === -1) {
+                this.#selectedElement = oldSelect;
+            }
+        }
+        this.#selectableElements[this.#selectedElement].classList.add("hover");
+    }
+
+    #selectedElement = -1;
+
+    #readMenuInputs(ev) {
+        if (this.#selectedElement === -1) {
+            this.#selectedElement = 0;
+            this.#selectElement([0, 0]);
+            return;
+        }
+        this.#clearSelect();
+        var dir = [0, 0];
+        if (ev.key === "ArrowLeft") {
+            dir[0] = -1;
+        } else if (ev.key === "ArrowRight") {
+            dir[0] = 1;
+        }
+        if (ev.key === "ArrowDown") {
+            dir[1] = 1;
+        } else if (ev.key === "ArrowUp") {
+            dir[1] = -1;
+        }
+        this.#selectElement(dir);
     }
 }
 
