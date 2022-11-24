@@ -232,6 +232,12 @@ class MicrogameJamMenuInputReader {
     constructor() {
         this.#setUpMenuInputs();
         document.body.addEventListener("keydown", this.#readMenuInputs.bind(this));
+        document.body.addEventListener("mousemove", function(){
+            if (this.#selectedElement !== -1){
+                this.#clearSelect();
+                this.#selectedElement = -1;
+            }
+        }.bind(this));
     }
 
     get getSelectableElements(){
@@ -247,8 +253,11 @@ class MicrogameJamMenuInputReader {
         var computedStyle = window.getComputedStyle(element);
         var posLeft = positionDat[0] + element.offsetLeft;
         var posTop = positionDat[1] + element.offsetTop;
+
+        // Is the HTML element positioned within the bounds of the frame?
         var isWithinBounds = posLeft >= 0 && posLeft <= 960 && posTop >= 0 && posTop <= 540;
         
+        // Next, does the CSS contribute to the position at all?
         // Assumes transforms only:
         var translateMatrix = computedStyle.transform.replace(")", "").split(",");
         var left = parseInt(translateMatrix[4]);
@@ -256,7 +265,7 @@ class MicrogameJamMenuInputReader {
         var isWithinCSSBounds = false;
         if (!isNaN(left) && !isNaN(top)){
             isWithinCSSBounds = posLeft + left >= 0 && posLeft + left <= 960 && posTop + top >= 0 && posTop + top <= 540;
-        } else if (computedStyle.transform === "none" && isWithinBounds) {
+        } else if (computedStyle.transform === "none" && isWithinBounds) { // If no transform is set, we assume that the element's position is based solely on posLeft and posTop.
             isWithinCSSBounds = true;
         }
 
