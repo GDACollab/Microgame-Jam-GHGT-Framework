@@ -170,7 +170,7 @@ class MicrogameJamMenu {
                     if ("onFinish" in menuMapping[destMenu]) {
                         menuMapping[destMenu].onFinish.bind(self)();
                     }
-                    self.#inputReader.resetMenuInputs();
+                    self.#inputReader.resetMenuInputs.bind(self.#inputReader)();
                 }
             });
         }
@@ -233,6 +233,10 @@ class MicrogameJamMenuInputReader {
         this.#setUpMenuInputs();
         document.body.addEventListener("keydown", this.#readMenuInputs.bind(this));
     }
+
+    get getSelectableElements(){
+        return this.#selectableElements;
+    }
     
     // Based on the stuff I did for the twine extension.
 
@@ -241,7 +245,9 @@ class MicrogameJamMenuInputReader {
             return;
         }
         var computedStyle = window.getComputedStyle(element);
-        var isWithinBounds = positionDat[0] + element.offsetLeft >= 0 && positionDat[0] + element.offsetLeft <= 960 && positionDat[1] + element.offsetTop >= 0 && positionDat[1] + element.offsetTop <= 540;
+        var posLeft = positionDat[0] + element.offsetLeft;
+        var posTop = positionDat[1] + element.offsetTop;
+        var isWithinBounds = posLeft >= 0 && posLeft <= 960 && posTop >= 0 && posTop <= 540;
         
         // Assumes transforms only:
         var translateMatrix = computedStyle.transform.replace(")", "").split(",");
@@ -249,13 +255,15 @@ class MicrogameJamMenuInputReader {
         var top = parseInt( translateMatrix[5]);
         var isWithinCSSBounds = false;
         if (!isNaN(left) && !isNaN(top)){
-            isWithinCSSBounds = left >= 0 && left <= 960 && top >= 0 && top <= 540;
+            isWithinCSSBounds = posLeft + left >= 0 && posLeft + left <= 960 && posTop + top >= 0 && posTop + top <= 540;
+        } else if (computedStyle.transform === "none" && isWithinBounds) {
+            isWithinCSSBounds = true;
         }
 
-        var newSum = [positionDat[0] + element.offsetLeft, positionDat[1] + element.offsetTop];
-        if ((isWithinCSSBounds || isWithinBounds) && computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer"){
+        var newSum = [posLeft, posTop];
+        if ((isWithinCSSBounds) && computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer"){
             this.#selectableElements.push(element);
-            element.totalOffset = [positionDat[0] + element.offsetLeft, positionDat[1] + element.offsetTop];
+            element.totalOffset = newSum;
         } else {
             for (var c in element.children){
                 var child = element.children[c];
@@ -268,6 +276,10 @@ class MicrogameJamMenuInputReader {
         var menu = document.getElementById("menu");
         var pos = [0, 0];
         this.#selectElementRecurse(menu, pos);
+        if (this.#selectedElement !== -1) {
+            this.#selectedElement = 0;
+            this.#selectElement([0, 0]);
+        }
     }
 
     resetMenuInputs() {
@@ -275,7 +287,6 @@ class MicrogameJamMenuInputReader {
             e.classList.remove("hover");
         });
         this.#selectableElements = [];
-        this.#selectedElement = -1;
         this.#setUpMenuInputs();
     }
 
