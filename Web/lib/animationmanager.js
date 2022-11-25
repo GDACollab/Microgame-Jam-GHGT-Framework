@@ -240,21 +240,21 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         // Should be in chronological order, so we just need to pull the first value:
         var nextTime = this.playStack[0];
         
-        var currFrame = this.timeline.get(nextTime);
+        this.currFrame = this.timeline.get(nextTime);
 
         var shouldLoop = this._shouldLoop(time, this);
 
         // We need to be able to transition out of a loop ASAP for loading.
-        if ("postLoop" in currFrame && !shouldLoop) {
-            var start = this.timeline.get(currFrame.postLoop).index;
+        if ("postLoop" in this.currFrame && !shouldLoop) {
+            var start = this.timeline.get(this.currFrame.postLoop).index;
 
             // Because we've been looping for who knows how long, we need to treat it as if we were playing the animation normally:
             this.playStack = Array.from(this.timeline.keys()).slice(start);
 
             // If we've gone above the current time for the post loop, reset it back to normal:
             
-            if (totalPlayTime > currFrame.postLoop) {
-                this.currTime += (totalPlayTime - currFrame.postLoop) * 1000;
+            if (totalPlayTime > this.currFrame.postLoop) {
+                this.currTime += (totalPlayTime - this.currFrame.postLoop) * 1000;
 
                 // Set totalPlayTime to 0 so we evaluate for one more frame.
                 totalPlayTime = 0;
@@ -269,8 +269,8 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
             this.currKeyframePlaying = nextTime;
 
             // Loop if we need to continue:
-            if ("loop" in currFrame && shouldLoop){
-                var start = this.timeline.get(currFrame.loop).index;
+            if ("loop" in this.currFrame && shouldLoop){
+                var start = this.timeline.get(this.currFrame.loop).index;
 
                 // We've started looping again! Forget the old play stack, we're on this now:
                 this.playStack = Array.from(this.timeline.keys()).slice(start);
@@ -281,7 +281,7 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
                 // That means we SHOULD rewind time back to 2 seconds. So our totalPlayTime is ~3 seconds, and we want to add time to this.currTime until totalPlayTime 
                 // rewinds to hit 1 seconds.
                 // So we need to rewind by (totalTime - startOfLoop) = (3 - 1) seconds = 2 seconds:
-                this.currTime += (totalPlayTime - currFrame.loop) * 1000;
+                this.currTime += (totalPlayTime - this.currFrame.loop) * 1000;
             }
         }
 

@@ -106,10 +106,17 @@ class MicrogameJamMenu {
     }
     
     #textY = 0;
+    #creditsInputsDrawn = false;
 
     #menuMapping = {
         "credits": {
-            shouldLoop: function(){
+            shouldLoop: function(time, animationObj){
+                if (!this.#creditsInputsDrawn && animationObj.currFrame.index === 3) {
+                    this.#inputReader.resetMenuInputs();
+                    if (this.#inputReader.selectableElements.length > 0){
+                        this.#creditsInputsDrawn = true;
+                    }
+                }
                 return this.#currMenu === "credits";
             },
             backCallback: this.transitionTo.bind(this, "main")
@@ -120,14 +127,17 @@ class MicrogameJamMenu {
         "main": {
             onFinish: function(){
                 if (this.#currMenu === "credits"){
+                    this.#creditsInputsDrawn = false;
                     document.getElementById("credits-text").style.setProperty("--text-y", 0);
+                    this.#textY = 0;
+                    this.#Controller.GameAnimation.stopAllKeyframedAnimationOf(`CCSSGLOBALmainTocredits`);
                 }
                 this.#currMenu = "main";
             },
             shouldLoop: function(){
-                if (this.#destMenu === "credits"){
+                if (this.#currMenu === "credits"){
                     this.#textY -= 150;
-                    document.getElementById("credits-text").style.setProperty("--text-y", textY);
+                    document.getElementById("credits-text").style.setProperty("--text-y", this.#textY);
                 }
                 return false;
             }
@@ -135,8 +145,6 @@ class MicrogameJamMenu {
     };
 
     transitionTo(menu){
-        this.#textY = 0;
-
         var animName = `CCSSGLOBAL${this.#currMenu}To${menu}`;
 
         if (menu !== "main"){
@@ -159,9 +167,9 @@ class MicrogameJamMenu {
             var self = this;
             this.#Controller.GameAnimation.playKeyframedAnimation(animName, {
                 keepAnims: this.#destMenu !== "main",
-                shouldLoop: function() {
+                shouldLoop: function(time, animationObj) {
                     if ("shouldLoop" in menuMapping[destMenu]){
-                        return menuMapping[destMenu].shouldLoop.bind(self)();
+                        return menuMapping[destMenu].shouldLoop.bind(self, time, animationObj)();
                     } else {
                         return false;
                     }
@@ -170,7 +178,7 @@ class MicrogameJamMenu {
                     if ("onFinish" in menuMapping[destMenu]) {
                         menuMapping[destMenu].onFinish.bind(self)();
                     }
-                    self.#inputReader.resetMenuInputs.bind(self.#inputReader)();
+                    self.#inputReader.resetMenuInputs();
                 }
             });
         }
@@ -240,7 +248,7 @@ class MicrogameJamMenuInputReader {
         }.bind(this));
     }
 
-    get getSelectableElements(){
+    get selectableElements(){
         return this.#selectableElements;
     }
     
@@ -304,6 +312,9 @@ class MicrogameJamMenuInputReader {
     }
 
     #selectElement(direction){
+        if (this.#selectableElements.length === 0){
+            return;
+        }
         if (direction[0] !== 0 || direction[1] !== 0) {
             var oldSelect = this.#selectedElement;
             this.#selectedElement = -1;
