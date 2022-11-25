@@ -61,7 +61,7 @@ class MicrogameKeyboard extends MicrogameInput {
 
 class MicrogameGamepad extends MicrogameInput {
     #gamepad;
-    #sensitivity = 0.2;
+    #sensitivity = 0.4;
     bindings = {
         "ArrowUp": ["-axes1"],
         "ArrowDown": ["axes1"],
@@ -79,15 +79,21 @@ class MicrogameGamepad extends MicrogameInput {
 
     getInput(control) {
         var inputVal = this.#inputMatch.exec(control);
-        return this.#gamepad[inputVal[2]][inputVal[3]].value >= this.#sensitivity * ((inputVal[1] === "-") ? -1 : 1);
+        var val = this.#gamepad[inputVal[2]][inputVal[3]];
+        if (val instanceof GamepadButton){
+            val = val.value;
+        }
+        return ((inputVal[1] === "-") ? -1 : 1) * val >= this.#sensitivity;
     }
 
     update() {
         for (var binding in this.bindings) {
-            if (this.getInput(this.bindings[binding])) {
+            var t = performance.now();
+            var i = this.getInput(this.bindings[binding]);
+            if (i && !keysDown.has(binding)) {
                 this.pressKey(binding, "down");
                 keysDown.add(binding);
-            } else if (keysDown.has(binding)) {
+            } else if (!i && keysDown.has(binding)) {
                 this.pressKey(binding, "up");
                 keysDown.delete(binding);
             }
@@ -103,7 +109,7 @@ function updateInput() {
             if (gamepad === null) {
                 continue;
             }
-            if (!gamepad.id in microgameinputs) {
+            if (!(gamepad.id in microgameinputs)) {
                 microgameinputs[gamepad.id] = new MicrogameGamepad(gamepad);
             }
         }
