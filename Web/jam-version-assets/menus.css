@@ -27,6 +27,10 @@
     color: black;
 }
 
+#options-select-games p.hover, #options-select-games p:hover {
+    background-color: #dddd00;
+}
+
 #options-select-games p {
     border: 1px solid blue;
     border-top-style: none;
@@ -35,6 +39,7 @@
     margin-top: 0;
     margin-bottom: 0;
     width: 100%;
+    transition: 0.5s;
 }
 
 #options-select-games p:nth-child(2) {
