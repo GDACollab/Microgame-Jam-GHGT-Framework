@@ -1,4 +1,4 @@
-import {MicrogameJamMenu} from "./lib/menumanager.js";
+import {MicrogameJamMenu} from "./lib/options/menumanager.js";
 import {GameLoader} from "./gameloader.js";
 import {AudioManager} from "./lib/gamesound.js";
 import {AnimationManager} from "./lib/animationmanager.js";
@@ -7,7 +7,7 @@ import {initVersionStyle, versionStyleUpdate} from "./jam-version-assets/version
 import * as MicrogameInputManager from "./lib/input.js";
 
 // Main game controller.
-// For controlling the primary functions, all calls should get routed throug here.
+// For controlling the primary functions, all calls should get routed through here.
 
 function debugLoopTransition(isWin){
     var winOrLose = (isWin)? "win" : "lose";

@@ -4,7 +4,6 @@ import {PicoInterface} from "./lib/picointerface.js";
 class GameLoader {
     #debug_index = 0;
     #gameLoaded = false;
-    #enabledGames = new Set();
 
     #gamesList;
     #gamesConfig;
@@ -24,26 +23,11 @@ class GameLoader {
             this.#gamesConfig[key] = this.#gamesConfig[key].split(",");
         }
 
-        var gamesSelect = document.getElementById("options-select-games");
-        Object.keys(this.#gameNames).forEach((game) => {
-            var p = document.createElement("p");
-            this.#enabledGames.add(game);
-            var check = document.createElement("input");
-            var gameName = this.#gameNames[game];
-            check.type = "checkbox";
-            check.id = game + "enable";
-            check.checked = true;
-            check.name = game + "enable";
-            var label = document.createElement("label");
-            label.innerText = gameName;
-            // We want to be able to click each game to set individual settings.
-            // label.htmlFor = game + "enable";
-            p.appendChild(check);
-            p.appendChild(label);
-            gamesSelect.appendChild(p);
-        });
-
         document.getElementById("game").onload = this.#iframeLoaded;
+    }
+
+    get gameNames() {
+        return this.#gameNames;
     }
 
     // TODO: Make game picking more robust, add difficulty increases, etc.

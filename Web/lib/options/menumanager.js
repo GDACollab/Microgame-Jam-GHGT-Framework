@@ -1,3 +1,5 @@
+import {OptionsManager} from "./optionsmanager.js"
+
 // Handles the creation of the main menu and transition elements.
 // Also handles actual control of the main menu elements.
 class ElementCreator {
@@ -94,6 +96,7 @@ class MicrogameJamMenu {
     #destMenu;
     #Controller;
     #inputReader;
+    #optionsManager;
 
     constructor(Controller){
         this.#Controller = Controller;
@@ -103,6 +106,7 @@ class MicrogameJamMenu {
         this.#initTransitions();
 
         this.#inputReader = new MicrogameJamMenuInputReader();
+        this.#optionsManager = new OptionsManager(this.#Controller);
     }
     
     #textY = 0;

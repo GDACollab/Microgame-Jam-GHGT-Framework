@@ -22,13 +22,17 @@
     width: 500px;
 }
 
-#options-select-games label::selection, #options-select-games p::selection {
+#options-select-games label::selection, #options-select-games p::selection, #options-select-games.active  {
     background-color: yellow;
     color: black;
 }
 
 #options-select-games p.hover, #options-select-games p:hover {
-    background-color: #dddd00;
+    background-color: #ffffaa;
+}
+
+#options-select-games p.active {
+    background-color: yellow;
 }
 
 #options-select-games p {
@@ -67,11 +71,11 @@
     margin-right: 10px;
 }
 
-#options-select-games-general {
+#options-select-games-all {
     border-bottom: none !important;
 }
 
-#options-select-games-general span {
+#options-select-games-all span {
     padding-top: 22px;
     padding-bottom: 22px;
     padding-left: 11px;
@@ -79,7 +83,7 @@
     border-left: 1px red solid;
 }
 
-#options-select-games-general::before {
+#options-select-games-all::before {
     content: "";
     display: inline-block;
     width: 31px;
