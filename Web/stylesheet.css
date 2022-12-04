@@ -2,6 +2,7 @@ body {
     margin: 0;
     height: 540px;
     width: 960px;
+    overflow: hidden;
 }
 canvas {
     z-index: 1;
@@ -14,15 +15,13 @@ iframe {
 #menu {
     z-index: 2;
     overflow: hidden;
-    max-width: 960px;
-    max-height: 540px;
     background-color: white;
 }
 
 #menu, #transitionContainer{
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 960px;
+    height: 540px;
     border: none;
 }
 

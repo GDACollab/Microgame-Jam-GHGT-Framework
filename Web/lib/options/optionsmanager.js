@@ -2,15 +2,15 @@ export class OptionsManager {
 	#currentOption = "all";
     #Controller;
     #enabledGames = new Set();
+    #optionsSelect;
 
 	constructor(Controller) {
 		this.#Controller = Controller;
 
-        document.getElementById("options-select-games").onscroll = this.#optionsScroll;
+        this.#optionsSelect = document.getElementById("options-select-games");
 
 		var gameNames = this.#Controller.GameLoader.gameNames;
 
-		var gamesSelect = document.getElementById("options-select-games");
         Object.keys(gameNames).forEach((game) => {
             var p = document.createElement("p");
             this.#enabledGames.add(game);
@@ -31,7 +31,7 @@ export class OptionsManager {
 
             p.onclick = this.#swapToOptions.bind(this, gameName);
 
-            gamesSelect.appendChild(p);
+            this.#optionsSelect.appendChild(p);
         });
 
 		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "all");
@@ -46,8 +46,4 @@ export class OptionsManager {
 		document.getElementById("options-select-games-" + gameName).classList.add("active");
         this.#currentOption = gameName;
 	}
-
-    #optionsScroll(ev) {
-        document.getElementById("options-select-games").scrollTo(0, 0);
-    }
 }

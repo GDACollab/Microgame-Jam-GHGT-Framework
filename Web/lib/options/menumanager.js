@@ -350,8 +350,12 @@ class MicrogameJamMenuInputReader {
     }
 
     #selectedElement = -1;
+    #isInMenu = true;
 
     #readMenuInputs(ev) {
+        if (this.#isInMenu) {
+            ev.preventDefault();
+        }
         if (this.#selectedElement === -1) {
             this.#selectedElement = 0;
             this.#selectElement([0, 0]);

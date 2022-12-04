@@ -11,110 +11,6 @@
     --text-y: 0;
 }
 
-#options {
-    font-family: "Open Sans";
-    color: black;
-    height: 100%;
-}
-
-#options-select-games {
-    background-color: white;
-    width: 500px;
-}
-
-#options-select-games label::selection, #options-select-games p::selection, #options-select-games.active  {
-    background-color: yellow;
-    color: black;
-}
-
-#options-select-games p.hover, #options-select-games p:hover {
-    background-color: #ffffaa;
-}
-
-#options-select-games p.active {
-    background-color: yellow;
-}
-
-#options-select-games p {
-    border: 1px solid blue;
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
-    margin-top: 0;
-    margin-bottom: 0;
-    width: 100%;
-    transition: 0.5s;
-}
-
-#options-select-games p:nth-child(2) {
-    border-top: 1px solid blue;
-}
-
-#options-select-games p {
-    cursor: pointer;
-}
-
-#options-select-games p label {
-    border: 1px red;
-    border-left-style: solid;
-    height: 100%;
-    width: 80%;
-    display: inline-block;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    margin-left: 2px;
-}
-
-#options-select-games p input[type=checkbox] {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-#options-select-games-all {
-    border-bottom: none !important;
-}
-
-#options-select-games-all span {
-    padding-top: 22px;
-    padding-bottom: 22px;
-    padding-left: 11px;
-    display: inline-block;
-    border-left: 1px red solid;
-}
-
-#options-select-games-all::before {
-    content: "";
-    display: inline-block;
-    width: 31px;
-}
-
-#options input, #options label {
-    cursor: pointer;
-    accent-color: black;
-}
-
-.googly-eye {
-    background: white;
-    border-radius: 100%;
-    width: 25px;
-    height: 25px;
-    position: absolute;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.googly-eye-center {
-    background: black;
-    border-radius: 100%;
-    width: 15px;
-    height: 15px;
-    left: 15%;
-    top: 15%;
-    position: relative;
-    transition: 0.25s;
-}
-
 #credits-text a {
     color: white;
 }
@@ -332,4 +228,109 @@
     to {
         transform: translate(0, 0) rotate(0);
     }
+}
+
+/* --------- OPTIONS ------ */
+#options {
+    font-family: "Open Sans";
+    color: black;
+    height: 100%;
+}
+
+#options-select-games {
+    background-color: white;
+    width: 500px;
+}
+
+#options-select-games label::selection, #options-select-games p::selection, #options-select-games.active  {
+    background-color: yellow;
+    color: black;
+}
+
+#options-select-games p.hover, #options-select-games p:hover {
+    background-color: #ffffaa;
+}
+
+#options-select-games p.active {
+    background-color: yellow;
+}
+
+#options-select-games p {
+    border: 1px solid blue;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100%;
+    transition: 0.5s;
+}
+
+#options-select-games p:nth-child(2) {
+    border-top: 1px solid blue;
+}
+
+#options-select-games p {
+    cursor: pointer;
+}
+
+#options-select-games p label {
+    border: 1px red;
+    border-left-style: solid;
+    height: 100%;
+    width: 80%;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    margin-left: 2px;
+}
+
+#options-select-games p input[type=checkbox] {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#options-select-games-all {
+    border-bottom: none !important;
+}
+
+#options-select-games-all span {
+    padding-top: 22px;
+    padding-bottom: 22px;
+    padding-left: 11px;
+    display: inline-block;
+    border-left: 1px red solid;
+}
+
+#options-select-games-all::before {
+    content: "";
+    display: inline-block;
+    width: 31px;
+}
+
+#options input, #options label {
+    cursor: pointer;
+    accent-color: black;
+}
+
+.googly-eye {
+    background: white;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.googly-eye-center {
+    background: black;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+    left: 15%;
+    top: 15%;
+    position: relative;
+    transition: 0.25s;
 }
