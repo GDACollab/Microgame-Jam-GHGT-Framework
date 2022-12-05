@@ -1,7 +1,12 @@
+:root {
+    --width: 960px;
+    --height: 540px;
+}
+
 body {
     margin: 0;
-    height: 540px;
-    width: 960px;
+    height: var(--height);
+    width: var(--width);
     overflow: hidden;
 }
 canvas {
@@ -20,8 +25,8 @@ iframe {
 
 #menu, #transitionContainer{
     position: absolute;
-    width: 960px;
-    height: 540px;
+    width: var(--width);
+    height: var(--height);
     border: none;
 }
 
@@ -37,8 +42,8 @@ img {
 
 iframe, #gameContainer {
     position: absolute;
-    width: 960px;
-    height: 540px;
+    width: var(--width);
+    height: var(--height);
     border: none;
     overflow: hidden;
 }

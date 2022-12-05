@@ -1,3 +1,5 @@
+import {Selectable} from "./menumanager.js";
+
 export class OptionsManager {
 	#currentOption = "all";
     #Controller;
@@ -36,6 +38,12 @@ export class OptionsManager {
 
 		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "all");
 	}
+
+    startManagingOptions() {
+        for (var i = 0; i < this.#optionsSelect.children.length; i++) {
+            this.#Controller.GameMenus.addSelectableElement(this.#optionsSelect.children[i]);
+        }
+    }
 
     get enabledGames() {
         return this.#enabledGames;

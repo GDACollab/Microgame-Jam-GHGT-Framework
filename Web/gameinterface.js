@@ -1,9 +1,3 @@
-const MAX_ALLOWED_TIMER = 15;
-const MIN_ALLOWED_TIMER = 5;
-const DEBUG_DIFFICULTY = -1;
-// Pick a game to repeatedly test. Set "sequential" to go through all the games in order:
-const DEBUG_TEST = "";
-
 // Based on https://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-a-singleton-in-javascript
 var GameInterface = (function() {
     var _lives = 3;
