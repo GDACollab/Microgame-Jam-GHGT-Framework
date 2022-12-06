@@ -16,7 +16,7 @@ class GameList extends Selectable {
             return false;
         }
 
-        if (direction.y === 1 && this.#selected < this.element.children.length) {
+        if (direction.y === 1 && this.#selected < this.element.children.length - 1) {
             this.#selected++;
         }
         if (direction.y === -1 && this.#selected > 0) {
@@ -24,9 +24,16 @@ class GameList extends Selectable {
         }
 
         this.element.children[this.#prevSelected].classList.remove("hover");
-        this.element.children[this.#selected].classList.add("hover");
-        var childHeight = parseFloat(window.getComputedStyle(this.element.children[this.#selected]).height.replace("px", ""));
-        this.element.scroll(0, this.#baseOffset + this.#selected * childHeight);
+
+        var selected = this.element.children[this.#selected];
+        selected.classList.add("hover");
+
+        var scroll = this.element.scrollTop;
+        var selectedPos = (selected.offsetTop - scroll);
+        
+        if (selectedPos - selected.offsetHeight < 0 || selectedPos + selected.offsetHeight > this.element.offsetHeight) {
+            this.element.scroll(0, this.#baseOffset + this.#selected * selected.offsetHeight);
+        }
 
         this.#prevSelected = this.#selected;
 
@@ -37,8 +44,7 @@ class GameList extends Selectable {
     // Actually hover over the selected element. 
     // Called when this element is first selected (and gets overrided by selectElement for subsequent calls with the arrow keys).
     select() {
-        this.#selected = 0;
-        this.element.children[0].classList.add("hover");
+        this.element.children[this.#selected].classList.add("hover");
     }
 
     click() {

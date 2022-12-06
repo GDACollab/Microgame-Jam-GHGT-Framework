@@ -116,7 +116,7 @@ class Selectable {
         var left = parseFloat(translateMatrix[4]);
         var top = parseFloat( translateMatrix[5]);
         var isWithinCSSBounds = false;
-        if (left instanceof Number && top instanceof Number){
+        if (!isNaN(left) && !isNaN(top)){
             isWithinCSSBounds = this.position.x + left >= 0 && this.position.x + left <= SCREEN_WIDTH && this.position.y + top >= 0 && this.position.y + top <= SCREEN_HEIGHT;
         } else if (computedStyle.transform === "none" && isWithinBounds) { // If no transform is set, we assume that the element's position is based solely on posLeft and posTop.
             isWithinCSSBounds = true;

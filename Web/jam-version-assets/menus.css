@@ -240,13 +240,19 @@
 #options-select-games {
     background-color: white;
     width: 500px;
+    height: 320px; 
+    position: relative;
+    left: 460px;
+    top: 967px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 #options-select-games label::selection, #options-select-games p::selection, #options-select-games.active  {
     background-color: yellow;
     color: black;
 }
-#options-select-games.active.hover {
+#options-select-games p.active.hover {
     background-color: #dddd55;
 }
 

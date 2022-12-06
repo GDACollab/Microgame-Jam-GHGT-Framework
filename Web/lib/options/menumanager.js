@@ -287,15 +287,15 @@ class MicrogameJamMenuInputReader {
     }
 
     resetMenuInputs() {
-        this.#selectableElements.forEach(function(e){
-            e.clearSelect();
-        });
+        this.#clearSelect();
         this.#selectableElements = [];
         this.#setUpMenuInputs();
     }
 
     #clearSelect() {
-        this.#selectableElements[this.#selectedElement].clearSelect();
+        this.#selectableElements.forEach(function(e){
+            e.clearSelect();
+        });
     }
 
     #selectElement(direction){
