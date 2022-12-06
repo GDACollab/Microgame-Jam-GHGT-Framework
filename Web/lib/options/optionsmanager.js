@@ -15,6 +15,8 @@ class GameList extends Selectable {
         if (direction.x === -1) {
             return false;
         }
+        
+        this.clearSelect();
 
         if (direction.y === 1 && this.#selected < this.element.children.length - 1) {
             this.#selected++;
@@ -22,20 +24,7 @@ class GameList extends Selectable {
         if (direction.y === -1 && this.#selected > 0) {
             this.#selected--;
         }
-
-        this.element.children[this.#prevSelected].classList.remove("hover");
-
-        var selected = this.element.children[this.#selected];
-        selected.classList.add("hover");
-
-        var scroll = this.element.scrollTop;
-        var selectedPos = (selected.offsetTop - scroll);
-        
-        if (selectedPos - selected.offsetHeight < 0 || selectedPos + selected.offsetHeight > this.element.offsetHeight) {
-            this.element.scroll(0, this.#baseOffset + this.#selected * selected.offsetHeight);
-        }
-
-        this.#prevSelected = this.#selected;
+        this.select();
 
         // Return true to tell the menumanager to keep going.
         return true;
@@ -44,7 +33,22 @@ class GameList extends Selectable {
     // Actually hover over the selected element. 
     // Called when this element is first selected (and gets overrided by selectElement for subsequent calls with the arrow keys).
     select() {
-        this.element.children[this.#selected].classList.add("hover");
+        var selected = this.element.children[this.#selected];
+        selected.classList.add("hover");
+
+        var selectedPos = selected.offsetTop - this.element.scrollTop;
+        
+        while (selectedPos + selected.offsetHeight/2 > this.element.offsetHeight) {
+            this.element.scrollTop += selected.offsetHeight;
+            selectedPos -= selected.offsetHeight;
+        } 
+
+        while (selectedPos - selected.offsetHeight/2 < 0) {
+            this.element.scrollTop -= selected.offsetHeight;
+            selectedPos += selected.offsetHeight;
+        }
+
+        this.#prevSelected = this.#selected;
     }
 
     click() {
