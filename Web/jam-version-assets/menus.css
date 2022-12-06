@@ -246,6 +246,9 @@
     background-color: yellow;
     color: black;
 }
+#options-select-games.active.hover {
+    background-color: #dddd55;
+}
 
 #options-select-games p.hover, #options-select-games p:hover {
     background-color: #ffffaa;
