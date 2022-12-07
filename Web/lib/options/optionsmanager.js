@@ -97,16 +97,35 @@ export class OptionsManager {
             optionsDiv.id = "game-options-" + gameName;
             optionsDiv.className = "game-options";
 
+            var enabledP = document.createElement("p");
+            enabledP.className = "game-enable";
+            enabledP.name = "game-enable";
+
+            var enabledCheck = document.createElement("input");
+            enabledCheck.type = "checkbox";
+            enabledCheck.checked = true;
+            enabledCheck.id = game + "-options-enable";
+
+            var enabledLabel = document.createElement("label");
+            enabledLabel.innerText = "Enabled";
+            enabledLabel.htmlFor = game + "-options-enable";
+
+            enabledP.appendChild(enabledCheck);
+            enabledP.appendChild(enabledLabel);
+
+            optionsDiv.appendChild(enabledP);
+
             var remapDiv = document.createElement("div");
             remapDiv.className = "remap-options";
 
-            var dirs = ["Up", "Left", "Down", "Right", "Space"];
+            var dirs = ["Up", "Right", "Down", "Left", "Space"];
+
             dirs.forEach(function(d){
                 var direction = document.createElement("div");
                 direction.className = "remap-" + d;
 
                 var text = document.createElement("p");
-                text.innerText = d + " Alternate Binding:";
+                text.innerText = d + ":";
 
                 direction.appendChild(text);
 
@@ -118,6 +137,7 @@ export class OptionsManager {
 
                 var clearButtonP = document.createElement("p");
                 var clearButton = document.createElement("button");
+                clearButton.innerText = "Clear";
 
                 clearButtonP.appendChild(clearButton);
                 direction.appendChild(clearButtonP);

@@ -23,9 +23,17 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 To fix right now:
 - Settings menu (volume for main menu? Select microgames, controller remappings)
+ - Reformat CSS so it looks nice
+ - Add enable/disable buttons for each game
+ - Add key bindings to "all".
+ - Save data to local storage
+ - Add "reset to defaults" button.
+ - Add images for each game?
+- Fix start button
 - Difficulty changing/game loading logic (Rotating queue of unique games, difficulty increases, difficulty of 1 if it's your first time playing a game)
 - Game over screen on 0 lives
 - Send any keyboard inputs from the body to the iframe.
+- Add dry run games
 - Minify all .js and .css for web build?
 - NW.js for desktop builds (breaks itch.io's API). Or maybe my itch.io desktop app is broken.
 

@@ -10,18 +10,23 @@ function setUpGooglyEyes() {
         var innerLeft = 0;
     
         var oldVal = rangeElement.value;
+        var refTop = eye.offsetTop;
+        var rangeElTop = rangeElement.offsetTop;
+        var left = parseFloat(eye.getAttribute("left"));
     
         document.getElementById(elementId).oninput = function(ev) {
-            eye.style.left = (((parseInt(rangeElement.value) - parseInt(rangeElement.min))/parseInt(rangeElement.max)) * parseFloat(eye.getAttribute("scale"))) + rangeElement.offsetLeft + "px";
-            eye.style.top = (rangeElement.offsetTop - 2) + "px";
+            eye.style.left = ((((parseInt(rangeElement.value) - parseInt(rangeElement.min))/parseInt(rangeElement.max)) * parseFloat(eye.getAttribute("scale"))) + rangeElement.offsetLeft + left) + "px";
+            
+            eye.style.top = (rangeElTop - refTop - 2) + "px";
     
             innerUp -= 40 * Math.abs(rangeElement.value - oldVal);
             innerLeft -= 1 * (rangeElement.value - oldVal);
     
             oldVal = rangeElement.value;
         }
-        eye.style.left = (((parseInt(rangeElement.value) - parseInt(rangeElement.min))/parseInt(rangeElement.max)) * parseFloat(eye.getAttribute("scale"))) + rangeElement.offsetLeft + "px";
-        eye.style.top = (rangeElement.offsetTop - 2) + "px";
+        eye.style.left = ((((parseInt(rangeElement.value) - parseInt(rangeElement.min))/parseInt(rangeElement.max)) * parseFloat(eye.getAttribute("scale"))) + rangeElement.offsetLeft + left) + "px";
+        
+        eye.style.top = (rangeElTop - refTop - 2) + "px";
     
         var radius = 40;
         googlyEyes.push(function(){

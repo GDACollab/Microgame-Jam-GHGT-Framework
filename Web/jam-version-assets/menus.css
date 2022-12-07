@@ -318,7 +318,7 @@
 }
 
 
-#options-select-games-all .game-select:hover, #options-select-games-all .hover > .game-select  {
+#options-select-games-all .game-select:hover, #options-select-games-all.hover > .game-select  {
     padding-left: 37px;
 }
 
@@ -337,6 +337,15 @@
     height: 200px;
 }
 
+.game-options {
+    margin-left: 33px;
+    cursor: default !important;
+}
+
+.game-options .game-enable {
+    float: left;
+}
+
 .remap-options {
     text-align: center;
 }
@@ -348,9 +357,8 @@
 .remap-options > div{
     display: block;
     float: right;
-    margin-bottom: 1.0em;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-bottom: 0.5em;
+    margin-right: 10px;
 }
 
 .remap-options button {
@@ -358,12 +366,26 @@
     height: 30px;
 }
 
+.remap-Up {
+    margin-left: 227px;
+    margin-right: 144px !important;
+}
+
+.remap-Space {
+    width: 170px;
+    margin-right: 18px !important;
+}
+
+.remap-Space button {
+    width: 165px !important;
+}
+
 .googly-eye {
     background: white;
     border-radius: 100%;
     width: 25px;
     height: 25px;
-    position: absolute;
+    position: relative;
     pointer-events: none;
     overflow: hidden;
 }
