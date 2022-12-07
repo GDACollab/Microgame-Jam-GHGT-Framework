@@ -76,6 +76,53 @@ class MenuVector {
     }
 }
 
+// Not actually a vector field (https://en.wikipedia.org/wiki/Vector_field), but a sloppy interpretation of one.
+// Basically, given a 2D grid of positions, a present position, and a given direction, where will you go based on the direction?
+class MenuVectorField {
+    #positions;
+    #currPos;
+    constructor(positions, initialPos){
+        this.#positions = positions;
+        this.#currPos = initialPos;
+    }
+
+    getFromDir(direction){
+        if (direction.x !== 0 || direction.y !== 0) {
+            var oldSelect = this.#currPos;
+            this.#currPos = -1;
+
+            var closestDist = -1;
+            var currPosVec = this.#positions[oldSelect];
+
+            this.#positions.forEach(function(pos, index){
+                if (index !== oldSelect) {
+                    var searchVec = MenuVector.sub(pos, currPosVec);
+
+                    var dist = direction.dist(MenuVector.normalized(pos));
+                    var dot = direction.dot(searchVec);
+                    if (dot > 0.5 && (dist < closestDist || closestDist === -1)) {
+                        closestDist = dist;
+                        this.#currPos = index;
+                    }
+                }
+            }, this);
+
+            if (this.#selectedElement === -1) {
+                this.#selectedElement = oldSelect;
+            }
+        }
+        return this.#currPos;
+    }
+
+    get currPos() {
+        return this.#currPos;
+    }
+
+    set currPos(pos){
+        this.#currPos = pos;
+    }
+}
+
 class Selectable {
     constructor(baseElement, existingPosition = null) {
         this.element = baseElement;
@@ -126,4 +173,4 @@ class Selectable {
     }
 }
 
-export {Selectable, MenuVector};
+export {Selectable, MenuVector, MenuVectorField};

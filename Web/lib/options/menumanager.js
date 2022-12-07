@@ -1,5 +1,5 @@
 import {OptionsManager} from "./optionsmanager.js"
-import {Selectable, MenuVector} from "./menulib.js"
+import {Selectable, MenuVector, MenuVectorField} from "./menulib.js"
 
 // Handles the creation of the main menu and transition elements.
 // Also handles actual control of the main menu elements.
@@ -275,16 +275,21 @@ class MicrogameJamMenuInputReader {
         }
     }
 
+    #selectableVectorField;
+
     #setUpMenuInputs() {
         var menu = document.getElementById("menu");
         var pos = new MenuVector(0, 0);
         this.#selectElementRecurse(menu, pos);
+        this.#selectableElements.push(...this.#selectablesToAdd);
+        this.#selectablesToAdd = [];
+
+        this.#selectableVectorField = new MenuVectorField(this.#selectableElements, 0);
+
         if (this.#selectedElement !== -1) {
             this.#selectedElement = 0;
             this.#selectElement(new MenuVector(0, 0));
         }
-        this.#selectableElements.push(...this.#selectablesToAdd);
-        this.#selectablesToAdd = [];
     }
 
     resetMenuInputs() {
@@ -304,6 +309,8 @@ class MicrogameJamMenuInputReader {
             return;
         }
 
+        this.#selectedElement = this.#selectableVectorField.getFromDir(direction);
+
         // Does the selected element want to override our controls?
         if (this.#selectableElements[this.#selectedElement].selectElement instanceof Function) {
             // Don't do anything else if the element is still considered "selected".
@@ -312,32 +319,7 @@ class MicrogameJamMenuInputReader {
             }
         }
 
-        if (direction.x !== 0 || direction.y !== 0) {
-            var oldSelect = this.#selectedElement;
-            this.#selectedElement = -1;
-
-            var closestDist = -1;
-            var currElement = this.#selectableElements[oldSelect];
-            var currElementVec = new MenuVector(currElement.position);
-
-            this.#selectableElements.forEach(function(e, index){
-                if (index !== oldSelect) {
-                    var searchLoc = new MenuVector(e.position);
-                    var searchVec = MenuVector.sub(searchLoc, currElementVec);
-
-                    var dist = direction.dist(MenuVector.normalized(searchLoc));
-                    var dot = direction.dot(searchVec);
-                    if (dot > 0.5 && (dist < closestDist || closestDist === -1)) {
-                        closestDist = dist;
-                        this.#selectedElement = index;
-                    }
-                }
-            }, this);
-
-            if (this.#selectedElement === -1) {
-                this.#selectedElement = oldSelect;
-            }
-        }
+        
         this.#selectableElements[this.#selectedElement].select();
     }
 
