@@ -84,7 +84,7 @@
         transform: translate(0, 0);
     }
     to {
-        transform: translate(0, -747px);
+        transform: translate(0, -472px);
     }
 }
 
@@ -105,7 +105,7 @@
 
 @keyframes optionsPaperExit {
     from {
-        transform: translate(0, -747px);
+        transform: translate(0, -472px);
     }
 }
 
@@ -239,30 +239,30 @@
 
 #options-select-games {
     background-color: white;
-    width: 530px;
-    height: 320px; 
+    width: 630px;
+    height: 472px; 
     position: absolute;
-    left: 430px;
-    top: 967px;
+    left: 290px;
+    top: 540px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
 #options-select-games label::selection, #options-select-games-all-text::selection, #options-select-games div::selection, #options-select-games.active  {
-    background-color: yellow;
+    background-color: #ffff00b5;
     color: black;
 }
 #options-select-games div.active.hover, #options-select-games div.active:hover {
-    background-color: #acac00;
+    background-color: #ffff00;
 }
 
 #options-select-games div.hover, #options-select-games div:hover {
-    background-color: #ffff77;
+    background-color: #ffff77b5;
     padding-left: 2px;
 }
 
 #options-select-games div.active {
-    background-color: yellow;
+    background-color: #ffff00b5;
 }
 
 #options-select-games div {

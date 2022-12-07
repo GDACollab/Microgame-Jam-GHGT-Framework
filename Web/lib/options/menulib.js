@@ -108,7 +108,7 @@ class Selectable {
         var computedStyle = window.getComputedStyle(this.element);
 
         // Is the HTML element positioned within the bounds of the frame?
-        var isWithinBounds = this.position.x >= 0 && this.position.x <= SCREEN_WIDTH && this.position.y >= 0 && this.position.y <= SCREEN_HEIGHT;
+        var isWithinBounds = this.position.x > 0 && this.position.x < SCREEN_WIDTH && this.position.y > 0 && this.position.y < SCREEN_HEIGHT;
         
         // Next, does the CSS contribute to the position at all?
         // Assumes transforms only:
@@ -117,7 +117,7 @@ class Selectable {
         var top = parseFloat( translateMatrix[5]);
         var isWithinCSSBounds = false;
         if (!isNaN(left) && !isNaN(top)){
-            isWithinCSSBounds = this.position.x + left >= 0 && this.position.x + left <= SCREEN_WIDTH && this.position.y + top >= 0 && this.position.y + top <= SCREEN_HEIGHT;
+            isWithinCSSBounds = this.position.x + left > 0 && this.position.x + left < SCREEN_WIDTH && this.position.y + top > 0 && this.position.y + top < SCREEN_HEIGHT;
         } else if (computedStyle.transform === "none" && isWithinBounds) { // If no transform is set, we assume that the element's position is based solely on posLeft and posTop.
             isWithinCSSBounds = true;
         }

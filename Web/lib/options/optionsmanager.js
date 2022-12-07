@@ -35,12 +35,12 @@ class GameList extends Selectable {
 
         var selectedPos = selected.offsetTop - this.element.scrollTop;
         
-        while (selectedPos + selected.offsetHeight/2 > this.element.offsetHeight) {
+        while (selectedPos + selected.offsetHeight > this.element.offsetHeight) {
             this.element.scrollTop += selected.offsetHeight;
             selectedPos -= selected.offsetHeight;
         } 
 
-        while (selectedPos - selected.offsetHeight/2 < 0) {
+        while (selectedPos - selected.offsetHeight < 0) {
             this.element.scrollTop -= selected.offsetHeight;
             selectedPos += selected.offsetHeight;
         }
@@ -91,7 +91,7 @@ export class OptionsManager {
             this.#optionsSelect.appendChild(div);
         });
 
-		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "All Games");
+		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "all");
 	}
 
     startManagingOptions() {
@@ -106,7 +106,5 @@ export class OptionsManager {
         document.getElementById("options-select-games-" + this.#currentOption).classList.remove("active");
 		document.getElementById("options-select-games-" + gameName).classList.add("active");
         this.#currentOption = gameName;
-        
-        document.getElementById("remap-game-name").innerText = gameName;
 	}
 }
