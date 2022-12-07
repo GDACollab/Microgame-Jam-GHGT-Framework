@@ -28,3 +28,12 @@ To fix right now:
 - Send any keyboard inputs from the body to the iframe.
 - Minify all .js and .css for web build?
 - NW.js for desktop builds (breaks itch.io's API). Or maybe my itch.io desktop app is broken.
+
+CSS Wishlist:
+- While I'm busy working with a ton of CSS, there are some things I'd really love to see in future iterations of... I guess either CCSS or just future versions of CSS. I doubt these will ever get taken seriously (especially in this obscure README file), but here's hoping!
+- Actual color blending options (i.e., for picking how gradients go from one color to another instead of just linearly.)
+- All the features I gave to CCSS but better (because it'll be an actual proper implementation instead of hacking variables together)
+- Content-transition (activate a transition when CSS detects a change in the innerText of an HTML element)
+- Global position properties (like, where is an element ACTUALLY on screen? Read-only, based on the element's offset and position properties).
+- Being able to use the hover and active properties DURING animations or transitions. Like some kind of additive properties instead of outright replacing them?
+- Being able to rank priorities for styles instead of using !important

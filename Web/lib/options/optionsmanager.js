@@ -2,11 +2,8 @@ import {Selectable} from "./menulib.js";
 
 class GameList extends Selectable {
     #selected = 0;
-    #prevSelected = 0;
-    #baseOffset = 0;
     constructor(baseElement) {
         super(baseElement);
-        this.#baseOffset = this.element.children[0].offsetTop;
     }
 
     // Pick an element to select from a direction.
@@ -47,8 +44,6 @@ class GameList extends Selectable {
             this.element.scrollTop -= selected.offsetHeight;
             selectedPos += selected.offsetHeight;
         }
-
-        this.#prevSelected = this.#selected;
     }
 
     click() {
@@ -74,7 +69,7 @@ export class OptionsManager {
 		var gameNames = this.#Controller.GameLoader.gameNames;
 
         Object.keys(gameNames).forEach((game) => {
-            var p = document.createElement("p");
+            var div = document.createElement("div");
             this.#enabledGames.add(game);
             var check = document.createElement("input");
             var gameName = gameNames[game];
@@ -86,17 +81,17 @@ export class OptionsManager {
             label.innerText = gameName;
             // We want to be able to click each game to set individual settings.
             // label.htmlFor = game + "enable";
-            p.appendChild(check);
-            p.appendChild(label);
+            div.appendChild(check);
+            div.appendChild(label);
 
-            p.id = "options-select-games-" + gameName;
+            div.id = "options-select-games-" + gameName;
 
-            p.onclick = this.#swapToOptions.bind(this, gameName);
+            div.onclick = this.#swapToOptions.bind(this, gameName);
 
-            this.#optionsSelect.appendChild(p);
+            this.#optionsSelect.appendChild(div);
         });
 
-		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "all");
+		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "All Games");
 	}
 
     startManagingOptions() {
@@ -111,5 +106,7 @@ export class OptionsManager {
         document.getElementById("options-select-games-" + this.#currentOption).classList.remove("active");
 		document.getElementById("options-select-games-" + gameName).classList.add("active");
         this.#currentOption = gameName;
+        
+        document.getElementById("remap-game-name").innerText = gameName;
 	}
 }
