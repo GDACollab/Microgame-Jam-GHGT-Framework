@@ -340,6 +340,34 @@
     accent-color: black;
 }
 
+#remap-options {
+    width: 50%;
+    text-align: center;
+    position: absolute;
+    top: -500px;
+    color: white;
+}
+
+#remap-options p{
+    margin: 0;
+}
+
+#remap-game-name {
+    display: block !important;
+}
+
+#remap-options div{
+    display: inline-block;
+    margin-bottom: 1.0em;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#remap-options button {
+    width: 125px;
+    height: 30px;
+}
+
 .googly-eye {
     background: white;
     border-radius: 100%;
