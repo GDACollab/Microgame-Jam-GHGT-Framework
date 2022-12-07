@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="stylesheet.css"/>
         <link rel="stylesheet" href="./jam-version-assets/version-style.css" id="version-style"/>
 
+        <script src="globals.js"></script>
         <script src="lib/markdown-it.min.js"></script>
         <script>
             var ini;
@@ -80,9 +81,9 @@
                         </div>
                     </div>
                 </div>
-                <div id="options-select-games" style="position: relative; left: 460px; top: 967px; height: 83.3%; overflow-x: hidden; overflow-y: scroll;" onscroll="document.getElementById('options-select-games').scroll(0,0)">
-                    <p style="border-left: 1px solid red; border-bottom: none; margin-left: 36px; padding-left: 10px; width: calc(100% - 33px); padding-top: 20px; padding-bottom: 20px;">
-                        Microgame Settings
+                <div id="options-select-games">
+                    <p id="options-select-games-all" class="active">
+                        <span id="options-select-games-all-text"> Microgame Settings </span>
                     </p>
                 </div>
             </div>

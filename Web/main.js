@@ -1,4 +1,4 @@
-import {MicrogameJamMenu} from "./lib/menumanager.js";
+import {MicrogameJamMenu} from "./lib/options/menumanager.js";
 import {GameLoader} from "./gameloader.js";
 import {AudioManager} from "./lib/gamesound.js";
 import {AnimationManager} from "./lib/animationmanager.js";
@@ -7,22 +7,22 @@ import {initVersionStyle, versionStyleUpdate} from "./jam-version-assets/version
 import * as MicrogameInputManager from "./lib/input.js";
 
 // Main game controller.
-// For controlling the primary functions, all calls should get routed throug here.
+// For controlling the primary functions, all calls should get routed through here.
 
 function debugLoopTransition(isWin){
     var winOrLose = (isWin)? "win" : "lose";
 
-    var numLives = ini["Transitions"]["debug-lives"];
+    var numLives = DEBUG_TRANSITION_LIVES;
     
-    MicrogameJamMainManager.GameLoader.setUpLifeCounter(numLives, ini["Transitions"]["debug-life-lost"] === "true");
+    MicrogameJamMainManager.GameLoader.setUpLifeCounter(numLives, DEBUG_TRANSITION_LIFE_LOST);
 
     MicrogameJamMainManager.GameAnimation.playKeyframedAnimation(`CCSSGLOBAL${winOrLose}Animation`, {
         shouldLoop: function(){
-            return ini["Transitions"]["debug-loop"] === "loop-end";
+            return DEBUG_TRANSITION_LOOP === "loop-end";
         },
         onFinish: function(){
-        if (ini["Transitions"]["debug-loop"] === "loop"){
-            MicrogameJamMainManager.GameLoader.removeLives(numLives, ini["Transitions"]["debug-life-lost"] === "true");
+        if (DEBUG_TRANSITION_LOOP === "loop"){
+            MicrogameJamMainManager.GameLoader.removeLives(numLives, DEBUG_TRANSITION_LIFE_LOST);
             MicrogameJamMainManager.GameAnimation.stopAllKeyframedAnimationOf("CCSSGLOBALloseLife");
             debugLoopTransition(isWin);
         }
@@ -47,13 +47,13 @@ class MicrogameJam {
 
         document.getElementById("playButton").onclick = this.startMicrogames;
 
-        if (ini["Transitions"].debug === "win") {
+        if (DEBUG_TRANSITION === "win") {
             debugLoopTransition(true);
             document.getElementById("transitionContainer").hidden = false;
             document.getElementById("winTransition").hidden = false;
         }
 
-        if (ini["Transitions"].debug === "lose"){
+        if (DEBUG_TRANSITION === "lose"){
             debugLoopTransition(false);
             document.getElementById("transitionContainer").hidden = false;
             document.getElementById("loseTransition").hidden = false;

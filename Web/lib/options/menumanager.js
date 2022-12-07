@@ -1,3 +1,6 @@
+import {OptionsManager} from "./optionsmanager.js"
+import {Selectable, MenuVector} from "./menulib.js"
+
 // Handles the creation of the main menu and transition elements.
 // Also handles actual control of the main menu elements.
 class ElementCreator {
@@ -94,6 +97,7 @@ class MicrogameJamMenu {
     #destMenu;
     #Controller;
     #inputReader;
+    #optionsManager;
 
     constructor(Controller){
         this.#Controller = Controller;
@@ -103,10 +107,16 @@ class MicrogameJamMenu {
         this.#initTransitions();
 
         this.#inputReader = new MicrogameJamMenuInputReader();
+        this.#optionsManager = new OptionsManager(this.#Controller);
+    }
+
+    addSelectableElement(element) {
+        this.#inputReader.addSelectable(element);
     }
     
     #textY = 0;
     #creditsInputsDrawn = false;
+    #optionsSetUp = false;
 
     #menuMapping = {
         "credits": {
@@ -122,7 +132,16 @@ class MicrogameJamMenu {
             backCallback: this.transitionTo.bind(this, "main")
         },
         "options": {
-            backCallback: this.transitionTo.bind(this, "main")
+            backCallback: this.transitionTo.bind(this, "main"),
+            shouldLoop: function() {
+                if(!this.#optionsSetUp) {
+                    this.#optionsManager.startManagingOptions();
+                    this.#optionsSetUp = true;
+                }
+            },
+            onFinish: function() {
+                this.#optionsSetUp = false;
+            }
         },
         "main": {
             onFinish: function(){
@@ -164,22 +183,21 @@ class MicrogameJamMenu {
             this.#Controller.GameAnimation.stopAllKeyframedAnimationOf(animName);
             var menuMapping = this.#menuMapping;
             var destMenu = this.#destMenu;
-            var self = this;
             this.#Controller.GameAnimation.playKeyframedAnimation(animName, {
                 keepAnims: this.#destMenu !== "main",
                 shouldLoop: function(time, animationObj) {
                     if ("shouldLoop" in menuMapping[destMenu]){
-                        return menuMapping[destMenu].shouldLoop.bind(self, time, animationObj)();
+                        return menuMapping[destMenu].shouldLoop.call(this, time, animationObj);
                     } else {
                         return false;
                     }
-                },
+                }.bind(this),
                 onFinish: function(){
                     if ("onFinish" in menuMapping[destMenu]) {
-                        menuMapping[destMenu].onFinish.bind(self)();
+                        menuMapping[destMenu].onFinish.call(this);
                     }
-                    self.#inputReader.resetMenuInputs();
-                }
+                    this.#inputReader.resetMenuInputs();
+                }.bind(this)
             });
         }
     }
@@ -213,26 +231,6 @@ class MicrogameJamMenu {
     }
 }
 
-class MenuVector {
-    constructor(arr) {
-        this.x = arr[0];
-        this.y = arr[1];
-    }
-    dot(otherVector){
-        return this.x * otherVector.x + this.y * otherVector.y;
-    }
-    dist(otherVector) {
-        return Math.sqrt(Math.pow(this.x - otherVector.x, 2) + Math.pow(this.y - otherVector.y, 2));
-    }
-    sub(otherVector) {
-        return new MenuVector([this.x - otherVector.x, this.y - otherVector.y]); 
-    }
-    normalized() {
-        var size = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
-        return new MenuVector([this.x/size, this.y/size]);
-    }
-}
-
 class MicrogameJamMenuInputReader {
 
     #selectableElements = [];
@@ -248,89 +246,86 @@ class MicrogameJamMenuInputReader {
         }.bind(this));
     }
 
+    #selectablesToAdd = [];
+
+    addSelectable(element) {
+        this.#selectablesToAdd.push(element);
+    }
+
     get selectableElements(){
         return this.#selectableElements;
     }
     
     // Based on the stuff I did for the twine extension.
 
-    #selectElementRecurse(element, positionDat){
+    #selectElementRecurse(element, positionVector){
         if (element instanceof Element === false){
             return;
         }
-        var computedStyle = window.getComputedStyle(element);
-        var posLeft = positionDat[0] + element.offsetLeft;
-        var posTop = positionDat[1] + element.offsetTop;
+        var select = new Selectable(element, positionVector);
 
-        // Is the HTML element positioned within the bounds of the frame?
-        var isWithinBounds = posLeft >= 0 && posLeft <= 960 && posTop >= 0 && posTop <= 540;
-        
-        // Next, does the CSS contribute to the position at all?
-        // Assumes transforms only:
-        var translateMatrix = computedStyle.transform.replace(")", "").split(",");
-        var left = parseInt(translateMatrix[4]);
-        var top = parseInt( translateMatrix[5]);
-        var isWithinCSSBounds = false;
-        if (!isNaN(left) && !isNaN(top)){
-            isWithinCSSBounds = posLeft + left >= 0 && posLeft + left <= 960 && posTop + top >= 0 && posTop + top <= 540;
-        } else if (computedStyle.transform === "none" && isWithinBounds) { // If no transform is set, we assume that the element's position is based solely on posLeft and posTop.
-            isWithinCSSBounds = true;
-        }
-
-        var newSum = [posLeft, posTop];
-        if ((isWithinCSSBounds) && computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer"){
-            this.#selectableElements.push(element);
-            element.totalOffset = newSum;
+        if (select.isSelectableWithinBounds()){
+            this.#selectableElements.push(select);
         } else {
             for (var c in element.children){
                 var child = element.children[c];
-                this.#selectElementRecurse(child, newSum);
+                this.#selectElementRecurse(child, new MenuVector(select.position));
             }
         }
     }
 
     #setUpMenuInputs() {
         var menu = document.getElementById("menu");
-        var pos = [0, 0];
+        var pos = new MenuVector(0, 0);
         this.#selectElementRecurse(menu, pos);
         if (this.#selectedElement !== -1) {
             this.#selectedElement = 0;
-            this.#selectElement([0, 0]);
+            this.#selectElement(new MenuVector(0, 0));
         }
+        this.#selectableElements.push(...this.#selectablesToAdd);
+        this.#selectablesToAdd = [];
     }
 
     resetMenuInputs() {
-        this.#selectableElements.forEach(function(e){
-            e.classList.remove("hover");
-        });
+        this.#clearSelect();
         this.#selectableElements = [];
         this.#setUpMenuInputs();
     }
 
     #clearSelect() {
-        this.#selectableElements[this.#selectedElement].classList.remove("hover");
+        this.#selectableElements.forEach(function(e){
+            e.clearSelect();
+        });
     }
 
     #selectElement(direction){
         if (this.#selectableElements.length === 0){
             return;
         }
-        if (direction[0] !== 0 || direction[1] !== 0) {
+
+        // Does the selected element want to override our controls?
+        if (this.#selectableElements[this.#selectedElement].selectElement instanceof Function) {
+            // Don't do anything else if the element is still considered "selected".
+            if (this.#selectableElements[this.#selectedElement].selectElement(direction)) {
+                return;
+            }
+        }
+
+        if (direction.x !== 0 || direction.y !== 0) {
             var oldSelect = this.#selectedElement;
             this.#selectedElement = -1;
 
             var closestDist = -1;
-            var dirVec = new MenuVector(direction);
             var currElement = this.#selectableElements[oldSelect];
-            var currElementVec = new MenuVector(currElement.totalOffset);
+            var currElementVec = new MenuVector(currElement.position);
 
             this.#selectableElements.forEach(function(e, index){
                 if (index !== oldSelect) {
-                    var searchLoc = new MenuVector(e.totalOffset);
-                    var searchVec = searchLoc.sub(currElementVec);
+                    var searchLoc = new MenuVector(e.position);
+                    var searchVec = MenuVector.sub(searchLoc, currElementVec);
 
-                    var dist = dirVec.dist(searchLoc.normalized());
-                    var dot = dirVec.dot(searchVec);
+                    var dist = direction.dist(MenuVector.normalized(searchLoc));
+                    var dot = direction.dot(searchVec);
                     if (dot > 0.5 && (dist < closestDist || closestDist === -1)) {
                         closestDist = dist;
                         this.#selectedElement = index;
@@ -342,15 +337,19 @@ class MicrogameJamMenuInputReader {
                 this.#selectedElement = oldSelect;
             }
         }
-        this.#selectableElements[this.#selectedElement].classList.add("hover");
+        this.#selectableElements[this.#selectedElement].select();
     }
 
     #selectedElement = -1;
+    #isInMenu = true;
 
     #readMenuInputs(ev) {
+        if (this.#isInMenu) {
+            ev.preventDefault();
+        }
         if (this.#selectedElement === -1) {
             this.#selectedElement = 0;
-            this.#selectElement([0, 0]);
+            this.#selectElement(new MenuVector(0, 0));
             return;
         }
         if (ev.key === " ") {
@@ -369,8 +368,8 @@ class MicrogameJamMenuInputReader {
         } else if (ev.key === "ArrowUp") {
             dir[1] = -1;
         }
-        this.#selectElement(dir);
+        this.#selectElement(new MenuVector(dir));
     }
 }
 
-export {MicrogameJamMenu};
+export {MicrogameJamMenu, Selectable};
