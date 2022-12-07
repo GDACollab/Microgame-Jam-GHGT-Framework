@@ -79,22 +79,26 @@ export class OptionsManager {
             check.name = game + "enable";
             var label = document.createElement("label");
             label.innerText = gameName;
+
+            var gameSelectDiv = document.createElement("div");
+            gameSelectDiv.className = "game-select";
             // We want to be able to click each game to set individual settings.
             // label.htmlFor = game + "enable";
-            div.appendChild(check);
-            div.appendChild(label);
+            gameSelectDiv.appendChild(check);
+            gameSelectDiv.appendChild(label);
+
+            div.appendChild(gameSelectDiv);
 
             div.id = "options-select-games-" + gameName;
 
             div.onclick = this.#swapToOptions.bind(this, gameName);
 
-            var specificDiv = document.createElement("div");
-            specificDiv.id = "game-options-" + gameName;
+            var optionsDiv = document.createElement("div");
+            optionsDiv.id = "game-options-" + gameName;
+            optionsDiv.className = "game-options";
 
-            var gameName = document.createElement("p");
-            gameName.className = "game-options-name-" + gameName;
-
-            specificDiv.appendChild(gameName);
+            var remapDiv = document.createElement("div");
+            remapDiv.className = "remap-options";
 
             var dirs = ["Up", "Left", "Down", "Right", "Space"];
             dirs.forEach(function(d){
@@ -118,12 +122,12 @@ export class OptionsManager {
                 clearButtonP.appendChild(clearButton);
                 direction.appendChild(clearButtonP);
 
-                specificDiv.appendChild(direction);
+                remapDiv.appendChild(direction);
             });
 
-            div.appendChild(specificDiv);
+            optionsDiv.appendChild(remapDiv);
 
-            specificDiv.setAttribute("hidden", "");
+            div.appendChild(optionsDiv);
 
             this.#optionsSelect.appendChild(div);
         });

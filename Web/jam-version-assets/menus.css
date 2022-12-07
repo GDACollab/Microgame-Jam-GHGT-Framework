@@ -248,24 +248,24 @@
     overflow-y: scroll;
 }
 
-#options-select-games label::selection, #options-select-games-all-text::selection, #options-select-games div::selection, #options-select-games.active  {
-    background-color: #ffff00b5;
+#options-select-games ::selection  {
+    background-color: greenyellow;
     color: black;
 }
-#options-select-games div.active.hover, #options-select-games div.active:hover {
+#options-select-games > .active.hover > .game-select, #options-select-games > .active > .game-select:hover {
     background-color: #ffff00;
 }
 
-#options-select-games div.hover, #options-select-games div:hover {
+#options-select-games > .hover > .game-select, #options-select-games .game-select:hover {
     background-color: #ffff77b5;
     padding-left: 2px;
 }
 
-#options-select-games div.active {
+#options-select-games .active > .game-select {
     background-color: #ffff00b5;
 }
 
-#options-select-games div {
+#options-select-games .game-select {
     border: 1px solid blue;
     border-top-style: none;
     border-left-style: none;
@@ -276,7 +276,7 @@
     transition: 0.5s;
 }
 
-#options-select-games div:nth-child(2) {
+#options-select-games .game-select:nth-child(2) {
     border-top: 1px solid blue;
 }
 
@@ -284,7 +284,7 @@
     cursor: pointer;
 }
 
-#options-select-games div label {
+#options-select-games .game-select > label {
     border: 1px red;
     border-left-style: solid;
     height: 100%;
@@ -296,7 +296,7 @@
     margin-left: 2px;
 }
 
-#options-select-games div input[type=checkbox] {
+#options-select-games .game-select > input[type=checkbox] {
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -313,10 +313,13 @@
     border-left: 1px red solid;
 }
 
-#options-select-games-all::before {
-    content: "";
-    display: inline-block;
-    width: 31px;
+#options-select-games-all .game-select {
+    padding-left: 35px;
+}
+
+
+#options-select-games-all .game-select:hover, #options-select-games-all .hover > .game-select  {
+    padding-left: 37px;
 }
 
 #options input, #options label {
@@ -324,32 +327,33 @@
     accent-color: black;
 }
 
-#remap-options {
-    width: 50%;
-    text-align: center;
-    position: absolute;
-    top: -671px;
-    color: white;
-}
-
-#remap-options p{
-    margin: 0;
-}
-
-#remap-game-name {
-    display: block !important;
-    font-size: 2em;
+#options-select-games .game-options {
+    height: 0px;
+    overflow-y: hidden;
     transition: 1s;
 }
 
-#remap-options div{
-    display: inline-block;
+#options-select-games .active .game-options {
+    height: 200px;
+}
+
+.remap-options {
+    text-align: center;
+}
+
+.remap-options p{
+    margin: 0;
+}
+
+.remap-options > div{
+    display: block;
+    float: right;
     margin-bottom: 1.0em;
     margin-left: 20px;
     margin-right: 20px;
 }
 
-#remap-options button {
+.remap-options button {
     width: 125px;
     height: 30px;
 }
