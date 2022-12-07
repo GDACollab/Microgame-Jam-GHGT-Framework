@@ -239,6 +239,7 @@ class MicrogameJamMenuInputReader {
         this.#setUpMenuInputs();
         document.body.addEventListener("keydown", this.#readMenuInputs.bind(this));
         document.body.addEventListener("mousemove", function(){
+            document.body.style.cursor = "inherit";
             if (this.#selectedElement !== -1){
                 this.#clearSelect();
                 this.#selectedElement = -1;
@@ -348,6 +349,7 @@ class MicrogameJamMenuInputReader {
             ev.preventDefault();
         }
         if (this.#selectedElement === -1) {
+            document.body.style.cursor = "none";
             this.#selectedElement = 0;
             this.#selectElement(new MenuVector(0, 0));
             return;

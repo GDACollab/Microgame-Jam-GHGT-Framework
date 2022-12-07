@@ -88,6 +88,43 @@ export class OptionsManager {
 
             div.onclick = this.#swapToOptions.bind(this, gameName);
 
+            var specificDiv = document.createElement("div");
+            specificDiv.id = "game-options-" + gameName;
+
+            var gameName = document.createElement("p");
+            gameName.className = "game-options-name-" + gameName;
+
+            specificDiv.appendChild(gameName);
+
+            var dirs = ["Up", "Left", "Down", "Right", "Space"];
+            dirs.forEach(function(d){
+                var direction = document.createElement("div");
+                direction.className = "remap-" + d;
+
+                var text = document.createElement("p");
+                text.innerText = d + " Alternate Binding:";
+
+                direction.appendChild(text);
+
+                var bindButtonP = document.createElement("p");
+                var bindButton = document.createElement("button");
+
+                bindButtonP.appendChild(bindButton);
+                direction.appendChild(bindButtonP);
+
+                var clearButtonP = document.createElement("p");
+                var clearButton = document.createElement("button");
+
+                clearButtonP.appendChild(clearButton);
+                direction.appendChild(clearButtonP);
+
+                specificDiv.appendChild(direction);
+            });
+
+            div.appendChild(specificDiv);
+
+            specificDiv.setAttribute("hidden", "");
+
             this.#optionsSelect.appendChild(div);
         });
 
