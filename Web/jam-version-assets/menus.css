@@ -72,6 +72,34 @@
     accent-color: black;
 }
 
+#remap-options {
+    width: 50%;
+    text-align: center;
+    position: absolute;
+    top: -500px;
+    color: white;
+}
+
+#remap-options p{
+    margin: 0;
+}
+
+#remap-game-name {
+    display: block !important;
+}
+
+#remap-options div{
+    display: inline-block;
+    margin-bottom: 1.0em;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#remap-options button {
+    width: 125px;
+    height: 30px;
+}
+
 .googly-eye {
     background: white;
     border-radius: 100%;
@@ -158,6 +186,7 @@
         --time: 0.5s;
         --ANIM-options-enter: optionsPaperEnter 0.5s #options-select-games;
         --ANIM-options-back-enter: backButtonAppear 0.5s .menu-art#backButton;
+        --ANIM-binding-enter: bindingEnter 0.5s #remap-options;
     }
 }
 
@@ -175,6 +204,7 @@
         --time: 0s;
         --ANIM-options-exit: optionsPaperExit 0.5s #options-select-games;
         --ANIM-options-back-exit: backButtonDisappear 0.5s .menu-art#backButton;
+        --ANIM-binding-exit: bindingExit 0.5s #remap-options;
         --ANIM-options-lighten: lightenBackground 1s .menu-art#background;
     }
     10% {
@@ -212,6 +242,21 @@
 @keyframes darkenBackground {
     to {
         filter: brightness(0.5);
+    }
+}
+
+@keyframes bindingEnter {
+    to {
+        transform: translate(0, 700px);
+    }
+}
+
+@keyframes bindingExit {
+    from {
+        transform: translate(0, 700px);
+    }
+    to {
+        transform: translate(0, 0);
     }
 }
 
