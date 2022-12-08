@@ -1,25 +1,43 @@
-import {Selectable} from "./menulib.js";
+import {Selectable, MenuVectorField} from "./menulib.js";
 
 class GameList extends Selectable {
     #selected = 0;
+    #optionFields = [];
     constructor(baseElement) {
         super(baseElement);
+        for (var i = 0; i < this.element.children.length; i++) {
+            var child = this.element.children[i];
+            var options = child.querySelector(".game-options");
+            
+            this.#optionFields.push(new MenuVectorField(Selectable.generateSelectablesArr(options), 0));
+        }
+        this.#optionsSubSelect = false;
     }
+
+    #optionsSubSelect = false;
 
     // Pick an element to select from a direction.
     selectElement(direction){
-        // We return false to return control to the regular menu.
-        if (direction.x === -1) {
-            return false;
-        }
-        
-        this.clearSelect();
+        if (this.#optionsSubSelect) {
 
-        if (direction.y === 1 && this.#selected < this.element.children.length - 1) {
-            this.#selected++;
-        }
-        if (direction.y === -1 && this.#selected > 0) {
-            this.#selected--;
+        } else {
+            // We return false to return control to the regular menu.
+            if (direction.x === -1) {
+                return false;
+            }
+            
+            this.clearSelect();
+
+            if (direction.y === 1 && this.#selected < this.element.children.length - 1) {
+                this.#selected++;
+            }
+            if (direction.y === -1 && this.#selected > 0) {
+                this.#selected--;
+            }
+
+            if (this.element.children[this.#selected].className === "active") {
+                this.#optionsSubSelect = true;
+            }
         }
         this.select();
 
@@ -30,19 +48,23 @@ class GameList extends Selectable {
     // Actually hover over the selected element. 
     // Called when this element is first selected (and gets overrided by selectElement for subsequent calls with the arrow keys).
     select() {
-        var selected = this.element.children[this.#selected];
-        selected.classList.add("hover");
+        if (this.#optionsSubSelect) {
 
-        var selectedPos = selected.offsetTop - this.element.scrollTop;
-        
-        while (selectedPos + selected.offsetHeight > this.element.offsetHeight) {
-            this.element.scrollTop += selected.offsetHeight;
-            selectedPos -= selected.offsetHeight;
-        } 
+        } else {
+            var selected = this.element.children[this.#selected];
+            selected.classList.add("hover");
 
-        while (selectedPos - selected.offsetHeight < 0) {
-            this.element.scrollTop -= selected.offsetHeight;
-            selectedPos += selected.offsetHeight;
+            var selectedPos = selected.offsetTop - this.element.scrollTop;
+            
+            while (selectedPos + selected.offsetHeight > this.element.offsetHeight) {
+                this.element.scrollTop += selected.offsetHeight;
+                selectedPos -= selected.offsetHeight;
+            } 
+
+            while (selectedPos - selected.offsetHeight < 0) {
+                this.element.scrollTop -= selected.offsetHeight;
+                selectedPos += selected.offsetHeight;
+            }
         }
     }
 
@@ -156,7 +178,7 @@ export class OptionsManager {
 	}
 
     startManagingOptions() {
-        this.#Controller.GameMenus.addSelectableElement(new GameList(this.#optionsSelect));
+        this.#Controller.GameMenus.addSelectable(new GameList(this.#optionsSelect));
     }
 
     get enabledGames() {

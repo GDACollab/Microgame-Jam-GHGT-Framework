@@ -82,7 +82,14 @@ class MenuVectorField {
     #positions;
     #currPos;
     constructor(positions, initialPos){
-        this.#positions = positions;
+        // Validation would be easier with Typescript, but we're not in TS rn. Something to maybe fix in the future.
+        // Copy array:
+        this.#positions = [...positions];
+        if (positions[0] instanceof Selectable) {
+            for (var i = 0; i < positions.length; i++) {
+                this.#positions[i] = positions[i].position;
+            }
+        }
         this.#currPos = initialPos;
     }
 
@@ -107,8 +114,8 @@ class MenuVectorField {
                 }
             }, this);
 
-            if (this.#selectedElement === -1) {
-                this.#selectedElement = oldSelect;
+            if (this.#currPos  === -1) {
+                this.#currPos = oldSelect;
             }
         }
         return this.#currPos;
@@ -132,6 +139,27 @@ class Selectable {
             this.findPosition();
         }
     }
+
+    // Based on the stuff I did for the twine extension.
+    static generateSelectablesArr(element, position = new MenuVector(0, 0)){
+        if (element instanceof Element === false) {
+            return;
+        }
+        var arr = [];
+        var select = new Selectable(element, position);
+
+        if (select.isSelectableWithinBounds()) {
+            arr.push(select);
+        } else {
+            for (var i = 0; i < element.children.length; i++) {
+                var child = element.children[i];
+                var selectables = Selectable.generateSelectablesArr(child, new MenuVector(select.position));
+                arr.push(...selectables);
+            }
+        }
+        return arr;
+    }
+
     select() {
         this.element.classList.add("hover");
     }

@@ -110,8 +110,8 @@ class MicrogameJamMenu {
         this.#optionsManager = new OptionsManager(this.#Controller);
     }
 
-    addSelectableElement(element) {
-        this.#inputReader.addSelectable(element);
+    addSelectable(selectable) {
+        this.#inputReader.addSelectable(selectable);
     }
     
     #textY = 0;
@@ -249,38 +249,19 @@ class MicrogameJamMenuInputReader {
 
     #selectablesToAdd = [];
 
-    addSelectable(element) {
-        this.#selectablesToAdd.push(element);
+    addSelectable(selectable) {
+        this.#selectablesToAdd.push(selectable);
     }
 
     get selectableElements(){
         return this.#selectableElements;
-    }
-    
-    // Based on the stuff I did for the twine extension.
-
-    #selectElementRecurse(element, positionVector){
-        if (element instanceof Element === false){
-            return;
-        }
-        var select = new Selectable(element, positionVector);
-
-        if (select.isSelectableWithinBounds()){
-            this.#selectableElements.push(select);
-        } else {
-            for (var c in element.children){
-                var child = element.children[c];
-                this.#selectElementRecurse(child, new MenuVector(select.position));
-            }
-        }
     }
 
     #selectableVectorField;
 
     #setUpMenuInputs() {
         var menu = document.getElementById("menu");
-        var pos = new MenuVector(0, 0);
-        this.#selectElementRecurse(menu, pos);
+        this.#selectableElements = Selectable.generateSelectablesArr(menu);
         this.#selectableElements.push(...this.#selectablesToAdd);
         this.#selectablesToAdd = [];
 
@@ -294,7 +275,6 @@ class MicrogameJamMenuInputReader {
 
     resetMenuInputs() {
         this.#clearSelect();
-        this.#selectableElements = [];
         this.#setUpMenuInputs();
     }
 
