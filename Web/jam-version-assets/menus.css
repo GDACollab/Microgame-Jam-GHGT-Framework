@@ -280,10 +280,6 @@
     border-top: 1px solid blue;
 }
 
-#options-select-games div {
-    cursor: pointer;
-}
-
 #options-select-games .game-select > label {
     border: 1px red;
     border-left-style: solid;
@@ -339,7 +335,6 @@
 
 .game-options {
     margin-left: 33px;
-    cursor: default !important;
 }
 
 .game-options .game-enable {
@@ -364,6 +359,11 @@
 .remap-options button {
     width: 125px;
     height: 30px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.remap-options button.hover {
+    background: black;
 }
 
 .remap-Up {
@@ -388,6 +388,8 @@
     position: relative;
     pointer-events: none;
     overflow: hidden;
+    transition: 0.5s;
+    transition-property: width, height, background, transform;
 }
 
 .googly-eye-center {
@@ -399,4 +401,16 @@
     top: 15%;
     position: relative;
     transition: 0.25s;
+}
+
+#options-volume:hover~#options-volume-eye, #options-volume.hover~#options-volume-eye {
+    width: 30px;
+    height: 30px;
+    background: #cbcbcb;
+    transform: translate(-5px, -5px);
+}
+
+#options-volume:hover~#options-volume-eye .googly-eye-center, #options-volume.hover~#options-volume-eye .googly-eye-center {
+    width: 20px;
+    height: 20px;
 }

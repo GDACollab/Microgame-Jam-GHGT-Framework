@@ -135,11 +135,11 @@ class MicrogameJamMenu {
             backCallback: this.transitionTo.bind(this, "main"),
             shouldLoop: function() {
                 if(!this.#optionsSetUp) {
-                    this.#optionsManager.startManagingOptions();
                     this.#optionsSetUp = true;
                 }
             },
             onFinish: function() {
+                this.#optionsManager.startManagingOptions();
                 this.#optionsSetUp = false;
             }
         },
@@ -289,14 +289,19 @@ class MicrogameJamMenuInputReader {
             return;
         }
 
-        this.#selectedElement = this.#selectableVectorField.getFromDir(direction);
-
         // Does the selected element want to override our controls?
         if (this.#selectableElements[this.#selectedElement].selectElement instanceof Function) {
             // Don't do anything else if the element is still considered "selected".
             if (this.#selectableElements[this.#selectedElement].selectElement(direction)) {
                 return;
             }
+        }
+        
+        var pick = this.#selectableVectorField.getFromDir(direction);
+        if (pick !== -1){
+            this.#selectedElement = pick;
+        } else if (this.#selectedElement === -1) {
+            this.#selectedElement = 0;
         }
 
         

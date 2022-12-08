@@ -8,18 +8,39 @@ class GameList extends Selectable {
         for (var i = 0; i < this.element.children.length; i++) {
             var child = this.element.children[i];
             var options = child.querySelector(".game-options");
+            var selectables = Selectable.generateSelectablesArr(options);
             
-            this.#optionFields.push(new MenuVectorField(Selectable.generateSelectablesArr(options), 0));
+            this.#optionFields.push({field: new MenuVectorField(selectables, 0), element: options, selectables: selectables});
         }
         this.#optionsSubSelect = false;
+        this.#optionsPick = -1;
     }
 
     #optionsSubSelect = false;
+    #optionsPick = -1;
 
     // Pick an element to select from a direction.
     selectElement(direction){
         if (this.#optionsSubSelect) {
-
+            var pick = this.#optionFields[this.#selected].field.getFromDir(direction);
+            if (pick === -1) {
+                if (direction.y === -1) {
+                    this.#optionsSubSelect = false;
+                    this.#optionsPick = -1;
+                }
+                if (direction.y === 1) {
+                    this.#optionsSubSelect = false;
+                    if (this.#selected < this.element.children.length - 1) {
+                        this.#selected++;
+                    }
+                    this.#optionsPick = -1;
+                }
+                if (direction.x === -1) {
+                    return false;
+                }
+            } else {
+                this.#optionsPick = pick;
+            }
         } else {
             // We return false to return control to the regular menu.
             if (direction.x === -1) {
@@ -29,14 +50,19 @@ class GameList extends Selectable {
             this.clearSelect();
 
             if (direction.y === 1 && this.#selected < this.element.children.length - 1) {
-                this.#selected++;
+                if (this.element.children[this.#selected].className === "active") {
+                    this.#optionsSubSelect = true;
+                    this.#optionsPick = 0;
+                } else {
+                    this.#selected++;
+                }
             }
-            if (direction.y === -1 && this.#selected > 0) {
+            if (direction.y === -1 && this.#selected > 0) {    
+                if (this.element.children[this.#selected - 1].className === "active") {
+                    this.#optionsSubSelect = true;
+                    this.#optionsPick = this.#optionFields[this.#selected].selectables.length - 1;
+                }
                 this.#selected--;
-            }
-
-            if (this.element.children[this.#selected].className === "active") {
-                this.#optionsSubSelect = true;
             }
         }
         this.select();
@@ -49,7 +75,7 @@ class GameList extends Selectable {
     // Called when this element is first selected (and gets overrided by selectElement for subsequent calls with the arrow keys).
     select() {
         if (this.#optionsSubSelect) {
-
+            this.#optionFields[this.#selected].selectables[this.#optionsPick].classList.add("hover");
         } else {
             var selected = this.element.children[this.#selected];
             selected.classList.add("hover");
@@ -69,11 +95,19 @@ class GameList extends Selectable {
     }
 
     click() {
-        this.element.children[this.#selected].click();
+        if (this.#optionsSubSelect) {
+            this.#optionFields[this.#selected].selectables[this.#optionsPick].click();
+        } else {
+            this.element.children[this.#selected].click();
+        }
     }
 
     clearSelect() {
-        this.element.children[this.#selected].classList.remove("hover");
+        if (this.#optionsSubSelect) {
+            this.#optionFields[this.#selected].selectables[this.#optionsPick].classList.remove("hover");
+        } else {
+            this.element.children[this.#selected].classList.remove("hover");
+        }
     }
 }
 

@@ -49,7 +49,7 @@ class MenuVector {
         if (arguments[0] instanceof MenuVector) {
             this.#x -= otherVector.x;
             this.#y -= otherVector.y;
-        } else if (arguments[0] instanceof Number && arguments[1] instanceof Number) {
+        } else if (!isNaN(arguments[0]) && !isNaN(arguments[1])) {
             this.#x -= arguments[0];
             this.#y -= arguments[1];
         } else {
@@ -94,31 +94,29 @@ class MenuVectorField {
     }
 
     getFromDir(direction){
+        var pick = -1;
         if (direction.x !== 0 || direction.y !== 0) {
-            var oldSelect = this.#currPos;
-            this.#currPos = -1;
-
             var closestDist = -1;
-            var currPosVec = this.#positions[oldSelect];
+            var currPosVec = this.#positions[this.#currPos];
 
             this.#positions.forEach(function(pos, index){
-                if (index !== oldSelect) {
+                if (index !== this.#currPos) {
                     var searchVec = MenuVector.sub(pos, currPosVec);
 
                     var dist = direction.dist(MenuVector.normalized(pos));
                     var dot = direction.dot(searchVec);
                     if (dot > 0.5 && (dist < closestDist || closestDist === -1)) {
                         closestDist = dist;
-                        this.#currPos = index;
+                        pick = index;
                     }
                 }
             }, this);
 
-            if (this.#currPos  === -1) {
-                this.#currPos = oldSelect;
+            if (pick  !== -1) {
+                this.#currPos = pick;
             }
         }
-        return this.#currPos;
+        return pick;
     }
 
     get currPos() {
@@ -153,7 +151,11 @@ class Selectable {
         } else {
             for (var i = 0; i < element.children.length; i++) {
                 var child = element.children[i];
-                var selectables = Selectable.generateSelectablesArr(child, new MenuVector(select.position));
+                var newPos = new MenuVector(select.position);
+                if (child.parentOffset === element.parentOffset) {
+                    newPos.sub(element.offsetLeft, element.offsetTop);
+                }
+                var selectables = Selectable.generateSelectablesArr(child, newPos);
                 arr.push(...selectables);
             }
         }
@@ -174,7 +176,9 @@ class Selectable {
         this.position = new MenuVector(this.element.offsetLeft, this.element.offsetTop);
         var par = this.element.parentElement;
         while (par !== null) {
-            this.position.add(par.offsetLeft, par.offsetTop);
+            if (par.parentElement !== null && par.parentElement.parentOffset !== par.parentOffset){
+                this.position.add(par.offsetLeft, par.offsetTop);
+            }
             par = par.parentElement;
         }
     }
