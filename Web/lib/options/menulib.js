@@ -152,7 +152,7 @@ class Selectable {
             for (var i = 0; i < element.children.length; i++) {
                 var child = element.children[i];
                 var newPos = new MenuVector(select.position);
-                if (child.parentOffset === element.parentOffset) {
+                if (child.offsetParent === element.offsetParent) {
                     newPos.sub(element.offsetLeft, element.offsetTop);
                 }
                 var selectables = Selectable.generateSelectablesArr(child, newPos);
@@ -176,7 +176,7 @@ class Selectable {
         this.position = new MenuVector(this.element.offsetLeft, this.element.offsetTop);
         var par = this.element.parentElement;
         while (par !== null) {
-            if (par.parentElement !== null && par.parentElement.parentOffset !== par.parentOffset){
+            if (par.parentElement !== null && par.parentElement.offsetParent !== par.offsetParent){
                 this.position.add(par.offsetLeft, par.offsetTop);
             }
             par = par.parentElement;
