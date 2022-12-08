@@ -137,6 +137,8 @@ class MenuVectorField {
                     // 0 = direction.y * (direction.y * t + C_1 - center.y) + direction.x * (direction.x * t + C_2 - center.x).
                     // And there's only one value of t, which is our global minima:
                     // t = (direction.y * (center.y - C_1) + direction.x * (center.x - C_2))/(direction.x^2 + direction.y^2).
+
+                    // Visualization: https://www.desmos.com/calculator/kl2oypib1f
                     var t = (direction.y * (selectable.center.y - from.y) + direction.x * (selectable.center.x - from.x))/(Math.pow(direction.x, 2) + Math.pow(direction.y, 2));
                     // And so we get the x and y from our t-value:
                     var dirClose = new MenuVector(direction.x * t + from.x, direction.y * t + from.y);
