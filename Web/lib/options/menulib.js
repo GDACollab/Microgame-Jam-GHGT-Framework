@@ -35,8 +35,8 @@ class MenuVector {
     // Being able to set your own shorthand for macros in the script. Like .= for calling the dot product on a vector or something.
     add() {
         if (arguments[0] instanceof MenuVector) {
-            this.#x += otherVector.x;
-            this.#y += otherVector.y;
+            this.#x += arguments[0].x;
+            this.#y += arguments[0].y;
         } else if (!isNaN(arguments[0]) && !isNaN(arguments[1])) {
             this.#x += arguments[0];
             this.#y += arguments[1];
@@ -57,8 +57,19 @@ class MenuVector {
         }
         return this;
     }
+
+    scalarMul(scalar) {
+        this.x *= scalar;
+        this.y *= scalar;
+        return this;
+    }
+
+    get length() {
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2)); 
+    }
+
     normalized() {
-        var size = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        var size = this.length;
         this.#x /= size;
         this.#y /= size;
         return this;
@@ -70,6 +81,9 @@ class MenuVector {
     static sub(vec1, vec2) {
         return new MenuVector(vec1.x - vec2.x, vec1.y - vec2.y);
     }
+    static scalarMul(vec, scalar) {
+        return new MenuVector(vec.x * scalar, vec.y * scalar);
+    }
     static normalized(vec) {
         var size = Math.sqrt(Math.pow(vec.x, 2) + Math.pow(vec.y, 2));
         return new MenuVector(vec.x/size, vec.y/size);
@@ -79,38 +93,40 @@ class MenuVector {
 // Not actually a vector field (https://en.wikipedia.org/wiki/Vector_field), but a sloppy interpretation of one.
 // Basically, given a 2D grid of positions, a present position, and a given direction, where will you go based on the direction?
 class MenuVectorField {
-    #positions;
+    #selectables;
     #currPos;
-    constructor(positions, initialPos){
+    constructor(selectables, initialPos){
         // Validation would be easier with Typescript, but we're not in TS rn. Something to maybe fix in the future.
         // Copy array:
-        this.#positions = [...positions];
-        if (positions[0] instanceof Selectable) {
-            for (var i = 0; i < positions.length; i++) {
-                this.#positions[i] = positions[i].position;
-            }
-        }
+        this.#selectables = [...selectables];
         this.#currPos = initialPos;
     }
 
+    raycast(from, direction){
+        var closestDir = -1;
+        var i = -1;
+        this.#selectables.forEach(function(selectable, index){
+            if (index !== this.#currPos) {
+                var to = MenuVector.sub(selectable.position, from);
+                var dot = direction.dot(MenuVector.normalized(to));
+                if (dot > 0.5) {
+                    var dirClose = MenuVector.scalarMul(direction, to.length).add(from);
+                    var dist = dirClose.dist(selectable.position);
+                    if (dist <= 100 && (dist < closestDir || closestDir === -1)) {
+                        closestDir = dist;
+                        i = index;
+                    } 
+                }
+            }
+        }, this);
+        return i;
+    }
+
     getFromDir(direction){
+        // debugger;
         var pick = -1;
         if (direction.x !== 0 || direction.y !== 0) {
-            var closestDist = -1;
-            var currPosVec = this.#positions[this.#currPos];
-
-            this.#positions.forEach(function(pos, index){
-                if (index !== this.#currPos) {
-                    var searchVec = MenuVector.sub(pos, currPosVec);
-
-                    var dist = direction.dist(MenuVector.normalized(pos));
-                    var dot = direction.dot(searchVec);
-                    if (dot > 0.5 && (dist < closestDist || closestDist === -1)) {
-                        closestDist = dist;
-                        pick = index;
-                    }
-                }
-            }, this);
+            pick = this.raycast(this.#selectables[this.#currPos].position, direction);
 
             if (pick  !== -1) {
                 this.#currPos = pick;

@@ -60,7 +60,7 @@ class GameList extends Selectable {
             if (direction.y === -1 && this.#selected > 0) {    
                 if (this.element.children[this.#selected - 1].className === "active") {
                     this.#optionsSubSelect = true;
-                    this.#optionsPick = this.#optionFields[this.#selected].selectables.length - 1;
+                    this.#optionsPick = this.#optionFields[this.#selected - 1].selectables.length - 1;
                 }
                 this.#selected--;
             }
@@ -75,7 +75,7 @@ class GameList extends Selectable {
     // Called when this element is first selected (and gets overrided by selectElement for subsequent calls with the arrow keys).
     select() {
         if (this.#optionsSubSelect) {
-            this.#optionFields[this.#selected].selectables[this.#optionsPick].classList.add("hover");
+            this.#optionFields[this.#selected].selectables[this.#optionsPick].element.classList.add("hover");
         } else {
             var selected = this.element.children[this.#selected];
             selected.classList.add("hover");
@@ -96,7 +96,7 @@ class GameList extends Selectable {
 
     click() {
         if (this.#optionsSubSelect) {
-            this.#optionFields[this.#selected].selectables[this.#optionsPick].click();
+            this.#optionFields[this.#selected].selectables[this.#optionsPick].element.click();
         } else {
             this.element.children[this.#selected].click();
         }
@@ -104,7 +104,7 @@ class GameList extends Selectable {
 
     clearSelect() {
         if (this.#optionsSubSelect) {
-            this.#optionFields[this.#selected].selectables[this.#optionsPick].classList.remove("hover");
+            this.#optionFields[this.#selected].selectables[this.#optionsPick].element.classList.remove("hover");
         } else {
             this.element.children[this.#selected].classList.remove("hover");
         }
