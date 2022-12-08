@@ -158,10 +158,9 @@ class MenuVectorField {
     }
 
     getFromDir(direction){
-        // debugger;
         var pick = -1;
         if (direction.x !== 0 || direction.y !== 0) {
-            pick = this.raycastEstimate(this.#selectables[this.#currPos].position, direction);
+            pick = this.raycastEstimate(this.#selectables[this.#currPos].center, direction);
 
             if (pick  !== -1) {
                 this.#currPos = pick;

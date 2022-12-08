@@ -53,6 +53,7 @@ class GameList extends Selectable {
                 if (this.element.children[this.#selected].className === "active") {
                     this.#optionsSubSelect = true;
                     this.#optionsPick = 0;
+                    this.#optionFields[this.#selected].field.currPos = 0;
                 } else {
                     this.#selected++;
                 }
@@ -61,6 +62,7 @@ class GameList extends Selectable {
                 if (this.element.children[this.#selected - 1].className === "active") {
                     this.#optionsSubSelect = true;
                     this.#optionsPick = this.#optionFields[this.#selected - 1].selectables.length - 1;
+                    this.#optionFields[this.#selected - 1].field.currPos = this.#optionsPick;
                 }
                 this.#selected--;
             }
