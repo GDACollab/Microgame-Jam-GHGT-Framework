@@ -316,6 +316,7 @@ class MicrogameJamMenuInputReader {
         if (this.#selectedElement === -1) {
             document.body.style.cursor = "none";
             this.#selectedElement = 0;
+            this.#selectableVectorField.currPos = 0;
             this.#selectElement(new MenuVector(0, 0));
             return;
         }

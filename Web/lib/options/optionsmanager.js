@@ -19,28 +19,41 @@ class GameList extends Selectable {
     #optionsSubSelect = false;
     #optionsPick = -1;
 
+    optionsSelect(direction, inputReader){
+        if (direction.x !== 0 && this.#optionFields[this.#selected].selectables[this.#optionsPick].element.type === "range") {
+            var element = this.#optionFields[this.#selected].selectables[this.#optionsPick].element;
+            var volumeVal = parseInt(element.value);
+            element.value = (volumeVal + (direction.x * 1));
+            element.dispatchEvent(new Event("input"));
+            return;
+        }
+        var pick = this.#optionFields[this.#selected].field.getFromDir(direction);
+        if (pick === -1) {
+            if (direction.y === -1) {
+                this.#optionsSubSelect = false;
+                this.#optionsPick = -1;
+            }
+            if (direction.y === 1) {
+                this.#optionsSubSelect = false;
+                if (this.#selected < this.element.children.length - 1) {
+                    this.#selected++;
+                }
+                this.#optionsPick = -1;
+            }
+            if (direction.x === -1) {
+                inputReader.setElement(0);
+                return true;
+            }
+        } else {
+            this.#optionsPick = pick;
+        }
+    }
+
     // Pick an element to select from a direction.
     selectElement(direction, inputReader){
         if (this.#optionsSubSelect) {
-            var pick = this.#optionFields[this.#selected].field.getFromDir(direction);
-            if (pick === -1) {
-                if (direction.y === -1) {
-                    this.#optionsSubSelect = false;
-                    this.#optionsPick = -1;
-                }
-                if (direction.y === 1) {
-                    this.#optionsSubSelect = false;
-                    if (this.#selected < this.element.children.length - 1) {
-                        this.#selected++;
-                    }
-                    this.#optionsPick = -1;
-                }
-                if (direction.x === -1) {
-                    inputReader.setElement(0);
-                    return;
-                }
-            } else {
-                this.#optionsPick = pick;
+            if (this.optionsSelect(direction, inputReader)) {
+                return;
             }
         } else {
             if (direction.x === -1) {
