@@ -116,7 +116,6 @@ class MicrogameJamMenu {
     
     #textY = 0;
     #creditsInputsDrawn = false;
-    #optionsSetUp = false;
 
     #menuMapping = {
         "credits": {
@@ -133,14 +132,8 @@ class MicrogameJamMenu {
         },
         "options": {
             backCallback: this.transitionTo.bind(this, "main"),
-            shouldLoop: function() {
-                if(!this.#optionsSetUp) {
-                    this.#optionsSetUp = true;
-                }
-            },
             onFinish: function() {
                 this.#optionsManager.startManagingOptions();
-                this.#optionsSetUp = false;
             }
         },
         "main": {
@@ -284,6 +277,12 @@ class MicrogameJamMenuInputReader {
         });
     }
 
+    setElement(index) {
+        this.#selectedElement = index;
+        this.#selectableVectorField.currPos = this.#selectedElement;
+        this.#selectableElements[this.#selectedElement].select();
+    }
+
     #selectElement(direction){
         if (this.#selectableElements.length === 0){
             return;
@@ -292,9 +291,8 @@ class MicrogameJamMenuInputReader {
         // Does the selected element want to override our controls?
         if (this.#selectableElements[this.#selectedElement].selectElement instanceof Function) {
             // Don't do anything else if the element is still considered "selected".
-            if (this.#selectableElements[this.#selectedElement].selectElement(direction)) {
-                return;
-            }
+            this.#selectableElements[this.#selectedElement].selectElement(direction, this);
+            return;
         }
         
         var pick = this.#selectableVectorField.getFromDir(direction);

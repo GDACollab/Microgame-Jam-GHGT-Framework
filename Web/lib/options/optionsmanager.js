@@ -20,7 +20,7 @@ class GameList extends Selectable {
     #optionsPick = -1;
 
     // Pick an element to select from a direction.
-    selectElement(direction){
+    selectElement(direction, inputReader){
         if (this.#optionsSubSelect) {
             var pick = this.#optionFields[this.#selected].field.getFromDir(direction);
             if (pick === -1) {
@@ -36,15 +36,16 @@ class GameList extends Selectable {
                     this.#optionsPick = -1;
                 }
                 if (direction.x === -1) {
-                    return false;
+                    inputReader.setElement(0);
+                    return;
                 }
             } else {
                 this.#optionsPick = pick;
             }
         } else {
-            // We return false to return control to the regular menu.
             if (direction.x === -1) {
-                return false;
+                inputReader.setElement(0);
+                return;
             }
             
             this.clearSelect();
@@ -68,9 +69,6 @@ class GameList extends Selectable {
             }
         }
         this.select();
-
-        // Return true to tell the menumanager to keep going.
-        return true;
     }
 
     // Actually hover over the selected element. 
