@@ -1,4 +1,4 @@
-import {Selectable, MenuVectorField} from "./menulib.js";
+import {Selectable, MenuVectorField, MenuVector} from "./menulib.js";
 
 class GameList extends Selectable {
     #selected = 0;
@@ -8,7 +8,7 @@ class GameList extends Selectable {
         for (var i = 0; i < this.element.children.length; i++) {
             var child = this.element.children[i];
             var options = child.querySelector(".game-options");
-            var selectables = Selectable.generateSelectablesArr(options);
+            var selectables = Selectable.generateSelectablesArr(options, new MenuVector(0, 0), "isSelectable");
             
             this.#optionFields.push({field: new MenuVectorField(selectables, 0), element: options, selectables: selectables});
         }
@@ -63,12 +63,12 @@ class GameList extends Selectable {
             
             this.clearSelect();
 
-            if (direction.y === 1 && this.#selected < this.element.children.length - 1) {
+            if (direction.y === 1 && this.#selected < this.element.children.length) {
                 if (this.element.children[this.#selected].className === "active") {
                     this.#optionsSubSelect = true;
                     this.#optionsPick = 0;
                     this.#optionFields[this.#selected].field.currPos = 0;
-                } else {
+                } else if (this.#selected < this.element.children.length - 1) {
                     this.#selected++;
                 }
             }
@@ -94,15 +94,14 @@ class GameList extends Selectable {
             selected.classList.add("hover");
 
             var selectedPos = selected.offsetTop - this.element.scrollTop;
-            
             while (selectedPos + selected.offsetHeight > this.element.offsetHeight) {
                 this.element.scrollTop += selected.offsetHeight;
-                selectedPos -= selected.offsetHeight;
-            } 
+                selectedPos = selected.offsetTop - this.element.scrollTop;
+            }
 
-            while (selectedPos - selected.offsetHeight < 0) {
+            while (selectedPos < 0) {
                 this.element.scrollTop -= selected.offsetHeight;
-                selectedPos += selected.offsetHeight;
+                selectedPos = selected.offsetTop - this.element.scrollTop;
             }
         }
     }
@@ -112,6 +111,16 @@ class GameList extends Selectable {
             this.#optionFields[this.#selected].selectables[this.#optionsPick].element.click();
         } else {
             this.element.children[this.#selected].click();
+            
+            if (this.#selected === this.element.children.length - 1) {
+                // Because if you click on the bottom, it doesn't scroll to the expanded options. This is a cheap fix.
+                var scrollTo = setInterval(function(){
+                    this.element.scrollTo(0, this.element.scrollHeight + 200);
+                    if (this.element.children[this.#selected].scrollHeight > 240 || this.#selected !== this.element.children.length - 1) {
+                        clearInterval(scrollTo);
+                    }
+                }.bind(this), 1);
+            }
         }
     }
 

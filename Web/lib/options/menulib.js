@@ -1,4 +1,3 @@
-
 class MenuVector {
     #x;
     #y;
@@ -215,14 +214,14 @@ class Selectable {
     }
 
     // Based on the stuff I did for the twine extension.
-    static generateSelectablesArr(element, position = new MenuVector(0, 0)){
+    static generateSelectablesArr(element, position = new MenuVector(0, 0), selectableFunc = "isSelectableWithinBounds"){
         if (element instanceof Element === false) {
             return;
         }
         var arr = [];
         var select = new Selectable(element, position);
 
-        if (select.isSelectableWithinBounds()) {
+        if (select[selectableFunc]()) {
             arr.push(select);
         } else {
             for (var i = 0; i < element.children.length; i++) {
@@ -231,7 +230,7 @@ class Selectable {
                 if (child.offsetParent === element.offsetParent) {
                     newPos.sub(element.offsetLeft, element.offsetTop);
                 }
-                var selectables = Selectable.generateSelectablesArr(child, newPos);
+                var selectables = Selectable.generateSelectablesArr(child, newPos, selectableFunc);
                 arr.push(...selectables);
             }
         }
@@ -257,6 +256,11 @@ class Selectable {
             }
             par = par.parentElement;
         }
+    }
+
+    isSelectable() {
+        var computedStyle = window.getComputedStyle(this.element);
+        return computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer";
     }
 
     isSelectableWithinBounds(){

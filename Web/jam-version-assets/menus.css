@@ -323,6 +323,10 @@
     accent-color: black;
 }
 
+.game-enable {
+    cursor: pointer;
+}
+
 #options-select-games .game-options {
     height: 0px;
     overflow-y: hidden;
@@ -364,6 +368,10 @@
 }
 .remap-options button.hover {
     background: black;
+}
+
+.game-options .game-enable.hover {
+    background-color: black;
 }
 
 .remap-Up {
