@@ -15,6 +15,10 @@ class CCSSAnimationBase {
         var animDat = {};
 
         var animProps = animProp.split(" ");
+        // If the browser doesn't remove the space in front, we will:
+        if (animProps[0] === "") {
+            animProps.shift();
+        }
 
         // It's always first the name of the animation to play, then how long it lasts:
         animDat.animName = animProps[0].replaceAll(" ", "");

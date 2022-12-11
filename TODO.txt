@@ -22,9 +22,8 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Change config.ini and CCSS animations to be compiled instead of read on the fly
 
 To fix right now:
-- Settings menu (volume for main menu? Select microgames, controller remappings)
+- Settings menu
  - Reformat CSS so it looks nice
- - Add enable/disable buttons for each game
  - Add key bindings to "all".
  - Save data to local storage
  - Add "reset to defaults" button.
@@ -33,8 +32,9 @@ To fix right now:
 - Difficulty changing/game loading logic (Rotating queue of unique games, difficulty increases, difficulty of 1 if it's your first time playing a game)
 - Game over screen on 0 lives
 - Send any keyboard inputs from the body to the iframe.
+- Chcek browser compatibility
 - Add dry run games
-- Minify all .js and .css for web build?
+- Minify all .js and .css for web build? (Javascript Bundler?)
 - NW.js for desktop builds (breaks itch.io's API). Or maybe my itch.io desktop app is broken.
 
 CSS Wishlist:
@@ -45,3 +45,4 @@ CSS Wishlist:
 - Global position properties (like, where is an element ACTUALLY on screen? Read-only, based on the element's offset and position properties).
 - Being able to use the hover and active properties DURING animations or transitions. Like some kind of additive properties instead of outright replacing them?
 - Being able to rank priorities for styles instead of using !important
+- Advanced filtering. Like being able to programatically define how an element is rendered pixel by pixel.
