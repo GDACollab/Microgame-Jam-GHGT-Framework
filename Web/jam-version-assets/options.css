@@ -79,7 +79,7 @@
     padding-left: 35px;
 }
 
-#options-select-games-all .game-select.hover, #options-select-games-all .game-select:hover {
+#options-select-games-all.hover .game-select, #options-select-games-all .game-select:hover {
     padding-left: 37px;
 }
 
@@ -171,13 +171,19 @@
     border-bottom: none;
 }
 
-.game-options .game-enable.hover {
-    background-color: black;
+.game-options .game-enable {
+    transition: 0.4s;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+.game-options .game-enable.hover, .game-options .game-enable:hover {
+    box-shadow: 1px 1px 5px;
 }
 
 .remap-Up {
     margin-left: 227px;
-    margin-right: 144px !important;
+    margin-right: 147px !important;
 }
 
 .remap-Up .bind-button .remap-button-background {
@@ -213,7 +219,7 @@
 
 .remap-Space {
     width: 170px;
-    margin-right: 18px !important;
+    margin-right: 15px !important;
 }
 
 .remap-Space .bind-button .remap-button-background {

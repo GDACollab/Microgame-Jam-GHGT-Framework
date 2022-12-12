@@ -272,7 +272,7 @@ export class OptionsManager {
         document.getElementById("game-options-all").innerHTML = `
         <div style="float: left; height: 92px; width: 50px; margin-left: 10px;" id="game-options-all-volume">
             <p style="width: 170px; text-align: center;">Main Menu Volume</p>
-            <input id="options-volume" type="range" min="1" max="100"/>
+            <input id="options-volume" type="range" min="1" max="100" value="100"/>
         </div>` + document.getElementById("game-options-all").innerHTML;
 
         document.getElementById("options-select-games-all").className = "active";
