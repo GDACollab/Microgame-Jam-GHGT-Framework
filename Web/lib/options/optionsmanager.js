@@ -144,54 +144,60 @@ export class OptionsManager {
 
         this.#optionsSelect = document.getElementById("options-select-games");
 
-		var gameNames = this.#Controller.GameLoader.gameNames;
+		var gameNames = {"all" : "Microgame Settings", ... this.#Controller.GameLoader.gameNames};
 
         Object.keys(gameNames).forEach((game) => {
             var div = document.createElement("div");
             this.#enabledGames.add(game);
-            var check = document.createElement("input");
             var gameName = gameNames[game];
-            check.type = "checkbox";
-            check.id = game + "enable";
-            check.checked = true;
-            check.name = game + "enable";
+            
+            var gameSelectDiv = document.createElement("div");
+            gameSelectDiv.className = "game-select";
+
+            if (game !== "all"){
+                var check = document.createElement("input");
+                check.type = "checkbox";
+                check.id = game + "enable";
+                check.checked = true;
+                check.name = game + "enable";
+                gameSelectDiv.appendChild(check);
+            }
             var label = document.createElement("label");
             label.innerText = gameName;
 
-            var gameSelectDiv = document.createElement("div");
-            gameSelectDiv.className = "game-select";
             // We want to be able to click each game to set individual settings.
             // label.htmlFor = game + "enable";
-            gameSelectDiv.appendChild(check);
             gameSelectDiv.appendChild(label);
 
             div.appendChild(gameSelectDiv);
 
-            div.id = "options-select-games-" + gameName;
+            div.id = "options-select-games-" + game;
 
-            div.onclick = this.#swapToOptions.bind(this, gameName);
+            div.onclick = this.#swapToOptions.bind(this, game);
 
             var optionsDiv = document.createElement("div");
-            optionsDiv.id = "game-options-" + gameName;
+            optionsDiv.id = "game-options-" + game;
             optionsDiv.className = "game-options";
 
-            var enabledP = document.createElement("p");
-            enabledP.className = "game-enable";
-            enabledP.name = "game-enable";
+            if (game !== "all"){
+                var enabledP = document.createElement("p");
+                enabledP.className = "game-enable";
+                enabledP.name = "game-enable";
 
-            var enabledCheck = document.createElement("input");
-            enabledCheck.type = "checkbox";
-            enabledCheck.checked = true;
-            enabledCheck.id = game + "-options-enable";
+                var enabledCheck = document.createElement("input");
+                enabledCheck.type = "checkbox";
+                enabledCheck.checked = true;
+                enabledCheck.id = game + "-options-enable";
 
-            var enabledLabel = document.createElement("label");
-            enabledLabel.innerText = "Enabled";
-            enabledLabel.htmlFor = game + "-options-enable";
+                var enabledLabel = document.createElement("label");
+                enabledLabel.innerText = "Enabled";
+                enabledLabel.htmlFor = game + "-options-enable";
 
-            enabledP.appendChild(enabledCheck);
-            enabledP.appendChild(enabledLabel);
+                enabledP.appendChild(enabledCheck);
+                enabledP.appendChild(enabledLabel);
 
-            optionsDiv.appendChild(enabledP);
+                optionsDiv.appendChild(enabledP);
+            }
 
             var remapDiv = document.createElement("div");
             remapDiv.className = "remap-options";
@@ -210,12 +216,45 @@ export class OptionsManager {
                 var bindButtonP = document.createElement("p");
                 var bindButton = document.createElement("button");
 
+                var bindButtonText = document.createElement("div");
+                bindButtonText.className = "remap-button-text";
+
+                bindButton.appendChild(bindButtonText);
+
+                var bindBackground = document.createElement("div");
+                bindBackground.className = "remap-button-background";
+
+                var bindMaskSize = Math.floor(Math.random() * 100) + 100;
+
+                bindBackground.style.maskSize = bindMaskSize + "%";
+                bindBackground.style.maskPosition = Math.floor(Math.random() * 100) + "% " + Math.floor(Math.random() * 100) + "%";
+
+                bindButton.appendChild(bindBackground);
+
+                bindButtonP.className = "bind-button";
+
                 bindButtonP.appendChild(bindButton);
+                
                 direction.appendChild(bindButtonP);
 
                 var clearButtonP = document.createElement("p");
                 var clearButton = document.createElement("button");
-                clearButton.innerText = "Clear";
+
+                clearButtonP.className = "clear-button";
+
+                var clearButtonText = document.createElement("div");
+                clearButtonText.className = "remap-button-text";
+                clearButtonText.innerText = "Clear";
+                clearButton.appendChild(clearButtonText);
+
+                var clearButtonBackground = document.createElement("div");
+                clearButtonBackground.className = "remap-button-background";
+
+                var clearMaskSize = Math.floor(Math.random() * 100) + 100;
+                clearButtonBackground.style.maskSize = clearMaskSize + "%";
+                clearButtonBackground.style.maskPosition = Math.floor(Math.random() * 100) + "% " + Math.floor(Math.random() * 100) + "%";
+                
+                clearButton.appendChild(clearButtonBackground);
 
                 clearButtonP.appendChild(clearButton);
                 direction.appendChild(clearButtonP);
@@ -229,6 +268,14 @@ export class OptionsManager {
 
             this.#optionsSelect.appendChild(div);
         });
+
+        document.getElementById("game-options-all").innerHTML = `
+        <div style="float: left; height: 92px; width: 50px; margin-left: 10px;" id="game-options-all-volume">
+            <p style="width: 170px; text-align: center;">Main Menu Volume</p>
+            <input id="options-volume" type="range" min="1" max="100"/>
+        </div>` + document.getElementById("game-options-all").innerHTML;
+
+        document.getElementById("options-select-games-all").className = "active";
 
 		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "all");
 	}

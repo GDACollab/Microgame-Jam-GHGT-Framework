@@ -19,12 +19,11 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 - NPM package for developers to test their games within the framework?
 
-- Change config.ini and CCSS animations to be compiled instead of read on the fly
+- Change config.ini and CCSS animations to be compiled instead of read on the fly (Probably through a Javascript Bundler). Allows me to remove even more hacky setTimeout solutions for adding HTML.
 
 To fix right now:
 - Settings menu
  - Reformat CSS so it looks nice
- - Add key bindings to "all".
  - Save data to local storage
  - Add "reset to defaults" button.
  - Add images for each game?
@@ -32,7 +31,7 @@ To fix right now:
 - Difficulty changing/game loading logic (Rotating queue of unique games, difficulty increases, difficulty of 1 if it's your first time playing a game)
 - Game over screen on 0 lives
 - Send any keyboard inputs from the body to the iframe.
-- Chcek browser compatibility
+- Check browser compatibility
 - Add dry run games
 - Minify all .js and .css for web build? (Javascript Bundler?)
 - NW.js for desktop builds (breaks itch.io's API). Or maybe my itch.io desktop app is broken.

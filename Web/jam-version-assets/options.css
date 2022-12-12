@@ -61,42 +61,25 @@
 }
 
 #options-select-games .game-select > input[type=checkbox] {
-    display: none;
-}
-
-.game-select::before {
-    content: "";
-    display: inline-block;
-    width: 47px;
-    height: 47px;
-    margin-left: 5px;
-    margin-right: 5px;
-    vertical-align: middle;
-    background-image: url("./art/Checkmark.png"), url("./art/Checkunchecked.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: brightness(70%) contrast(200%);
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #options-select-games-all {
     border-bottom: none !important;
 }
 
-#options-select-games-all span {
-    padding-top: 22px;
-    padding-bottom: 22px;
-    padding-left: 11px;
-    display: inline-block;
-    border-left: 1px red solid;
+#options-select-games-all label {
+    padding-top: 22px !important;
+    padding-bottom: 22px !important;
+    margin-left: 1px !important;
 }
 
 #options-select-games-all .game-select {
     padding-left: 35px;
 }
 
-
-#options-select-games-all .game-select:hover, #options-select-games-all.hover > .game-select  {
+#options-select-games-all .game-select.hover, #options-select-games-all .game-select:hover {
     padding-left: 37px;
 }
 
@@ -146,12 +129,46 @@
     width: 125px;
     height: 30px;
     cursor: pointer;
-    transition: 0.1s;
+    transition: 0.4s;
     border: none;
+    display: block;
+    position: relative;
 }
-.remap-options button.hover, .remap-options button:hover {
-    transform: translate(0, 1px);
-    background-color: #cbcbcb;
+.remap-options button .remap-button-background {
+    mask-image: url("./art/marker.png");
+    mask-size: 100%;
+    width: 125px;
+    height: 30px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: 0.4s;
+}
+
+.remap-options button .remap-button-text {
+    position: inherit;
+    z-index: 2;
+    width: 125px;
+}
+
+.remap-options p {
+    width: 125px;
+    height: 30px;
+}
+
+.remap-options .bind-button, .remap-options .clear-button {
+    border: 0.1px solid black;
+}
+
+.remap-options button:hover > .remap-button-background, .remap-options button.hover > .remap-button-background {
+    filter: brightness(0.8);
+}
+
+.remap-options .clear-button {
+    border-top: none;
+}
+.remap-options .bind-button {
+    border-bottom: none;
 }
 
 .game-options .game-enable.hover {
@@ -163,12 +180,51 @@
     margin-right: 144px !important;
 }
 
+.remap-Up .bind-button .remap-button-background {
+    background-color: #ABDEE6;
+}
+.remap-Up .clear-button .remap-button-background {
+    background-color: #55CBCD;
+}
+
+.remap-Right .bind-button .remap-button-background {
+    background-color: #ECD5E3;
+}
+
+.remap-Right .clear-button .remap-button-background {
+    background-color: #CBAACB;
+}
+
+.remap-Down .bind-button .remap-button-background {
+    background-color: #ffffc5;
+}
+
+.remap-Down .clear-button .remap-button-background {
+    background-color: #eaea8c;
+}
+
+.remap-Left .bind-button .remap-button-background {
+    background-color: #FFDACA;
+}
+
+.remap-Left .clear-button .remap-button-background {
+    background-color: #E1AB86;
+}
+
 .remap-Space {
     width: 170px;
     margin-right: 18px !important;
 }
 
-.remap-Space button {
+.remap-Space .bind-button .remap-button-background {
+    background-color: #d9ecd5;
+}
+
+.remap-Space .clear-button .remap-button-background {
+    background-color: #95C88E;
+}
+
+.remap-Space button, .remap-Space p, .remap-Space .remap-button-background, .remap-Space .remap-button-text {
     width: 165px !important;
 }
 
