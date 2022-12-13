@@ -37,4 +37,6 @@ class AudioManager {
     }
 }
 
-export {AudioManager};
+var GlobalAudioManager = new AudioManager();
+
+export default GlobalAudioManager;

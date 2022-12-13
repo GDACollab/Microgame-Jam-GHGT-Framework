@@ -91,5 +91,3 @@ async function getConfig(link){
 	var text = await data.text();
 	return parseIni(text);
 }
-
-export {getConfig};

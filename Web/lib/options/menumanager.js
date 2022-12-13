@@ -1,5 +1,6 @@
 import {OptionsManager} from "./optionsmanager.js"
 import {Selectable, MenuVector, MenuVectorField} from "./menulib.js"
+import GlobalAnimManager from "../animationmanager.js";
 
 // Handles the creation of the main menu and transition elements.
 // Also handles actual control of the main menu elements.
@@ -99,15 +100,14 @@ class MicrogameJamMenu {
     #inputReader;
     #optionsManager;
 
-    constructor(Controller){
-        this.#Controller = Controller;
+    constructor(){
         if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
             this.#initMainMenu();
         }
         this.#initTransitions();
 
         this.#inputReader = new MicrogameJamMenuInputReader();
-        this.#optionsManager = new OptionsManager(this.#Controller);
+        this.#optionsManager = new OptionsManager(this);
     }
 
     addSelectable(selectable) {
@@ -142,7 +142,7 @@ class MicrogameJamMenu {
                     this.#creditsInputsDrawn = false;
                     document.getElementById("credits-text").style.setProperty("--text-y", 0);
                     this.#textY = 0;
-                    this.#Controller.GameAnimation.stopAllKeyframedAnimationOf(`CCSSGLOBALmainTocredits`);
+                    GlobalAnimManager.stopAllKeyframedAnimationOf(`CCSSGLOBALmainTocredits`);
                 }
                 this.#currMenu = "main";
             },
@@ -173,10 +173,10 @@ class MicrogameJamMenu {
             }
 
             // Reset animation:
-            this.#Controller.GameAnimation.stopAllKeyframedAnimationOf(animName);
+            GlobalAnimManager.stopAllKeyframedAnimationOf(animName);
             var menuMapping = this.#menuMapping;
             var destMenu = this.#destMenu;
-            this.#Controller.GameAnimation.playKeyframedAnimation(animName, {
+            GlobalAnimManager.playKeyframedAnimation(animName, {
                 keepAnims: this.#destMenu !== "main",
                 shouldLoop: function(time, animationObj) {
                     if ("shouldLoop" in menuMapping[destMenu]){
@@ -340,4 +340,6 @@ class MicrogameJamMenuInputReader {
     }
 }
 
-export {MicrogameJamMenu, Selectable};
+var MainMenuManager = new MicrogameJamMenu();
+
+export default MainMenuManager;

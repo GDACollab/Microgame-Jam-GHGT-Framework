@@ -1,4 +1,6 @@
 import {PicoInterface} from "./lib/picointerface.js";
+import GlobalAudioManager from "./lib/gamesound.js";
+import GlobalAnimManager from "./lib/animationmanager.js";
 // Game loader, for everything to do with transitions: playing animations, playing sounds, selecting the next game, changing difficulty.
 
 class GameLoader {
@@ -8,10 +10,8 @@ class GameLoader {
     #gamesList;
     #gamesConfig;
     #gameNames;
-    #Controller;
 
-    constructor(Controller) {
-        this.#Controller = Controller;
+    constructor() {
 
         // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
         this.#gamesList = ini["Games"];
@@ -50,7 +50,7 @@ class GameLoader {
         
         var transitionName = (didWin)? "win" : "lose";
 
-        this.#Controller.GameSound.play(transitionName + "Jingle", masterVolume * 0.8, true);
+        GlobalAudioManager.play(transitionName + "Jingle", masterVolume * 0.8, true);
 
         GameLoaderAnimator.animateTransition(transitionName);
 
@@ -125,7 +125,7 @@ class GameLoader {
 
         var playTransitionPriorLoaded = false;
 
-        var numLives = this.#Controller.GameInterface.getLives();
+        var numLives = GameInterface.getLives();
         if (transitionName === "lose") {
             // This is used purely for animation, so if we've lost a life, we add one to show the losing animation.
             numLives++;
@@ -133,7 +133,7 @@ class GameLoader {
 
         this.setUpLifeCounter(numLives, transitionName === "lose");
 
-        this.#Controller.GameAnimation.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", {
+        GlobalAnimManager.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", {
             shouldLoop: function(timestamp, animationObj){
                 // Should we load when we're looping? If yes, we have to actually wait until we're looping.
                 if (this.#gamesConfig["play-transition-prior"].includes(gameToLoad) && !playTransitionPriorLoaded && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)) {
@@ -171,7 +171,7 @@ class GameLoader {
             div.appendChild(lostLifeDiv);
             
             // You can manually set delays in the CCSS animation itself:
-            this.#Controller.GameAnimation.playKeyframedAnimation("CCSSGLOBALloseLife", {
+            GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseLife", {
                 keepAnims: true
             });
         } else {
@@ -190,4 +190,6 @@ class GameLoader {
     }
 };
 
-export {GameLoader};
+var GlobalGameLoader = new GameLoader();
+
+export default GlobalGameLoader;

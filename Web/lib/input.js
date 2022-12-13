@@ -1,7 +1,7 @@
 var keysDown = new Set();
 
 class MicrogameInput {
-    bindings = {
+    static bindings = {
         "ArrowUp": ["ArrowUp"],
         "ArrowDown": ["ArrowDown"],
         "ArrowRight": ["ArrowRight"],
@@ -39,7 +39,6 @@ class MicrogameKeyboard extends MicrogameInput {
         "ArrowLeft": "ArrowLeft",
         " ": " "
     };
-    bindings;
 
     constructor() {
         super();
@@ -62,7 +61,7 @@ class MicrogameKeyboard extends MicrogameInput {
 class MicrogameGamepad extends MicrogameInput {
     #gamepad;
     #sensitivity = 0.4;
-    bindings = {
+    static bindings = {
         "ArrowUp": ["-axes1"],
         "ArrowDown": ["axes1"],
         "ArrowLeft": ["-axes0"],
@@ -101,28 +100,58 @@ class MicrogameGamepad extends MicrogameInput {
     }
 }
 
-var microgameinputs = { "keyboard": new MicrogameKeyboard()};
+class MicrogameInputManager {
+    #microgameInputs = {};
+    constructor() {
+        this.#microgameInputs = { "keyboard": new MicrogameKeyboard()};
+    }
 
-function updateInput() {
-    if (!!navigator.getGamepads) {
-        for (var gamepad of navigator.getGamepads()) {
-            if (gamepad === null) {
-                continue;
+    static get defaultBindingStrings() {
+        var bindingsStrings = {};
+        for (var dir in MicrogameKeyboard.bindings) {
+            var dirStringName = dir.replace("Arrow", "").toLowerCase();
+            if (dir === " ") {
+                dirStringName = "space";
             }
-            if (!(gamepad.id in microgameinputs)) {
-                microgameinputs[gamepad.id] = new MicrogameGamepad(gamepad);
+            var stringToAdd = MicrogameKeyboard.bindings[dir][0];
+            if (stringToAdd === " ") {
+                stringToAdd = "Space";
+            }
+            bindingsStrings[dirStringName] = stringToAdd;
+        }
+        for (var dir in MicrogameGamepad.bindings) {
+            var dirStringName = dir.replace("Arrow", "").toLowerCase();
+            if (dir === " ") {
+                dirStringName = "space";
+            }
+            bindingsStrings[dirStringName] += "," + MicrogameGamepad.bindings[dir];
+        }
+        return bindingsStrings;
+    }
+
+    updateInput() {
+        if (!!navigator.getGamepads) {
+            for (var gamepad of navigator.getGamepads()) {
+                if (gamepad === null) {
+                    continue;
+                }
+                if (!(gamepad.id in this.#microgameInputs)) {
+                    this.#microgameInputs[gamepad.id] = new MicrogameGamepad(gamepad);
+                }
             }
         }
+        for (var input in this.#microgameInputs) {
+            this.#microgameInputs[input].update();
+        }
     }
-    for (var input in microgameinputs) {
-        microgameinputs[input].update();
+
+    gameStartInputUpdate() {
+        for (var input in this.#microgameInputs) {
+            this.#microgameInputs[input].gameStartInputUpdate();
+        }
     }
 }
 
-function gameStartInputUpdate() {
-    for (var input in microgameinputs) {
-        microgameinputs[input].gameStartInputUpdate();
-    }
-}
+var GlobalInputManager = new MicrogameInputManager();
 
-export {updateInput, gameStartInputUpdate};
+export default GlobalInputManager;

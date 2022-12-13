@@ -1,10 +1,9 @@
-import {MicrogameJamMenu} from "./lib/options/menumanager.js";
-import {GameLoader} from "./gameloader.js";
-import {AudioManager} from "./lib/gamesound.js";
-import {AnimationManager} from "./lib/animationmanager.js";
-import {getConfig} from "./lib/configloader.js";
+import MicrogameJamMenu from "./lib/options/menumanager.js";
+import GlobalGameLoader from "./gameloader.js";
+import GlobalAudioManager from "./lib/gamesound.js";
+import GlobalAnimManager from "./lib/animationmanager.js";
 import {initVersionStyle, versionStyleUpdate} from "./jam-version-assets/version-style.js";
-import * as MicrogameInputManager from "./lib/input.js";
+import GlobalInputManager from "./lib/input.js";
 
 // Main game controller.
 // For controlling the primary functions, all calls should get routed through here.
@@ -36,12 +35,11 @@ class MicrogameJam {
     constructor() {
         initVersionStyle();
 
-        this.GameSound = new AudioManager();
+        this.GameSound = GlobalAudioManager;
 
-        this.GameAnimation = new AnimationManager(document.getElementById("version-style").href);
-        this.GameAnimation.evaluateMainSheet();
+        this.GameAnimation = GlobalAnimManager;
 
-        this.GameLoader = new GameLoader(this);
+        this.GameLoader = GlobalGameLoader;
 
         this.GameMenus = new MicrogameJamMenu(this);
 
@@ -98,20 +96,16 @@ class MicrogameJam {
 
         this.GameLoader.loadUpdate();
 
-        MicrogameInputManager.updateInput();
+        GlobalInputManager.updateInput();
 
         requestAnimationFrame(this.update.bind(this));
     }
 
     gameStarted() {
         this.#inGame = true;
-        MicrogameInputManager.gameStartInputUpdate();
+        GlobalInputManager.gameStartInputUpdate();
         this.GameLoader.gameStarted();
     }
 }
 
-var MicrogameJamMainManager;
-getConfig("./jam-version-assets/config.ini").then(function(res){
-    ini = res;
-    MicrogameJamMainManager = new MicrogameJam();
-});
+var MicrogameJamMainManager = new MicrogameJam();

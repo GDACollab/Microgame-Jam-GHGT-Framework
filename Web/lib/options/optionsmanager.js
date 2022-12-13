@@ -1,4 +1,6 @@
 import {Selectable, MenuVectorField, MenuVector} from "./menulib.js";
+import GlobalInputManager from "../input.js";
+import GlobalGameLoader from "../../gameloader.js";
 
 class GameList extends Selectable {
     #selected = 0;
@@ -135,20 +137,34 @@ class GameList extends Selectable {
 
 export class OptionsManager {
 	#currentOption = "all";
-    #Controller;
+    #MainMenuManager;
     #enabledGames = new Set();
     #optionsSelect;
+    #optionsStorage;
 
-	constructor(Controller) {
-		this.#Controller = Controller;
+	constructor(MainMenuManager) {
+        this.#optionsStorage = localStorage.getItem("options");
+        if (this.#optionsStorage === null) {
+            this.#optionsStorage = {};
+        } else {
+            this.#optionsStorage = JSON.parse(this.#optionsStorage);
+        }
+
+        this.#MainMenuManager = MainMenuManager;
 
         this.#optionsSelect = document.getElementById("options-select-games");
 
-		var gameNames = {"all" : "Microgame Settings", ... this.#Controller.GameLoader.gameNames};
+		var gameNames = {"all" : "Microgame Settings", ... GlobalGameLoader.gameNames};
 
         Object.keys(gameNames).forEach((game) => {
+            if (!(game in this.#optionsStorage)) {
+                this.#optionsStorage[game] = {
+                    "enabled": true,
+                    ...GlobalInputManager.defaultBindingStrings
+                };
+            }
+
             var div = document.createElement("div");
-            this.#enabledGames.add(game);
             var gameName = gameNames[game];
             
             var gameSelectDiv = document.createElement("div");
@@ -158,9 +174,14 @@ export class OptionsManager {
                 var check = document.createElement("input");
                 check.type = "checkbox";
                 check.id = game + "enable";
-                check.checked = true;
+                check.checked = this.#optionsStorage[game].enabled;
                 check.name = game + "enable";
                 gameSelectDiv.appendChild(check);
+                check.oninput = this.updateEnabled.bind(this, game);
+
+                if (this.#optionsStorage[game].enabled) {
+                    this.#enabledGames.add(game);
+                }
             }
             var label = document.createElement("label");
             label.innerText = gameName;
@@ -186,8 +207,9 @@ export class OptionsManager {
 
                 var enabledCheck = document.createElement("input");
                 enabledCheck.type = "checkbox";
-                enabledCheck.checked = true;
+                enabledCheck.checked = this.#optionsStorage[game].enabled;
                 enabledCheck.id = game + "-options-enable";
+                enabledCheck.oninput = this.updateEnabled.bind(this, game);
 
                 var enabledLabel = document.createElement("label");
                 enabledLabel.innerText = "Enabled";
@@ -216,8 +238,12 @@ export class OptionsManager {
                 var bindButtonP = document.createElement("p");
                 var bindButton = document.createElement("button");
 
+                bindButton.onclick = this.updateBinding.bind(this, game, d);
+
                 var bindButtonText = document.createElement("div");
                 bindButtonText.className = "remap-button-text";
+
+                bindButtonText.innerText = this.#optionsStorage[game][d.toLowerCase()];
 
                 bindButton.appendChild(bindButtonText);
 
@@ -260,7 +286,7 @@ export class OptionsManager {
                 direction.appendChild(clearButtonP);
 
                 remapDiv.appendChild(direction);
-            });
+            }, this);
 
             optionsDiv.appendChild(remapDiv);
 
@@ -278,10 +304,39 @@ export class OptionsManager {
         document.getElementById("options-select-games-all").className = "active";
 
 		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "all");
+
+        this.optionsSave();
 	}
 
+    optionsSave() {
+        localStorage.setItem("options", JSON.stringify(this.#optionsStorage));
+    }
+
+    updateEnabled(game, event) {
+        var enabled = event.target.checked;
+        if (enabled) {
+            this.#enabledGames.add(enabled);
+        } else {
+            this.#enabledGames.delete(enabled);
+        }
+        this.#optionsStorage[game].enabled = enabled;
+
+        document.getElementById(game + "enable").checked = event.target.checked;
+        document.getElementById(game + "-options-enable").checked = event.target.checked;
+        
+        this.optionsSave();
+    }
+
+    updateBinding(game, bindingName, event) {
+        event.target.innerText = "<<Press Something>>";
+    }
+
+    clearBindings(gameName, bindingName) {
+
+    }
+
     startManagingOptions() {
-        this.#Controller.GameMenus.addSelectable(new GameList(this.#optionsSelect));
+        this.#MainMenuManager.addSelectable(new GameList(this.#optionsSelect));
     }
 
     get enabledGames() {

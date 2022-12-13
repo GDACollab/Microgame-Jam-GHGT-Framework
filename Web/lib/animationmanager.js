@@ -463,4 +463,7 @@ class AnimationManager {
     }
 }
 
-export {AnimationManager};
+var GlobalAnimManager = new AnimationManager(document.getElementById("version-style").href);
+GlobalAnimManager.evaluateMainSheet();
+
+export default GlobalAnimManager;

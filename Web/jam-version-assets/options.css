@@ -99,7 +99,7 @@
 }
 
 #options-select-games .active .game-options {
-    height: 200px;
+    height: 300px;
 }
 
 .game-options {
@@ -114,10 +114,6 @@
     text-align: center;
 }
 
-.remap-options p{
-    margin: 0;
-}
-
 .remap-options > div{
     display: block;
     float: right;
@@ -127,7 +123,7 @@
 
 .remap-options button {
     width: 117px;
-    height: 30px;
+    height: 46px;
     cursor: pointer;
     transition: 0.4s;
     border: none;
@@ -138,7 +134,7 @@
     mask-image: url("./art/marker.png");
     mask-size: 100%;
     width: 125px;
-    height: 30px;
+    height: 46px;
     position: absolute;
     left: 0;
     top: 0;
@@ -148,12 +144,14 @@
 .remap-options button .remap-button-text {
     position: inherit;
     z-index: 2;
-    width: 125px;
+    width: 115px;
+    word-wrap: break-word;
 }
 
 .remap-options p {
     width: 125px;
-    height: 30px;
+    height: 46px;
+    margin: 0;
 }
 
 .remap-options .bind-button, .remap-options .clear-button {
