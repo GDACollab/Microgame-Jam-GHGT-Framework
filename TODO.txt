@@ -23,7 +23,6 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 To fix right now:
 - Settings menu
- - Reformat CSS so it looks nice
  - Save data to local storage
  - Add "reset to defaults" button.
  - Add images for each game?

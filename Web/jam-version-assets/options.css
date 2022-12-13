@@ -126,7 +126,7 @@
 }
 
 .remap-options button {
-    width: 125px;
+    width: 117px;
     height: 30px;
     cursor: pointer;
     transition: 0.4s;
@@ -165,7 +165,7 @@
 }
 
 .remap-options .clear-button {
-    border-top: none;
+    border-top: 0.1px solid black;
 }
 .remap-options .bind-button {
     border-bottom: none;
@@ -230,7 +230,11 @@
     background-color: #95C88E;
 }
 
-.remap-Space button, .remap-Space p, .remap-Space .remap-button-background, .remap-Space .remap-button-text {
+.remap-Space .remap-button-text {
+    width: 157px !important;
+}
+
+.remap-Space button, .remap-Space p, .remap-Space .remap-button-background {
     width: 165px !important;
 }
 
