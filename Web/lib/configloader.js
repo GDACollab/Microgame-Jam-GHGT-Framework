@@ -91,3 +91,8 @@ async function getConfig(link){
 	var text = await data.text();
 	return parseIni(text);
 }
+
+// Not a great solution. Should be already set up by pre-compiling/pre-parsing the data with something like Webpack. 
+var ini = getConfig("./jam-version-assets/config.ini");
+
+export default ini;

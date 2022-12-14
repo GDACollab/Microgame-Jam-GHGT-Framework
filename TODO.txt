@@ -1,11 +1,13 @@
 For working with Harlowe: https://github.com/ChapelR/harlowe-macro-api/blob/master/src/macro.js and https://foss.heptapod.net/games/harlowe/-/blob/branch/default/js/macros.js are pretty useful references.
 
 Future Improvements:
+- Convert .ini to .toml. It's a similar format, but supports more useful things.
+
 - More Twine Story Formats
 
-- Upgrade to typescript?
+- Upgrade to Typescript
 
-- Transition animator workflow
+- Transition animator GUI of some kind (or automated in Blender)
 
 - For Godot, add Brotli or .gzip compressions to builds to reduce filesize? Include web server in extension so that people can easily test out their results?
 
@@ -15,11 +17,11 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 - Asynchronous loading across extensions. Requires analysis of each engine though, and finding the exact point in their .wasm or .js file to pause until they're ready to play. Honestly it would be a huge pain, and we'd end up losing support for a lot of .JS engines (since we'd have to each configure them manually). Possible idea: Run the iframes in some kind of VM, find the exact point where "gameStart" is ready to go, then load that state into the iframe? I have no idea how that'd work in-browser though. I mean, if there were some way to pause iframes, it would be a whole lot simpler.
 
-- Same as above, but for changing volume for each iframe?
+- Same as above, but for changing volume for each iframe? (Not supported by current web standards, I believe)
 
 - NPM package for developers to test their games within the framework?
 
-- Change config.ini and CCSS animations to be compiled instead of read on the fly (Probably through a Javascript Bundler). Allows me to remove even more hacky setTimeout solutions for adding HTML.
+- Change config.ini and CCSS animations to be "compiled" instead of read/assembled on the fly (through Webpack or something similar). Allows me to remove even more hacky setTimeout solutions for adding HTML.
 
 To fix right now:
 - Settings menu

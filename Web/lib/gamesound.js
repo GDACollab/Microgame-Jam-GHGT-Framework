@@ -1,5 +1,23 @@
+import iniReader from "./configloader.js";
+
+var ini;
+
 class AudioManager {
+    #setupPromise;
+
     constructor(){
+        this.#setupPromise = new Promise(async (resolve) => {
+            ini = await iniReader;
+            this.#constructSounds();
+            resolve();
+        });
+    }
+
+    get onSetup() {
+        return this.#setupPromise;
+    }
+
+    #constructSounds(){
         this._sounds = ini["Sounds"];
 
         for (var soundKey in this._sounds){

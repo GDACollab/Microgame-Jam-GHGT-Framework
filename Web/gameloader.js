@@ -1,8 +1,10 @@
 import {PicoInterface} from "./lib/picointerface.js";
 import GlobalAudioManager from "./lib/gamesound.js";
 import GlobalAnimManager from "./lib/animationmanager.js";
+import iniReader from "./lib/configloader.js";
 // Game loader, for everything to do with transitions: playing animations, playing sounds, selecting the next game, changing difficulty.
 
+var ini;
 class GameLoader {
     #debug_index = 0;
     #gameLoaded = false;
@@ -11,8 +13,17 @@ class GameLoader {
     #gamesConfig;
     #gameNames;
 
-    constructor() {
+    #setupPromise;
 
+    constructor() {
+        this.#setupPromise = new Promise(async (resolve) => {
+            ini = await iniReader;
+            this.#setUpGameLoader();
+            resolve();
+        });
+    }
+
+    #setUpGameLoader() {
         // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
         this.#gamesList = ini["Games"];
         this.#gamesConfig = ini["GamesConfig"];

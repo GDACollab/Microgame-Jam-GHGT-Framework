@@ -41,9 +41,10 @@ class MicrogameJam {
 
         this.GameLoader = GlobalGameLoader;
 
-        this.GameMenus = new MicrogameJamMenu(this);
-
-        document.getElementById("playButton").onclick = this.startMicrogames;
+        this.GameMenus = MicrogameJamMenu;
+        this.GameMenus.onSetup.then(() => {
+            document.getElementById("playButton").onclick = this.startMicrogames;
+        });
 
         if (DEBUG_TRANSITION === "win") {
             debugLoopTransition(true);
@@ -57,18 +58,20 @@ class MicrogameJam {
             document.getElementById("loseTransition").hidden = false;
         }
 
-        this.GameSound.play("theme", this.masterVolume * 0.3, false, true);
+        this.GameSound.onSetup.then(() => {
+            this.GameSound.play("theme", this.masterVolume * 0.3, false, true);
 
-        var GameSound = this.GameSound;
-        for (const button of document.querySelectorAll("[id*=\"Button\"]")) {
-            button.addEventListener("mouseover", function(){
-                GameSound.play("buttonHover", this.masterVolume, true);
-            });
+            var GameSound = this.GameSound;
+            for (const button of document.querySelectorAll("[id*=\"Button\"]")) {
+                button.addEventListener("mouseover", function(){
+                    GameSound.play("buttonHover", this.masterVolume, true);
+                });
 
-            button.addEventListener("click", function(){
-                GameSound.play("buttonClick", this.masterVolume, true);
-            });
-        }
+                button.addEventListener("click", function(){
+                    GameSound.play("buttonClick", this.masterVolume, true);
+                });
+            }
+        });
 
         requestAnimationFrame(this.update.bind(this));
     }

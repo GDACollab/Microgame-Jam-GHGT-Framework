@@ -1,3 +1,5 @@
+import ini from "./configloader.js";
+
 class CCSSAnimationBase {
     constructor(cssRule) {
         this.name = cssRule.name;

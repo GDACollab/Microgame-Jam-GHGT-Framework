@@ -1,6 +1,8 @@
 import {OptionsManager} from "./optionsmanager.js"
 import {Selectable, MenuVector, MenuVectorField} from "./menulib.js"
 import GlobalAnimManager from "../animationmanager.js";
+import iniReader from "../configloader.js";
+var ini;
 
 // Handles the creation of the main menu and transition elements.
 // Also handles actual control of the main menu elements.
@@ -96,11 +98,24 @@ class ElementCreator {
 class MicrogameJamMenu {
     #currMenu = "main";
     #destMenu;
-    #Controller;
     #inputReader;
     #optionsManager;
 
+    #setUpPromise;
+
     constructor(){
+        this.#setUpPromise = new Promise(async (resolve) => {
+            ini = await iniReader;
+            this.#setUp();
+            resolve();
+        });
+    }
+
+    get onSetup() {
+        return this.#setUpPromise;
+    }
+
+    #setUp(){
         if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
             this.#initMainMenu();
         }
