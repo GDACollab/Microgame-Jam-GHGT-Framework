@@ -50,10 +50,12 @@ function addCustomGooglyEye(element, inputId, scale, left) {
 }
 
 function setUpGooglyEyes() {
-    document.querySelectorAll(".googly-eye").forEach(createEye);
-    setTimeout(() => {
-        //addCustomGooglyEye(document.getElementById("game-options-all-volume"), "options-volume", 138, -44)
-    }, 100);
+    window.addEventListener("load", () => {
+        document.querySelectorAll(".googly-eye").forEach(createEye);
+        setTimeout(() => {
+            addCustomGooglyEye(document.getElementById("game-options-all-volume"), "options-volume", 138, -44)
+        }, 100);
+    });
 }
 
 function updateGooglyEyes() {;

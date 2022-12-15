@@ -124,6 +124,11 @@ class GameLoader {
         }
     }
 
+    #gameToLoad;
+    get game() {
+        return this.#gameToLoad;
+    }
+
     // ANIMATIONS
     // -----------------------------------------------------------------------
 
@@ -132,7 +137,7 @@ class GameLoader {
         document.getElementById("transitionContainer").removeAttribute("hidden");
         document.getElementById(transitionName + "Transition").removeAttribute("hidden");
 
-        let gameToLoad = this.pickGameToLoad();
+        this.#gameToLoad = this.pickGameToLoad();
 
         var playTransitionPriorLoaded = false;
 
@@ -147,9 +152,9 @@ class GameLoader {
         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", {
             shouldLoop: function(timestamp, animationObj){
                 // Should we load when we're looping? If yes, we have to actually wait until we're looping.
-                if (this.#gamesConfig["play-transition-prior"].includes(gameToLoad) && !playTransitionPriorLoaded && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)) {
+                if (this.#gamesConfig["play-transition-prior"].includes(this.#gameToLoad) && !playTransitionPriorLoaded && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)) {
                     playTransitionPriorLoaded = true;
-                    this.#loadGameHTML(gameToLoad);
+                    this.#loadGameHTML(this.#gameToLoad);
                 }
                 // Loop while our game isn't ready to start.
                 return this.#gameLoaded === false; 
@@ -161,8 +166,8 @@ class GameLoader {
             }
         });
 
-        if (!(this.#gamesConfig["play-transition-prior"].includes(gameToLoad))) {
-            this.#loadGameHTML(gameToLoad);
+        if (!(this.#gamesConfig["play-transition-prior"].includes(this.#gameToLoad))) {
+            this.#loadGameHTML(this.#gameToLoad);
         }
     }
 

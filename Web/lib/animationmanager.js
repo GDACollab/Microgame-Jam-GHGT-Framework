@@ -1,4 +1,9 @@
-import ini from "./configloader.js";
+import iniReader from "./configloader.js";
+
+var ini;
+iniReader.then((dat) => {
+    ini = dat;
+});
 
 class CCSSAnimationBase {
     constructor(cssRule) {
@@ -11,6 +16,8 @@ class CCSSAnimationBase {
 
         this.currTime = 0;
         this.playStack = [];
+
+        
     }
 
     evaluateCCSSAnimProp(animProp) {

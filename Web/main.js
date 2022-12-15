@@ -106,7 +106,7 @@ class MicrogameJam {
 
     gameStarted() {
         this.#inGame = true;
-        GlobalInputManager.gameStartInputUpdate();
+        GlobalInputManager.gameStartInputUpdate(GlobalGameLoader.game);
         this.GameLoader.gameStarted();
     }
 }

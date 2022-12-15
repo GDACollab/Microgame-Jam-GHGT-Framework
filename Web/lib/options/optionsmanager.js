@@ -238,8 +238,11 @@ export class OptionsManager {
                 var bindButtonP = document.createElement("p");
                 var bindButton = document.createElement("button");
 
-                bindButton.onclick = this.updateBinding.bind(this, game, d);
-
+                var bindingName = "Arrow" + d;
+                if (d === "Space") {
+                    bindingName = " ";
+                }
+                bindButton.onclick = this.updateBinding.bind(this, game, bindingName);
                 var bindButtonText = document.createElement("div");
                 bindButtonText.className = "remap-button-text";
 
@@ -293,17 +296,17 @@ export class OptionsManager {
             div.appendChild(optionsDiv);
 
             this.#optionsSelect.appendChild(div);
-        });
+        }, this);
 
-        document.getElementById("game-options-all").innerHTML = `
+        // We can't add directly to innerHTML because it'll mess with the events.
+
+        document.getElementById("game-options-all").insertAdjacentHTML("afterbegin", `
         <div style="float: left; height: 92px; width: 50px; margin-left: 10px;" id="game-options-all-volume">
             <p style="width: 170px; text-align: center;">Main Menu Volume</p>
             <input id="options-volume" type="range" min="1" max="100" value="100"/>
-        </div>` + document.getElementById("game-options-all").innerHTML;
+        </div>`);
 
         document.getElementById("options-select-games-all").className = "active";
-
-		document.getElementById("options-select-games-all").onclick = this.#swapToOptions.bind(this, "all");
 
         this.optionsSave();
 	}
@@ -327,8 +330,14 @@ export class OptionsManager {
         this.optionsSave();
     }
 
+    updateBindingCapture(target, game, bindingName, bindingPressed) {
+        GlobalInputManager.addBinding(game, bindingName, bindingPressed);
+        target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
+    }
+
     updateBinding(game, bindingName, event) {
         event.target.innerText = "<<Press Something>>";
+        GlobalInputManager.captureNextInput(this.updateBindingCapture.bind(this, event.target, game, bindingName));
     }
 
     clearBindings(gameName, bindingName) {
