@@ -7,15 +7,29 @@ class MicrogameInput {
         ["ArrowLeft", "ArrowLeft"],
         [" ", " "]])]
     ]);
-
     static baseBindings = ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft", " "];
-
+    
+    #stateTracker = new Map();
     #currBinding = MicrogameInput.bindings.get("all");
+    constructor() {
+        this.#currBinding.forEach((keyToPress, binding) => {
+            this.#stateTracker.set(binding, {key: keyToPress, isDown: false});
+        }, this);
+    }
+
     update() {
         var keysToPress = [];
-        this.#currBinding.forEach((value, key) => {
-            var i = this.getInput(key);
-            keysToPress.push({"key": value, "isDown": i});
+        this.#currBinding.forEach((keyToPress, binding) => {
+            if (!this.#stateTracker.has(binding)) {
+                this.#stateTracker.set(binding, {key: keyToPress, isDown: false});
+            }
+            var pastState = this.#stateTracker.get(binding);
+            var currState = this.getInput(binding);
+            if (pastState.isDown !== currState) {
+                var updatedState = {key: keyToPress, isDown: currState};
+                keysToPress.push(updatedState);
+                this.#stateTracker.set(binding, updatedState);
+            }
         }, this);
         return keysToPress;
     }
@@ -27,6 +41,10 @@ class MicrogameInput {
         } else {
             this.#currBinding = this.constructor.bindings.get("all");
         }
+        this.#stateTracker = new Map();
+        this.#currBinding.forEach((keyToPress, binding) => {
+            this.#stateTracker.set(binding, {key: keyToPress, isDown: false});
+        }, this);
     }
 }
 
@@ -34,7 +52,7 @@ class MicrogameInput {
 class MicrogameKeyboard extends MicrogameInput {
 
     #keysToDown = new Set();
-    #allKeysDown = new Set();
+    static allKeysDown = new Set();
 
     constructor() {
         super();
@@ -46,7 +64,7 @@ class MicrogameKeyboard extends MicrogameInput {
 
     // TODO: Fix to work so that you can send keys in place of the standard arrows.
     #interruptInputDown(ev) {
-        this.#allKeysDown.add(ev.key);
+        MicrogameKeyboard.allKeysDown.add(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
             return;
         } else {
@@ -56,7 +74,7 @@ class MicrogameKeyboard extends MicrogameInput {
     }
 
     #interruptInputUp(ev) {
-        this.#allKeysDown.delete(ev.key);
+        MicrogameKeyboard.allKeysDown.delete(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
             return;
         } else {
@@ -66,7 +84,7 @@ class MicrogameKeyboard extends MicrogameInput {
     }
 
     getAnyInput() {
-        var iter = this.#allKeysDown.values().next();
+        var iter = MicrogameKeyboard.allKeysDown.values().next();
         if (!iter.done) {
             return {control: iter.value, type: MicrogameKeyboard};
         }
@@ -154,6 +172,14 @@ class MicrogameInputManager {
         map.get(game).set(binding.control, bindingName);
     }
 
+    hasBinding(game, binding) {
+        var map = binding.type.bindings;
+        if (!map.has(game)) {
+            return false;
+        }
+        return map.get(game).has(binding.control);
+    }
+
     getBindingsStrings(game) {
         var s = {};
         MicrogameKeyboard.bindings.get(game).forEach((dir, binding) => {
@@ -199,9 +225,6 @@ class MicrogameInputManager {
 
         MicrogameGamepad.bindings.get(game).forEach((dir, binding) => {
             var dirStringName = dir;
-            if (dir === " ") {
-                dirStringName = "space";
-            }
             s[dirStringName] += "," + binding;
         });
         return s;
@@ -247,8 +270,8 @@ class MicrogameInputManager {
         }
         if (this.#captureNextCallback !== null) {
             var any = this.getAnyInput();
-            if (any !== null){
-                this.#captureNextCallback(any);
+            // If the callback accepts the input we give it.
+            if (this.#captureNextCallback(any)) {
                 this.#captureNextCallback = null;
             }
         } else {
@@ -278,4 +301,4 @@ class MicrogameInputManager {
 
 var GlobalInputManager = new MicrogameInputManager();
 
-export default GlobalInputManager;
+export {GlobalInputManager as default, MicrogameKeyboard};

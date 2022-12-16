@@ -1,5 +1,5 @@
 import {Selectable, MenuVectorField, MenuVector} from "./menulib.js";
-import GlobalInputManager from "../input.js";
+import GlobalInputManager, {MicrogameKeyboard} from "../input.js";
 import GlobalGameLoader from "../../gameloader.js";
 
 class GameList extends Selectable {
@@ -154,7 +154,7 @@ export class OptionsManager {
 
         this.#optionsSelect = document.getElementById("options-select-games");
 
-		var gameNames = {"all" : "Microgame Settings", ... GlobalGameLoader.gameNames};
+		var gameNames = {"all" : "Microgame Settings (All Games)", ... GlobalGameLoader.gameNames};
 
         Object.keys(gameNames).forEach((game) => {
             if (!(game in this.#optionsStorage)) {
@@ -330,14 +330,37 @@ export class OptionsManager {
         this.optionsSave();
     }
 
+    #selectPressed = false;
+
     updateBindingCapture(target, game, bindingName, bindingPressed) {
-        GlobalInputManager.addBinding(game, bindingName, bindingPressed);
-        target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
+        if (!MicrogameKeyboard.allKeysDown.has(" ")) {
+            this.#selectPressed = false;
+        }
+        if (!this.#selectPressed && bindingPressed !== null){
+            if (GlobalInputManager.hasBinding(game, bindingPressed)) {
+                // If the binding exists anywhere else in the control scheme, we don't update it:
+                target.innerText = (bindingPressed.control === " " ? "Space" : bindingPressed.control) + " Already Bound";
+                setTimeout(() => {
+                    target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
+                }, 1000);
+                return true;
+            }
+            GlobalInputManager.addBinding(game, bindingName, bindingPressed);
+            target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
+            return true;
+        }
     }
 
     updateBinding(game, bindingName, event) {
-        event.target.innerText = "<<Press Something>>";
-        GlobalInputManager.captureNextInput(this.updateBindingCapture.bind(this, event.target, game, bindingName));
+        var target = event.currentTarget.querySelector(".remap-button-text");
+        // Wait for the timeout from above to complete if it hasn't yet.
+        // Additionally, if we're already capturing a binding, don't update our behavior.
+        if (target.innerText === "<<Press Something>>" || target.innerText.includes("Already Bound")){
+            return;
+        }
+        target.innerText = "<<Press Something>>";
+        this.#selectPressed = true;
+        GlobalInputManager.captureNextInput(this.updateBindingCapture.bind(this, target, game, bindingName));
     }
 
     clearBindings(gameName, bindingName) {
