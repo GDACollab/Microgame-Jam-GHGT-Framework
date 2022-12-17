@@ -1,6 +1,6 @@
 class MicrogameInput {
     // FIX to be a map for all games.
-    static bindings = new Map([["all", new Map()]]);
+    static bindings = new Map([["all", new Map([["w", "ArrowUp"], ["s", "ArrowDown"], ["a", "ArrowLeft"], ["d", "ArrowRight"]])]]);
     static baseBindings = ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft", " "];
     
     #stateTracker = new Map();
@@ -25,6 +25,19 @@ class MicrogameInput {
                 this.#stateTracker.set(binding, updatedState);
             }
         }, this);
+        // We also want to include the "all" inputs:
+        MicrogameInput.bindings.get("all").forEach((keyToPress, binding) => {
+            if (!this.#stateTracker.has(binding)) {
+                this.#stateTracker.set(binding, {key: keyToPress, isDown: false});
+            }
+            var pastState = this.#stateTracker.get(binding);
+            var currState = this.getInput(binding);
+            if (pastState.isDown !== currState) {
+                var updatedState = {key: keyToPress, isDown: currState};
+                keysToPress.push(updatedState);
+                this.#stateTracker.set(binding, updatedState);
+            }
+        });
         return keysToPress;
     }
 

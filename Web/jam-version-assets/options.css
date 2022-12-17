@@ -21,7 +21,7 @@
     color: black;
 }
 #options-select-games > .active.hover > .game-select, #options-select-games > .active > .game-select:hover {
-    background-color: #ffff00;
+    background-color: #ffff6e;
 }
 
 #options-select-games > .hover > .game-select, #options-select-games .game-select:hover {
