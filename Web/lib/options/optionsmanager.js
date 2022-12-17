@@ -259,13 +259,10 @@ export class OptionsManager {
                 var bindButtonText = document.createElement("div");
                 bindButtonText.className = "remap-button-text";
 
-                if (game !== "all"){
-                    GlobalInputManager.onUpdateDefaultBindings(game, d, (bindingName, binding) => {
-                        bindButtonText.innerText = GlobalInputManager.defaultBindingStrings[d];
-                    });
+                var strings = GlobalInputManager.getBindingsStrings(game);
+                if (d.toLowerCase() in strings) {
+                    bindButtonText.innerText = strings[d.toLowerCase()];
                 }
-
-                bindButtonText.innerText = GlobalInputManager.getBindingsStrings(game)[d.toLowerCase()];
 
                 bindButton.appendChild(bindButtonText);
 
@@ -288,7 +285,7 @@ export class OptionsManager {
                 var clearButtonP = document.createElement("p");
                 var clearButton = document.createElement("button");
 
-                clearButton.onclick = this.setUpClear.bind(this);
+                clearButton.onclick = this.clearBindButton.bind(this, game, bindingName);
 
                 clearButtonP.className = "clear-button";
 
@@ -340,6 +337,8 @@ export class OptionsManager {
                     dataType: "Map",
                     value: [...value]
                 }
+            } else if (key === "type" && typeof value === "function") {
+                return value.name
             } else {
                 return value;
             }
@@ -368,20 +367,15 @@ export class OptionsManager {
             this.#selectPressed = false;
         }
         if (!this.#selectPressed && bindingPressed !== null){
-            if (GlobalInputManager.hasBinding(game, bindingPressed)) {
+            var has = GlobalInputManager.hasBinding(game, bindingPressed);
+            if (has.has) {
                 // If the binding exists anywhere else in the control scheme, we don't update it:
                 target.innerText = (bindingPressed.control === " " ? "Space" : bindingPressed.control) + " Already Bound";
                 setTimeout(() => {
                     target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
                 }, 1000);
-                if (this.#clearOnSelect) {
-                    this.#clearOnSelect = false;
-                }
                 this.#bindingTarget = null;
                 return true;
-            }
-            if (this.#clearOnSelect) {
-                this.clearBindings(game, bindingName);
             }
             GlobalInputManager.addBinding(game, bindingName, bindingPressed);
             target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
@@ -392,7 +386,7 @@ export class OptionsManager {
                 };
             }
             this.#MainMenuManager.pauseInputs(100);
-            this.#optionsStorage[game].dir[bindingName].set(bindingPressed.binding, bindingPressed);
+            this.#optionsStorage[game].dir[bindingName].set(bindingPressed.control, bindingPressed);
             this.optionsSave();
             this.#bindingTarget = null;
             return true;
@@ -401,7 +395,6 @@ export class OptionsManager {
 
     stopBinding() {
         if (this.#bindingTarget !== null){
-            this.#clearOnSelect = false;
             this.#bindingTarget.element.innerText = GlobalInputManager.getBindingsStringsByBindingName(this.#bindingTarget.gameName)[this.#bindingTarget.bindingName];
             GlobalInputManager.cancelCaptureInput();
             this.#bindingTarget = null;
@@ -425,19 +418,14 @@ export class OptionsManager {
         GlobalInputManager.captureNextInput(this.updateBindingCapture.bind(this, target, game, bindingName));
     }
 
-    #clearOnSelect = false;
-
-    setUpClear(ev) {
+    clearBindButton(game, bindingName, ev) {
         if (this.#bindingTarget !== null) {
             this.stopBinding();
         }
-        var parent = ev.currentTarget.parentElement;
-        while (!parent.className.includes("remap-")) {
-            parent = parent.parentElement;
-        }
-        // We don't actually want to clear bindings until a replacement binding has been set.
-        this.#clearOnSelect = true;
-        parent.querySelector(".bind-button button").click();
+        ev.currentTarget.parentElement.parentElement.querySelector(".bind-button .remap-button-text").innerText = "";
+        this.clearBindings(game, bindingName);
+        this.#optionsStorage[game].dir[bindingName].clear();
+        this.optionsSave();
     }
 
     clearBindings(gameName, bindingName) {
