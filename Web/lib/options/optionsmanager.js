@@ -377,10 +377,11 @@ export class OptionsManager {
                 if (this.#clearOnSelect) {
                     this.#clearOnSelect = false;
                 }
+                this.#bindingTarget = null;
                 return true;
             }
             if (this.#clearOnSelect) {
-                this.clearBindings(gameName, bindingName);
+                this.clearBindings(game, bindingName);
             }
             GlobalInputManager.addBinding(game, bindingName, bindingPressed);
             target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
@@ -390,30 +391,53 @@ export class OptionsManager {
                     ...GlobalInputManager.getAllBindings(game)
                 };
             }
+            this.#MainMenuManager.pauseInputs(100);
             this.#optionsStorage[game].dir[bindingName].set(bindingPressed.binding, bindingPressed);
             this.optionsSave();
+            this.#bindingTarget = null;
             return true;
         }
     }
 
+    stopBinding() {
+        if (this.#bindingTarget !== null){
+            this.#clearOnSelect = false;
+            this.#bindingTarget.element.innerText = GlobalInputManager.getBindingsStringsByBindingName(this.#bindingTarget.gameName)[this.#bindingTarget.bindingName];
+            GlobalInputManager.cancelCaptureInput();
+            this.#bindingTarget = null;
+        }
+    }
+
+    #bindingTarget = null;
+
     updateBinding(game, bindingName, event) {
+        if (this.#bindingTarget !== null) {
+            this.stopBinding();
+        }
         var target = event.currentTarget.querySelector(".remap-button-text");
-        // Wait for the timeout from above to complete if it hasn't yet.
         // Additionally, if we're already capturing a binding, don't update our behavior.
-        if (target.innerText === "<<Press Something>>" || target.innerText.includes("Already Bound")){
+        if (target.innerText.includes("Already Bound")){
             return;
         }
         target.innerText = "<<Press Something>>";
+        this.#bindingTarget = {element: target, bindingName: bindingName, gameName: game};
         this.#selectPressed = true;
         GlobalInputManager.captureNextInput(this.updateBindingCapture.bind(this, target, game, bindingName));
     }
 
     #clearOnSelect = false;
 
-    setUpClear() {
+    setUpClear(ev) {
+        if (this.#bindingTarget !== null) {
+            this.stopBinding();
+        }
+        var parent = ev.currentTarget.parentElement;
+        while (!parent.className.includes("remap-")) {
+            parent = parent.parentElement;
+        }
         // We don't actually want to clear bindings until a replacement binding has been set.
-        document.parentElement.querySelector(".bind-button").click();
         this.#clearOnSelect = true;
+        parent.querySelector(".bind-button button").click();
     }
 
     clearBindings(gameName, bindingName) {
@@ -430,8 +454,13 @@ export class OptionsManager {
     }
 
 	#swapToOptions(gameName) {
-        document.getElementById("options-select-games-" + this.#currentOption).classList.remove("active");
-		document.getElementById("options-select-games-" + gameName).classList.add("active");
-        this.#currentOption = gameName;
+        if (this.#currentOption !== gameName) {
+            if (this.#bindingTarget !== null) {
+                this.stopBinding();
+            }
+            document.getElementById("options-select-games-" + this.#currentOption).classList.remove("active");
+            document.getElementById("options-select-games-" + gameName).classList.add("active");
+            this.#currentOption = gameName;
+        }
 	}
 }

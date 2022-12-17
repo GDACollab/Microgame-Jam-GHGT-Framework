@@ -125,6 +125,10 @@ class MicrogameJamMenu {
         this.#optionsManager = new OptionsManager(this);
     }
 
+    pauseInputs(ms){
+        this.#inputReader.pauseInputs(ms);
+    }
+
     addSelectable(selectable) {
         this.#inputReader.addSelectable(selectable);
     }
@@ -162,6 +166,9 @@ class MicrogameJamMenu {
                 this.#currMenu = "main";
             },
             shouldLoop: function(){
+                if (this.#currMenu === "options") {
+                    this.#optionsManager.stopBinding();
+                }
                 if (this.#currMenu === "credits"){
                     this.#textY -= 150;
                     document.getElementById("credits-text").style.setProperty("--text-y", this.#textY);
@@ -323,10 +330,17 @@ class MicrogameJamMenuInputReader {
 
     #selectedElement = -1;
     #isInMenu = true;
+    #pauseInputTimer = -1;
 
     #readMenuInputs(ev) {
         if (this.#isInMenu) {
             ev.preventDefault();
+        }
+        if (this.#pauseInputTimer > 0) {
+            if (this.#pauseInputTimer > performance.now()){
+                this.#pauseInputTimer = -1;
+            }
+            return;
         }
         if (this.#selectedElement === -1) {
             document.body.style.cursor = "none";
@@ -352,6 +366,10 @@ class MicrogameJamMenuInputReader {
             dir[1] = -1;
         }
         this.#selectElement(new MenuVector(dir));
+    }
+
+    pauseInputs(ms) {
+        this.#pauseInputTimer = performance.now() + ms;
     }
 }
 

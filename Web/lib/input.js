@@ -150,12 +150,14 @@ class MicrogameGamepad extends MicrogameInput {
 
 class MicrogameInputManager {
     #defaultBindingStrings = {};
+    #defaultBindingStringsByBindingName = {};
     
     #keysDown = new Set();
     #microgameInputs = { "keyboard": new MicrogameKeyboard()};
 
     constructor() {
         this.#defaultBindingStrings = this.getBindingsStrings("all");
+        this.#defaultBindingStringsByBindingName = this.getBindingsStringsByBindingName("all");
     }
 
     get defaultBindingStrings() {
@@ -232,12 +234,17 @@ class MicrogameInputManager {
     }
 
     clearBindings(game, bindingName) {
-        var map = binding.type.bindings;
         if (!map.has(game)) {
             MicrogameGamepad.bindings.set(game, MicrogameGamepad.bindings.get("all"));
             MicrogameKeyboard.bindings.set(game, MicrogameKeyboard.bindings.get("all"));
         }
-        map.get(game).forEach((keyToPress, binding) => {
+
+        MicrogameGamepad.get(game).forEach((keyToPress, binding) => {
+            if (keyToPress === bindingName) {
+                map.get(game).delete(binding);
+            }
+        });
+        MicrogameKeyboard.get(game).forEach((keyToPress, binding) => {
             if (keyToPress === bindingName) {
                 map.get(game).delete(binding);
             }
@@ -276,6 +283,9 @@ class MicrogameInputManager {
     }
 
     getBindingsStringsByBindingName(game) {
+        if (!this.hasAdjustedBindings(game)) {
+            return this.#defaultBindingStringsByBindingName;
+        }
         var s = {};
         MicrogameKeyboard.bindings.get(game).forEach((dir, binding) => {
             var dirStringName = dir;
@@ -310,6 +320,9 @@ class MicrogameInputManager {
     #captureNextCallback = null;
     captureNextInput(callback) {
         this.#captureNextCallback = callback;
+    }
+    cancelCaptureInput() {
+        this.#captureNextCallback = null;
     }
 
     #pressKey(key, isDown) {

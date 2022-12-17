@@ -237,7 +237,7 @@
 }
 
 .googly-eye {
-    background: white;
+    background: #e2e2e2;
     border-radius: 100%;
     width: 25px;
     height: 25px;
@@ -262,7 +262,7 @@
 #options-volume:hover~#options-volume-eye, #options-volume.hover~#options-volume-eye {
     width: 30px;
     height: 30px;
-    background: #cbcbcb;
+    background: #aaaaaa;
     transform: translate(-5px, -5px);
 }
 
