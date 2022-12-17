@@ -25,6 +25,8 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 - Move to a framework that allows for better UI design (in retrospect, I think config.ini is... well it's a mediocre solution.) Something like React or Sveltekit. The one advantage of being at a fixed resolution is that it makes the design much easier, so maybe switching to some kind of visual editor would be great for designers, and mixing that with a javascript framework for designing UIs.
 
+- Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
+
 To fix right now:
 - Settings menu
  - Save data to local storage

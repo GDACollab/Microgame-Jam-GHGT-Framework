@@ -385,7 +385,7 @@ export class OptionsManager {
             GlobalInputManager.addBinding(game, bindingName, bindingPressed);
             target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
 
-            if (!(dir in this.#optionsStorage[game])) {
+            if (!("dir" in this.#optionsStorage[game])) {
                 this.#optionsStorage[game].dir = {
                     ...GlobalInputManager.getAllBindings(game)
                 };

@@ -201,7 +201,8 @@ class MicrogameInputManager {
     addBinding(game, bindingName, binding){
         var map = binding.type.bindings;
         if (!map.has(game)) {
-            map.set(game, binding.type.bindings.get("all"));
+            MicrogameGamepad.bindings.set(game, MicrogameGamepad.bindings.get("all"));
+            MicrogameKeyboard.bindings.set(game, MicrogameKeyboard.bindings.get("all"));
             this.#onUpdateDefaultBindingsCallbacks.delete(game);
         }
         
@@ -233,7 +234,8 @@ class MicrogameInputManager {
     clearBindings(game, bindingName) {
         var map = binding.type.bindings;
         if (!map.has(game)) {
-            map.set(game, binding.type.bindings.get("all"));
+            MicrogameGamepad.bindings.set(game, MicrogameGamepad.bindings.get("all"));
+            MicrogameKeyboard.bindings.set(game, MicrogameKeyboard.bindings.get("all"));
         }
         map.get(game).forEach((keyToPress, binding) => {
             if (keyToPress === bindingName) {
