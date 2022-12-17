@@ -150,7 +150,6 @@ class MicrogameGamepad extends MicrogameInput {
 
 class MicrogameInputManager {
     #defaultBindingStrings = {};
-    #defaultBindings = new Map(MicrogameInput.bindings.get("all"));
     
     #keysDown = new Set();
     #microgameInputs = { "keyboard": new MicrogameKeyboard()};
@@ -163,13 +162,64 @@ class MicrogameInputManager {
         return this.#defaultBindingStrings;
     }
 
+    setBindingFromOption(game, direction, option) {
+        option.forEach((bindingName, bindingObj) => {
+            var map = bindingObj.type.bindings;
+            if (!map.has(game)){
+                map.set(game, bindingObj.type.bindings.get("all"));
+            }
+            map.get(game).set(bindingName, direction);
+        });
+    }
+
+    hasAdjustedBindings(game) {
+        return MicrogameKeyboard.bindings.has(game) || MicrogameGamepad.bindings.has(game);
+    }
+
+    getAllBindings(game) {
+        var bindings = {};
+
+        MicrogameKeyboard.bindings.get(game).forEach((keyToPress, binding) => {
+            var bindingObj = {control: binding, type: MicrogameKeyboard};
+            if (keyToPress in bindings) {
+                bindings[keyToPress].set(binding, bindingObj);
+            } else {
+                bindings[keyToPress] = new Map([[binding, bindingObj]]);
+            }
+        });
+        MicrogameGamepad.bindings.get(game).forEach((keyToPress, binding) => {
+            var bindingObj = {control: binding, type: MicrogameGamepad};
+            if (keyToPress in bindings) {
+                bindings[keyToPress].set(binding, bindingObj);
+            } else {
+                bindings[keyToPress] = new Map([[binding, bindingObj]]);
+            }
+        });
+        return bindings;
+    }
+
     addBinding(game, bindingName, binding){
         var map = binding.type.bindings;
         if (!map.has(game)) {
-            map.set(game, this.#defaultBindings);
+            map.set(game, binding.type.bindings.get("all"));
+            this.#onUpdateDefaultBindingsCallbacks.delete(game);
         }
         
         map.get(game).set(binding.control, bindingName);
+        if (game === "all") {
+            this.#defaultBindingStrings = this.getBindingsStrings("all");
+            this.#onUpdateDefaultBindingsCallbacks.forEach((callbackObj) => {
+                if (callbackObj.dir === bindingName) {
+                    callbackObj.callback(bindingName, binding);
+                }
+            });
+        }
+    }
+
+    #onUpdateDefaultBindingsCallbacks = new Map();
+
+    onUpdateDefaultBindings(gameName, dir, callback) {
+        this.#onUpdateDefaultBindingsCallbacks.set(gameName, {callback: callback, dir: dir});
     }
 
     hasBinding(game, binding) {
@@ -180,7 +230,22 @@ class MicrogameInputManager {
         return map.get(game).has(binding.control);
     }
 
+    clearBindings(game, bindingName) {
+        var map = binding.type.bindings;
+        if (!map.has(game)) {
+            map.set(game, binding.type.bindings.get("all"));
+        }
+        map.get(game).forEach((keyToPress, binding) => {
+            if (keyToPress === bindingName) {
+                map.get(game).delete(binding);
+            }
+        });
+    }
+
     getBindingsStrings(game) {
+        if (!this.hasAdjustedBindings(game)) {
+            return this.#defaultBindingStrings;
+        }
         var s = {};
         MicrogameKeyboard.bindings.get(game).forEach((dir, binding) => {
             var dirStringName = dir.replace("Arrow", "").toLowerCase();

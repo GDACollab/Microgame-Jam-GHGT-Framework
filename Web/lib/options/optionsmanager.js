@@ -147,20 +147,33 @@ export class OptionsManager {
         if (this.#optionsStorage === null) {
             this.#optionsStorage = {};
         } else {
-            this.#optionsStorage = JSON.parse(this.#optionsStorage);
+            // From https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
+            this.#optionsStorage = JSON.parse(this.#optionsStorage, (key, value) => {
+                if (typeof value === "object" && value !== null) {
+                    if (value.dataType === "Map") {
+                        return new Map(value.value);
+                    }
+                }
+                return value;
+            });
+            for (var game in this.#optionsStorage) {
+                var gameOption = this.#optionsStorage[game]
+                for (var dir in gameOption.dir) {
+                    GlobalInputManager.setBindingFromOption(game, dir, gameOption.dir[dir]);   
+                }
+            }
         }
 
         this.#MainMenuManager = MainMenuManager;
 
         this.#optionsSelect = document.getElementById("options-select-games");
 
-		var gameNames = {"all" : "Microgame Settings (All Games)", ... GlobalGameLoader.gameNames};
+		var gameNames = {all : "Microgame Settings (All Games)", ... GlobalGameLoader.gameNames};
 
         Object.keys(gameNames).forEach((game) => {
             if (!(game in this.#optionsStorage)) {
                 this.#optionsStorage[game] = {
-                    "enabled": true,
-                    ...GlobalInputManager.defaultBindingStrings
+                    enabled: true
                 };
             }
 
@@ -246,7 +259,13 @@ export class OptionsManager {
                 var bindButtonText = document.createElement("div");
                 bindButtonText.className = "remap-button-text";
 
-                bindButtonText.innerText = this.#optionsStorage[game][d.toLowerCase()];
+                if (game !== "all"){
+                    GlobalInputManager.onUpdateDefaultBindings(game, d, (bindingName, binding) => {
+                        bindButtonText.innerText = GlobalInputManager.defaultBindingStrings[d];
+                    });
+                }
+
+                bindButtonText.innerText = GlobalInputManager.getBindingsStrings(game)[d.toLowerCase()];
 
                 bindButton.appendChild(bindButtonText);
 
@@ -268,6 +287,8 @@ export class OptionsManager {
 
                 var clearButtonP = document.createElement("p");
                 var clearButton = document.createElement("button");
+
+                clearButton.onclick = this.setUpClear.bind(this);
 
                 clearButtonP.className = "clear-button";
 
@@ -312,7 +333,17 @@ export class OptionsManager {
 	}
 
     optionsSave() {
-        localStorage.setItem("options", JSON.stringify(this.#optionsStorage));
+        // From https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
+        localStorage.setItem("options", JSON.stringify(this.#optionsStorage, (key, value) => {
+            if (value instanceof Map) {
+                return {
+                    dataType: "Map",
+                    value: [...value]
+                }
+            } else {
+                return value;
+            }
+        }));
     }
 
     updateEnabled(game, event) {
@@ -343,10 +374,24 @@ export class OptionsManager {
                 setTimeout(() => {
                     target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
                 }, 1000);
+                if (this.#clearOnSelect) {
+                    this.#clearOnSelect = false;
+                }
                 return true;
+            }
+            if (this.#clearOnSelect) {
+                this.clearBindings(gameName, bindingName);
             }
             GlobalInputManager.addBinding(game, bindingName, bindingPressed);
             target.innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
+
+            if (!(dir in this.#optionsStorage[game])) {
+                this.#optionsStorage[game].dir = {
+                    ...GlobalInputManager.getAllBindings(game)
+                };
+            }
+            this.#optionsStorage[game].dir[bindingName].set(bindingPressed.binding, bindingPressed);
+            this.optionsSave();
             return true;
         }
     }
@@ -363,8 +408,17 @@ export class OptionsManager {
         GlobalInputManager.captureNextInput(this.updateBindingCapture.bind(this, target, game, bindingName));
     }
 
-    clearBindings(gameName, bindingName) {
+    #clearOnSelect = false;
 
+    setUpClear() {
+        // We don't actually want to clear bindings until a replacement binding has been set.
+        document.parentElement.querySelector(".bind-button").click();
+        this.#clearOnSelect = true;
+    }
+
+    clearBindings(gameName, bindingName) {
+        GlobalInputManager.clearBindings(gameName, bindingName);
+        this.#optionsStorage[gameName].dir[bindingName].clear();
     }
 
     startManagingOptions() {

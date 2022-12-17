@@ -23,6 +23,8 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 - Change config.ini and CCSS animations to be "compiled" instead of read/assembled on the fly (through Webpack or something similar). Allows me to remove even more hacky setTimeout solutions for adding HTML.
 
+- Move to a framework that allows for better UI design (in retrospect, I think config.ini is... well it's a mediocre solution.) Something like React or Sveltekit. The one advantage of being at a fixed resolution is that it makes the design much easier, so maybe switching to some kind of visual editor would be great for designers, and mixing that with a javascript framework for designing UIs.
+
 To fix right now:
 - Settings menu
  - Save data to local storage
@@ -31,11 +33,8 @@ To fix right now:
 - Fix start button
 - Difficulty changing/game loading logic (Rotating queue of unique games, difficulty increases, difficulty of 1 if it's your first time playing a game)
 - Game over screen on 0 lives
-- Send any keyboard inputs from the body to the iframe.
 - Check browser compatibility
 - Add dry run games
-- Minify all .js and .css for web build? (Javascript Bundler?)
-- NW.js for desktop builds (breaks itch.io's API). Or maybe my itch.io desktop app is broken.
 
 CSS Wishlist:
 - While I'm busy working with a ton of CSS, there are some things I'd really love to see in future iterations of... I guess either CCSS or just future versions of CSS. I doubt these will ever get taken seriously (especially in this obscure README file), but here's hoping!
