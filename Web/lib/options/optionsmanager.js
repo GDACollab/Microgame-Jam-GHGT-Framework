@@ -159,6 +159,7 @@ export class OptionsManager {
             for (var game in this.#optionsStorage) {
                 var gameOption = this.#optionsStorage[game]
                 for (var dir in gameOption.dir) {
+                    GlobalInputManager.clearBindings(game, dir);
                     GlobalInputManager.setBindingFromOption(game, dir, gameOption.dir[dir]);   
                 }
             }
@@ -244,7 +245,7 @@ export class OptionsManager {
                 direction.className = "remap-" + d;
 
                 var text = document.createElement("p");
-                text.innerText = d + ":";
+                text.innerText = d + " Bindings:";
 
                 direction.appendChild(text);
 
@@ -291,7 +292,11 @@ export class OptionsManager {
 
                 var clearButtonText = document.createElement("div");
                 clearButtonText.className = "remap-button-text";
-                clearButtonText.innerText = "Clear";
+                if (bindButtonText.innerText.length === 0) {
+                    clearButtonText.innerText = "Reset";
+                } else {
+                    clearButtonText.innerText = "Clear";
+                }
                 clearButton.appendChild(clearButtonText);
 
                 var clearButtonBackground = document.createElement("div");
@@ -412,20 +417,38 @@ export class OptionsManager {
         if (target.innerText.includes("Already Bound")){
             return;
         }
-        target.innerText = "<<Press Something>>";
+        target.innerText = "<<Press>>";
         this.#bindingTarget = {element: target, bindingName: bindingName, gameName: game};
         this.#selectPressed = true;
         GlobalInputManager.captureNextInput(this.updateBindingCapture.bind(this, target, game, bindingName));
+        event.currentTarget.parentElement.parentElement.querySelector(".clear-button .remap-button-text").innerText = "Clear";
     }
 
     clearBindButton(game, bindingName, ev) {
         if (this.#bindingTarget !== null) {
             this.stopBinding();
         }
-        ev.currentTarget.parentElement.parentElement.querySelector(".bind-button .remap-button-text").innerText = "";
-        this.clearBindings(game, bindingName);
-        this.#optionsStorage[game].dir[bindingName].clear();
+        if (!("dir" in this.#optionsStorage[game])) {
+            this.#optionsStorage[game].dir = {
+                ...GlobalInputManager.getAllBindings(game)
+            };
+        }
+        if (ev.currentTarget.querySelector(".remap-button-text").innerText === "Reset") {
+            this.resetBindings(game, bindingName);
+            ev.currentTarget.parentElement.parentElement.querySelector(".bind-button .remap-button-text").innerText = GlobalInputManager.getBindingsStringsByBindingName(game)[bindingName];
+            ev.currentTarget.querySelector(".remap-button-text").innerText = "Clear";
+        } else {
+            ev.currentTarget.parentElement.parentElement.querySelector(".bind-button .remap-button-text").innerText = "";
+            this.clearBindings(game, bindingName);
+            this.#optionsStorage[game].dir[bindingName].clear();
+            ev.currentTarget.querySelector(".remap-button-text").innerText = "Reset";
+        }
         this.optionsSave();
+    }
+
+    resetBindings(gameName, bindingName) {
+        GlobalInputManager.resetBindings(gameName, bindingName);
+        this.#optionsStorage[gameName].dir[bindingName] = GlobalInputManager.getAllBindings(gameName)[bindingName];
     }
 
     clearBindings(gameName, bindingName) {

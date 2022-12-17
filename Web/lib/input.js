@@ -78,7 +78,7 @@ class MicrogameKeyboard extends MicrogameInput {
     }
 
     getAnyInput() {
-        var iter = MicrogameKeyboard.allKeysDown.values().next();
+        var iter = this.#keysToDown.values().next();
         if (!iter.done) {
             return {control: iter.value, type: MicrogameKeyboard};
         }
@@ -145,11 +145,13 @@ class MicrogameGamepad extends MicrogameInput {
 class MicrogameInputManager {
     #defaultBindingStrings = {};
     #defaultBindingStringsByBindingName = {};
+    #defaultBindings;
     
     #keysDown = new Set();
     #microgameInputs = { "keyboard": new MicrogameKeyboard()};
 
     constructor() {
+        this.#defaultBindings = this.getAllBindings("all");
         this.#defaultBindingStrings = this.getBindingsStrings("all");
         this.#defaultBindingStringsByBindingName = this.getBindingsStringsByBindingName("all");
     }
@@ -236,6 +238,12 @@ class MicrogameInputManager {
         });
     }
 
+    resetBindings(game, bindingName) {
+        this.#defaultBindings[bindingName].forEach((bindingObj, binding) => {
+            bindingObj.type.bindings.get(game).set(binding, bindingName);
+        });
+    }
+
     getBindingsStrings(game) {
         if (!this.hasAdjustedBindings(game)) {
             return this.#defaultBindingStrings;
@@ -291,7 +299,11 @@ class MicrogameInputManager {
 
         MicrogameGamepad.bindings.get(game).forEach((dir, binding) => {
             var dirStringName = dir;
-            s[dirStringName] += "," + binding;
+            if (dirStringName in s) {
+                s[dirStringName] += "," + binding;
+            } else {
+                s[dirStringName] = binding;
+            }
         });
         return s;
     }
