@@ -13,31 +13,40 @@ class MicrogameInput {
 
     update() {
         var keysToPress = [];
-        this.#currBinding.forEach((keyToPress, binding) => {
+        
+        // We also want to include the "all" inputs:
+        MicrogameInput.bindings.get("all").forEach((keyToPress, binding) => {
             if (!this.#stateTracker.has(binding)) {
-                this.#stateTracker.set(binding, {key: keyToPress, isDown: false});
+                this.#stateTracker.set(binding, {key: keyToPress, isDown: false, binding: binding});
             }
             var pastState = this.#stateTracker.get(binding);
             var currState = this.getInput(binding);
+            if (pastState.isDown !== currState) {
+                var updatedState = {key: keyToPress, isDown: currState, binding: binding};
+                keysToPress.push(updatedState);
+                this.#stateTracker.set(binding, updatedState);
+            }
+        });
+
+        this.#currBinding.forEach((keyToPress, binding) => {
+            if (!this.#stateTracker.has(binding)) {
+                this.#stateTracker.set(binding, {key: keyToPress, isDown: false, binding: binding});
+            }
+            var pastState = this.#stateTracker.get(binding);
+            var currState = this.getInput(binding);
+            // We prioritize the current binding's keybinds:
+            if (pastState.key !== currState.key) {
+                var update = keysToPress.findIndex(key => key.binding === binding);
+                if (update !== undefined) {
+                    keysToPress.splice(update, 1);
+                }
+            }
             if (pastState.isDown !== currState) {
                 var updatedState = {key: keyToPress, isDown: currState};
                 keysToPress.push(updatedState);
                 this.#stateTracker.set(binding, updatedState);
             }
         }, this);
-        // We also want to include the "all" inputs:
-        MicrogameInput.bindings.get("all").forEach((keyToPress, binding) => {
-            if (!this.#stateTracker.has(binding)) {
-                this.#stateTracker.set(binding, {key: keyToPress, isDown: false});
-            }
-            var pastState = this.#stateTracker.get(binding);
-            var currState = this.getInput(binding);
-            if (pastState.isDown !== currState) {
-                var updatedState = {key: keyToPress, isDown: currState};
-                keysToPress.push(updatedState);
-                this.#stateTracker.set(binding, updatedState);
-            }
-        });
         return keysToPress;
     }
 

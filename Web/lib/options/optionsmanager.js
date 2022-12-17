@@ -142,6 +142,12 @@ export class OptionsManager {
     #optionsSelect;
     #optionsStorage;
 
+    #onVolume;
+    set onVolume(val) {
+        this.#onVolume = val;
+        val(parseInt(localStorage.getItem("volume"))/100);
+    } 
+
 	constructor(MainMenuManager) {
         this.#optionsStorage = localStorage.getItem("options");
         if (this.#optionsStorage === null) {
@@ -328,6 +334,17 @@ export class OptionsManager {
             <p style="width: 170px; text-align: center;">Main Menu Volume</p>
             <input id="options-volume" type="range" min="1" max="100" value="100"/>
         </div>`);
+
+        if (localStorage.getItem("volume") === null) {
+            localStorage.setItem("volume", 100);
+        }
+        document.getElementById("options-volume").value = parseInt(localStorage.getItem("volume"));
+
+        document.getElementById("options-volume").addEventListener("input", function() {
+            this.#onVolume(parseInt(document.getElementById("options-volume").value)/100);
+            localStorage.setItem("volume", document.getElementById("options-volume").value);
+        }.bind(this));
+
 
         document.getElementById("options-select-games-all").className = "active";
 

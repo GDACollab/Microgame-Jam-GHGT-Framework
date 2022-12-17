@@ -27,7 +27,7 @@ class AudioManager {
         }
     }
 
-    play(sound, volume = 1, varyPitch = false, looping = false, callback){
+    play(sound, volume, varyPitch = false, looping = false, callback){
         this._sounds[sound].loop = looping;
         this._sounds[sound].volume = volume;
         this._sounds[sound].onended = function(){};
@@ -46,6 +46,10 @@ class AudioManager {
         if (typeof callback === "function"){
             this._sounds[sound].onended = callback;
         }
+    }
+
+    updateSound(sound, volume) {
+        this._sounds[sound].volume = volume;
     }
 
     stop(sound){

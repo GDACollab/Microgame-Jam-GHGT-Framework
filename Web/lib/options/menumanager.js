@@ -111,6 +111,10 @@ class MicrogameJamMenu {
         });
     }
 
+    set onVolume(value) {
+        this.#optionsManager.onVolume = value;
+    }
+
     get onSetup() {
         return this.#setUpPromise;
     }

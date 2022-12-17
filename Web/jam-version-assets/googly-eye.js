@@ -13,7 +13,7 @@ function createEye(eye) {
     var rangeElTop = rangeElement.offsetTop;
     var left = parseFloat(eye.getAttribute("left"));
 
-    document.getElementById(elementId).oninput = function(ev) {
+    document.getElementById(elementId).addEventListener("input", function(ev) {
         eye.style.left = ((((parseInt(rangeElement.value) - parseInt(rangeElement.min))/parseInt(rangeElement.max)) * parseFloat(eye.getAttribute("scale"))) + rangeElement.offsetLeft + left) + "px";
         
         eye.style.top = (rangeElTop - refTop - 2) + "px";
@@ -22,7 +22,7 @@ function createEye(eye) {
         innerLeft -= 1 * (rangeElement.value - oldVal);
 
         oldVal = rangeElement.value;
-    }
+    });
     eye.style.left = ((((parseInt(rangeElement.value) - parseInt(rangeElement.min))/parseInt(rangeElement.max)) * parseFloat(eye.getAttribute("scale"))) + rangeElement.offsetLeft + left) + "px";
     
     eye.style.top = (rangeElTop - refTop - 2) + "px";
@@ -42,10 +42,10 @@ function createEye(eye) {
 }
 
 function addCustomGooglyEye(element, inputId, scale, left) {
-    element.innerHTML += `
+    element.insertAdjacentHTML("beforeend",`
     <div class="googly-eye" id="${inputId}-eye" scale="${scale}" left="${left}">
         <div class="googly-eye-center"></div>
-    </div>`;
+    </div>`);
     createEye(document.getElementById(inputId + "-eye"));
 }
 
