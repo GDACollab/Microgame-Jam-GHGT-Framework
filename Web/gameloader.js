@@ -60,13 +60,19 @@ class GameLoader {
 
         // Because Twine saves things to the session:
         sessionStorage.removeItem("Saved Session");
+        
+        var transitionName = (didWin)? "win" : "lose";
 
+        GlobalAudioManager.play(transitionName + "Jingle", this.masterVolume * 0.8, true);
+
+        this.animateTransition(transitionName);
         // Difficulty change:
         var difficulty = 1;
         if (DEBUG_DIFFICULTY >= 1 && DEBUG_DIFFICULTY <= 3 && Number.isInteger(DEBUG_DIFFICULTY)) {
             difficulty = DEBUG_DIFFICULTY;
-        } else {
+        } else if (this.#gameToLoad !== null) {
             if (!this.#alreadyPlayedGames.includes(this.#gameToLoad)) {
+                debugger;
                 this.#alreadyPlayedGames.push(this.#gameToLoad);
                 difficulty = 1;
             } else {
@@ -74,13 +80,7 @@ class GameLoader {
                 this.#totalGamesPlayed++;
             }
         }
-        
-        
-        var transitionName = (didWin)? "win" : "lose";
 
-        GlobalAudioManager.play(transitionName + "Jingle", this.masterVolume * 0.8, true);
-
-        this.animateTransition(transitionName);
         // Return difficulty to the GameInterface:
         return difficulty;
     }
@@ -104,9 +104,8 @@ class GameLoader {
                 }
             } else {
                 gameToLoad = DEBUG_TEST;
+                console.log("DEBUG TESTING: " + gameToLoad + " - " + this.#gamesList[gameToLoad]);
             }
-            
-            console.log("DEBUG TESTING: " + gameToLoad + " - " + this.#gamesList[gameToLoad]);
         } else {
             this.#recentGamesLoaded.push(gameToLoad);
             if (this.#recentGamesLoaded.length === 4) {
@@ -195,6 +194,7 @@ class GameLoader {
 
         if (transitionName === "lose" && numLives === 1) {
             this.loseGameTransition();
+            this.#gameToLoad = null;
             return;
         } else {
             this.#gameToLoad = this.pickGameToLoad();

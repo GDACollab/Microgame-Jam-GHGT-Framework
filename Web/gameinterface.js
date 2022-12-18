@@ -54,6 +54,7 @@ var GameInterface = (function() {
         },
 
         gameStart: function(){
+            console.log("GAME START");
             _gameEnd = false;
             _lives = 3;
             MicrogameJamMainManager.gameStarted();
