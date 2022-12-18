@@ -88,7 +88,7 @@ class GameLoader {
     pickGameToLoad() {
         var enabledGamesArr = Array.from(MainMenuManager.enabledGames.values());
         enabledGamesArr = enabledGamesArr.filter((game) => !this.#recentGamesLoaded.includes(game));
-        var gameToLoad = enabledGamesArr[Math.floor(Math.random() * enabledGamesArr)];
+        var gameToLoad = enabledGamesArr[Math.floor(Math.random() * enabledGamesArr.length)];
         if (DEBUG_TEST !== "") {
             if (DEBUG_TEST === "sequential"){
                 document.body.onkeyup = function(event){
@@ -156,10 +156,30 @@ class GameLoader {
     // -----------------------------------------------------------------------
 
     loseGameTransition() {
-        GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseAnimation");
+        var mainMenuDraw = false;
+        GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseAnimation", {
+            shouldLoop: function(timestamp, animationObj) {
+                if (!mainMenuDraw && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)){
+                    mainMenuDraw = true;
+                    // Unload the iframe, load the main menu:
+                    document.getElementById("game").src = "about:blank";
+                    document.getElementById("menu").removeAttribute("hidden");
+
+                    // Set up game over screen:
+                    document.getElementById("gameOver").removeAttribute("hidden");
+                    GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALhideMain");
+                    document.getElementById("backButton").style.transform = "translate(577px, -81px)";
+
+                    document.getElementById("backButton").onclick = () => {
+                        GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALshowMain");
+                        document.getElementById("backButton").style.transform = "";
+                    };
+                }
+                return false;
+            }
+        });
         // Reset the total number of games played, but don't reset recentGamesLoaded.
         this.#totalGamesPlayed = 0;
-        // Draw the game over screen elements of the menu:
     }
 
     animateTransition(transitionName) {

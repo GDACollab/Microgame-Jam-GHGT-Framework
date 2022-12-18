@@ -30,7 +30,7 @@ var GameInterface = (function() {
             if (_currTimer == 0) {
                 return -1;
             } else {
-                return _maxTimer - ((Date.now() - _currTimer) / 1000);
+                return _maxTimer - ((performance.now() - _currTimer) / 1000);
             }
         },
 
@@ -57,7 +57,12 @@ var GameInterface = (function() {
             _gameEnd = false;
             _lives = 3;
             MicrogameJamMainManager.gameStarted();
+            _currTimer = performance.now();
             return;
+        },
+
+        getMaxTimer: function() {
+            return _maxTimer;
         },
 
         setMaxTimer: function(time){

@@ -31,6 +31,7 @@ To fix right now:
 - Settings menu
  - Add images for each game?
 - Game over screen on 0 lives
+- Menu sounds for keyboard controls
 - Check browser compatibility
 - Add dry run games
 

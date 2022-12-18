@@ -4,6 +4,7 @@ import GlobalAudioManager from "./lib/gamesound.js";
 import GlobalAnimManager from "./lib/animationmanager.js";
 import {initVersionStyle, versionStyleUpdate} from "./jam-version-assets/version-style.js";
 import GlobalInputManager from "./lib/input.js";
+import iniReader from "./lib/configloader.js";
 
 // Main game controller.
 // For controlling the primary functions, all calls should get routed through here.
@@ -34,7 +35,10 @@ class MicrogameJam {
     masterVolume = 1;
 
     constructor() {
-        initVersionStyle();
+        var self = this;
+        iniReader.then((iniDat) => {
+            initVersionStyle(iniDat, self);
+        });
 
         this.GameSound = GlobalAudioManager;
 
@@ -47,6 +51,7 @@ class MicrogameJam {
         this.GameMenus = MicrogameJamMenu;
         this.GameMenus.onSetup.then(() => {
             document.getElementById("playButton").onclick = this.startMicrogames.bind(this);
+            document.getElementById("restartButton").onclick = this.startMicrogames.bind(this);
             
             this.GameMenus.onVolume = (vol) => {
                 this.masterVolume = vol;
@@ -93,9 +98,7 @@ class MicrogameJam {
 
         this.GameSound.stop("theme");
 
-        this.GameSound.play("buttonClick", this.masterVolume, true, false, function(){
-            this.GameSound.play("winJingle", this.masterVolume * 0.8, true);
-        }.bind(this));
+        this.GameSound.play("buttonClick", this.masterVolume, true, false);
 
         this.GameLoader.transition("win");
 
