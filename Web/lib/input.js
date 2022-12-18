@@ -35,7 +35,7 @@ class MicrogameInput {
             var pastState = this.#stateTracker.get(binding);
             var currState = this.getInput(binding);
             // We prioritize the current binding's keybinds:
-            if (pastState.key !== currState.key) {
+            if (pastState.key !== keyToPress) {
                 var update = keysToPress.findIndex(key => key.binding === binding);
                 if (update !== undefined) {
                     keysToPress.splice(update, 1);
