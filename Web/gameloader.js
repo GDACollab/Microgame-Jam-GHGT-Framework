@@ -1,6 +1,7 @@
 import {PicoInterface} from "./lib/picointerface.js";
 import GlobalAudioManager from "./lib/gamesound.js";
 import GlobalAnimManager from "./lib/animationmanager.js";
+import MainMenuManager from "./lib/options/menumanager.js";
 import iniReader from "./lib/configloader.js";
 // Game loader, for everything to do with transitions: playing animations, playing sounds, selecting the next game, changing difficulty.
 
@@ -14,6 +15,8 @@ class GameLoader {
     #gameNames;
 
     #setupPromise;
+    masterVolume = 1;
+    #recentGamesLoaded = [];
 
     constructor() {
         this.#setupPromise = new Promise(async (resolve) => {
@@ -23,7 +26,14 @@ class GameLoader {
         });
     }
 
+    #alreadyPlayedGames;
+    #totalGamesPlayed = 0;
+
     #setUpGameLoader() {
+        this.#alreadyPlayedGames = JSON.parse(localStorage.getItem("playedGames"));
+        if (this.#alreadyPlayedGames === null) {
+            this.#alreadyPlayedGames = [];
+        }
         // Add games to be loaded here (CONFIG_FILE adds stuff automatically):
         this.#gamesList = ini["Games"];
         this.#gamesConfig = ini["GamesConfig"];
@@ -44,6 +54,7 @@ class GameLoader {
     // TODO: Make game picking more robust, add difficulty increases, etc.
     // Main function where all the loading actually happens.
     transition(didWin){
+        localStorage.setItem("playedGames", JSON.stringify(this.#alreadyPlayedGames));
         this.picoInterface = undefined;
         this.#gameLoaded = false;
 
@@ -55,22 +66,29 @@ class GameLoader {
         if (DEBUG_DIFFICULTY >= 1 && DEBUG_DIFFICULTY <= 3 && Number.isInteger(DEBUG_DIFFICULTY)) {
             difficulty = DEBUG_DIFFICULTY;
         } else {
-            difficulty = 1;
+            if (!this.#alreadyPlayedGames.includes(this.#gameToLoad)) {
+                this.#alreadyPlayedGames.push(this.#gameToLoad);
+                difficulty = 1;
+            } else {
+                difficulty = Math.max(Math.min(Math.floor(0.9 * Math.log(this.#totalGamesPlayed) + 1), 3), 0);
+                this.#totalGamesPlayed++;
+            }
         }
         
         
         var transitionName = (didWin)? "win" : "lose";
 
-        GlobalAudioManager.play(transitionName + "Jingle", masterVolume * 0.8, true);
+        GlobalAudioManager.play(transitionName + "Jingle", this.masterVolume * 0.8, true);
 
-        GameLoaderAnimator.animateTransition(transitionName);
-
+        this.animateTransition(transitionName);
         // Return difficulty to the GameInterface:
         return difficulty;
     }
 
     pickGameToLoad() {
-        var gameToLoad = Object.keys(this.#gamesList)[Math.floor(Math.random() * Object.keys(this.#gamesList).length)]
+        var enabledGamesArr = Array.from(MainMenuManager.enabledGames.values());
+        enabledGamesArr = enabledGamesArr.filter((game) => !this.#recentGamesLoaded.includes(game));
+        var gameToLoad = enabledGamesArr[Math.floor(Math.random() * enabledGamesArr)];
         if (DEBUG_TEST !== "") {
             if (DEBUG_TEST === "sequential"){
                 document.body.onkeyup = function(event){
@@ -89,6 +107,11 @@ class GameLoader {
             }
             
             console.log("DEBUG TESTING: " + gameToLoad + " - " + this.#gamesList[gameToLoad]);
+        } else {
+            this.#recentGamesLoaded.push(gameToLoad);
+            if (this.#recentGamesLoaded.length === 4) {
+                this.#recentGamesLoaded.unshift();
+            }
         }
         return gameToLoad;
     }
@@ -132,20 +155,32 @@ class GameLoader {
     // ANIMATIONS
     // -----------------------------------------------------------------------
 
+    loseGameTransition() {
+        GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseAnimation");
+        // Reset the total number of games played, but don't reset recentGamesLoaded.
+        this.#totalGamesPlayed = 0;
+        // Draw the game over screen elements of the menu:
+    }
+
     animateTransition(transitionName) {
         document.getElementById("timer").setAttribute("hidden", "");
         document.getElementById("transitionContainer").removeAttribute("hidden");
         document.getElementById(transitionName + "Transition").removeAttribute("hidden");
-
-        this.#gameToLoad = this.pickGameToLoad();
-
-        var playTransitionPriorLoaded = false;
 
         var numLives = GameInterface.getLives();
         if (transitionName === "lose") {
             // This is used purely for animation, so if we've lost a life, we add one to show the losing animation.
             numLives++;
         }
+
+        if (transitionName === "lose" && numLives === 1) {
+            this.loseGameTransition();
+            return;
+        } else {
+            this.#gameToLoad = this.pickGameToLoad();
+        }
+
+        var playTransitionPriorLoaded = false;
 
         this.setUpLifeCounter(numLives, transitionName === "lose");
 
@@ -158,12 +193,12 @@ class GameLoader {
                 }
                 // Loop while our game isn't ready to start.
                 return this.#gameLoaded === false; 
-            },
+            }.bind(this),
             onFinish: function () {
                 document.getElementById(transitionName + "Transition").setAttribute("hidden", "");
                 document.getElementById("transitionContainer").setAttribute("hidden", "");
                 this.removeLives(numLives, transitionName === "lose");
-            }
+            }.bind(this)
         });
 
         if (!(this.#gamesConfig["play-transition-prior"].includes(this.#gameToLoad))) {

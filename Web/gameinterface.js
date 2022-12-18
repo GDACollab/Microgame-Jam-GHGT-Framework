@@ -8,6 +8,7 @@ var GameInterface = (function() {
     var _maxTimer = MAX_ALLOWED_TIMER;
     var _currTimer = 0;
     var _gameEnd = false;
+    var MicrogameJamMainManager = null;
 
     var _gameEnded = function(didWin) {
         _gameEnd = true;
@@ -71,6 +72,12 @@ var GameInterface = (function() {
                 _maxTimer = time;
             }
             return;
+        },
+
+        construct(manager) {
+            if (MicrogameJamMainManager === null) {
+                MicrogameJamMainManager = manager;
+            }
         }
     };
 

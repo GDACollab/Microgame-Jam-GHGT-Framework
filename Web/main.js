@@ -30,6 +30,7 @@ function debugLoopTransition(isWin){
 
 class MicrogameJam {
     #inGame = false;
+    // I should probably just move this to a static variable in gamesound.js. Oh well.
     masterVolume = 1;
 
     constructor() {
@@ -41,12 +42,15 @@ class MicrogameJam {
 
         this.GameLoader = GlobalGameLoader;
 
+        GlobalGameLoader.masterVolume = this.masterVolume;
+
         this.GameMenus = MicrogameJamMenu;
         this.GameMenus.onSetup.then(() => {
-            document.getElementById("playButton").onclick = this.startMicrogames;
+            document.getElementById("playButton").onclick = this.startMicrogames.bind(this);
             
             this.GameMenus.onVolume = (vol) => {
                 this.masterVolume = vol;
+                GlobalGameLoader.masterVolume = this.masterVolume;
                 this.GameSound.updateSound("theme", this.masterVolume * 0.3);
             };
         });
@@ -91,7 +95,7 @@ class MicrogameJam {
 
         this.GameSound.play("buttonClick", this.masterVolume, true, false, function(){
             this.GameSound.play("winJingle", this.masterVolume * 0.8, true);
-        });
+        }.bind(this));
 
         this.GameLoader.transition("win");
 
@@ -117,6 +121,11 @@ class MicrogameJam {
         GlobalInputManager.gameStartInputUpdate(GlobalGameLoader.game);
         this.GameLoader.gameStarted();
     }
+
+    endGame(didWin) {
+        this.GameLoader.transition(didWin);
+    }
 }
 
 var MicrogameJamMainManager = new MicrogameJam();
+GameInterface.construct(MicrogameJamMainManager);

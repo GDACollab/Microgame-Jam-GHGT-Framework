@@ -29,10 +29,7 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 To fix right now:
 - Settings menu
- - Hook options into main menu volume
  - Add images for each game?
-- Fix start button
-- Difficulty changing/game loading logic (Rotating queue of unique games, difficulty increases, difficulty of 1 if it's your first time playing a game)
 - Game over screen on 0 lives
 - Check browser compatibility
 - Add dry run games

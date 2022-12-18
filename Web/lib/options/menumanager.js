@@ -119,6 +119,10 @@ class MicrogameJamMenu {
         return this.#setUpPromise;
     }
 
+    get enabledGames() {
+        return this.#optionsManager.enabledGames;
+    }
+
     #setUp(){
         if (!(ini["Transitions"].debug === "win" || ini["Transitions"].debug === "lose")){
             this.#initMainMenu();
