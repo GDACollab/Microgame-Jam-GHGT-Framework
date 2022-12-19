@@ -225,13 +225,13 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
             var postLoop = frame.style.getPropertyValue("--post-loop");
 
             if (postLoop !== "") {
-                timeDat.postLoop = timings[postLoop];
+                timeDat.postLoop = timings[postLoop.replace(" ", "")];
             }
 
             var loop = frame.style.getPropertyValue("--loop");
 
             if (loop !== "") {
-                timeDat.loop = timings[loop];
+                timeDat.loop = timings[loop.replace(" ", "")];
             }
 
             var animationStore = this.readToAnimStore(frame);

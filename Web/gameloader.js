@@ -218,7 +218,7 @@ class GameLoader {
             numLives++;
         }
         
-        if ((transitionName === "lose" && numLives === 1) || numLives === 0) {
+        if ((transitionName === "lose" && numLives === 1) || numLives <= 0) {
             this.loseGameTransition();
             this.#gameToLoad = null;
             return;

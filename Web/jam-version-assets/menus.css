@@ -32,11 +32,11 @@
     15% {
         --time: 0.6s;
         --post-loop: 30%;
-        --ANIM-enter-credits: creditsScroll 70s #credits-text;
+        --ANIM-enter-credits: creditsScroll 75s #credits-text;
         --ANIM-enter-credits-animation-timing-function: linear;
     }
     20% {
-        --time: 70.6s;
+        --time: 75.6s;
         --ANIM-credits-hide: hideElement 0s #credits-text;
         --loop: 15%;
         --post-loop: 30%;
@@ -154,7 +154,7 @@
         transform: translate(0, calc(-10px + 1px * var(--text-y)));
     }
     to {
-        transform: translate(0, calc(-3510px + 1px * var(--text-y)));
+        transform: translate(0, calc(-4000px + 1px * var(--text-y)));
     }
 }
 
