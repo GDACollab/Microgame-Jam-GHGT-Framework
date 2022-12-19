@@ -123,6 +123,10 @@ class GameLoader {
         document.getElementById("game").src = gameURL;
         this.currGame = gameToLoad;
     }
+    #clearGameHTML() {
+        document.getElementById("game").src = "about:blank";
+        document.getElementById("game").contentWindow.location.href = "about:blank";
+    }
     
     gameStarted(){
         document.getElementById("game").removeAttribute("hidden");
@@ -249,6 +253,8 @@ class GameLoader {
 
         if (!(this.#gamesConfig["play-transition-prior"].includes(this.#gameToLoad))) {
             this.#loadGameHTML(this.#gameToLoad);
+        } else {
+            this.#clearGameHTML();
         }
     }
 

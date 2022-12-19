@@ -28,7 +28,6 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
 
 To fix right now:
-- Painter's Dream has an automatic lose in some cases? 
 - Games aren't unloaded during a transition until the end.
 - Browser compatibility
  - Googly eye doesn't show up in Chrome
@@ -49,6 +48,7 @@ I didn't notice until now, but keys can be held down and keydown will be sent re
 - Rossfight doesn't automatically transfer key presses (Unity games)
   - To reproduce: start Rossfight, click outside of the game window, press keys
   - Cross Cut and Rehuenited
+- Painter's Dream has an automatic lose in some cases? 
 
 CSS Wishlist:
 - While I'm busy working with a ton of CSS, there are some things I'd really love to see in future iterations of... I guess either CCSS or just future versions of CSS. I doubt these will ever get taken seriously (especially in this obscure README file), but here's hoping!
