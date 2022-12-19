@@ -368,11 +368,15 @@ export class OptionsManager {
     }
 
     updateEnabled(game, event) {
+        if (event.target.checked === false && this.#enabledGames.size <= 2) {
+            event.target.checked = true;
+            return;
+        }
         var enabled = event.target.checked;
         if (enabled) {
-            this.#enabledGames.add(enabled);
+            this.#enabledGames.add(game);
         } else {
-            this.#enabledGames.delete(enabled);
+            this.#enabledGames.delete(game);
         }
         this.#optionsStorage[game].enabled = enabled;
 

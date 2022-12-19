@@ -163,26 +163,44 @@ class GameLoader {
 
     loseGameTransition() {
         var mainMenuDraw = false;
+        this.setUpLifeCounter(1, true);
+        var internalClock = performance.now();
         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseAnimation", {
             shouldLoop: function(timestamp, animationObj) {
-                if (!mainMenuDraw && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)){
+                if (!mainMenuDraw && (timestamp - internalClock) > 600){
                     mainMenuDraw = true;
                     // Unload the iframe, load the main menu:
                     document.getElementById("game").src = "about:blank";
                     document.getElementById("menu").removeAttribute("hidden");
 
+                    document.getElementById("game-over-text").innerText = `You won ${this.#totalGamesPlayed} games.`;
+
                     // Set up game over screen:
-                    document.getElementById("gameOver").removeAttribute("hidden");
-                    GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALhideMain");
+                    document.getElementById("game-over").removeAttribute("hidden");
+                    GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALhideMain", {keepAnims: true});
                     document.getElementById("backButton").style.transform = "translate(577px, -81px)";
+                    document.getElementById("backButton").style.transformOrigin = "278% 0%";
 
                     document.getElementById("backButton").onclick = () => {
-                        GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALshowMain");
+                        GlobalAudioManager.stop("endTheme");
+                        GlobalAudioManager.play("theme", this.masterVolume * 0.3, false, true);
+                        GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALgameoverTomain", {
+                            onFinish: function(){
+                                document.getElementById("game-over").setAttribute("hidden", "");
+                            }
+                        });
                         document.getElementById("backButton").style.transform = "";
+                        document.getElementById("backButton").style.transformOrigin = "";
                     };
                 }
                 return false;
-            }
+            }.bind(this),
+            onFinish: function() {
+                document.getElementById("loseTransition").setAttribute("hidden", "");
+                document.getElementById("transitionContainer").setAttribute("hidden", "");
+                this.removeLives(1, true);
+                GlobalAudioManager.play("endTheme", this.masterVolume * 0.3, false, true);
+            }.bind(this)
         });
         // Reset the total number of games played, but don't reset recentGamesLoaded.
         this.#totalGamesPlayed = 0;
@@ -199,8 +217,8 @@ class GameLoader {
             // This is used purely for animation, so if we've lost a life, we add one to show the losing animation.
             numLives++;
         }
-
-        if (transitionName === "lose" && numLives === 1) {
+        
+        if ((transitionName === "lose" && numLives === 1) || numLives === 0) {
             this.loseGameTransition();
             this.#gameToLoad = null;
             return;

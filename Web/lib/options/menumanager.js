@@ -235,7 +235,7 @@ class MicrogameJamMenu {
         document.getElementById("creditsButton").onclick = this.transitionTo.bind(this, "credits");
         document.getElementById("optionsButton").onclick = this.transitionTo.bind(this, "options");
 
-        document.getElementById("gameOver").setAttribute("hidden", "");
+        document.getElementById("game-over").setAttribute("hidden", "");
     }
 
     #initTransitions(){

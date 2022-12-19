@@ -97,10 +97,11 @@ class MicrogameJam {
         this.#inGame = false;
 
         this.GameSound.stop("theme");
+        this.GameSound.stop("endTheme");
 
         this.GameSound.play("buttonClick", this.masterVolume, true, false);
 
-        this.GameLoader.transition("win");
+        this.GameLoader.transition(true);
 
         setTimeout(function(){
             document.getElementById("menu").setAttribute("hidden", "");
