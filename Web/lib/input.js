@@ -84,9 +84,9 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputDown(ev) {
         MicrogameKeyboard.allKeysDown.add(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame) {
+            if (GlobalGameLoader.inGame && "location" in ev.target && ev.target.location.href !== document.getElementById("game").contentWindow.location.href) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
-                MicrogameInputManager.pressKey(ev.key, true);
+                MicrogameInputManager.pressKey(ev.key, "down");
             }
             return;
         } else {
@@ -98,9 +98,9 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputUp(ev) {
         MicrogameKeyboard.allKeysDown.delete(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame) {
+            if (GlobalGameLoader.inGame && "location" in ev.target && ev.target.location.href !== document.getElementById("game").contentWindow.location.href) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
-                MicrogameInputManager.pressKey(ev.key, false);
+                MicrogameInputManager.pressKey(ev.key, "up");
             }
             return;
         } else {
