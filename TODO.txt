@@ -28,8 +28,6 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
 
 To fix right now:
-- Rhythm Game (I think orhygami) doesn't automatically transfer key presses
-  - Cross Cut and Rehuenited
 - Painter's Dream has an automatic lose in some cases? 
 - Games aren't unloaded during a transition until the end.
 - Browser compatibility
@@ -39,12 +37,18 @@ To fix right now:
 - Can get in an infinite loop on the main menu (clicking "Play Again" just loops you back to the "Play Again" screen)
 - Remove as many setTimeouts and setIntervals as possible
 
+Potential Future Bugs:
+I didn't notice until now, but keys can be held down and keydown will be sent repeatedly. Doesn't seem to impact anything now, but it might.
+
 (Potentially) Fixed Bugs:
 - Browser compatibility
   - Chrome and Edge seem to have issues with transitions
 - At end of credits, back button stops working?
 - State where you can't die?
 - Turn down main menu music/transition music
+- Rossfight doesn't automatically transfer key presses (Unity games)
+  - To reproduce: start Rossfight, click outside of the game window, press keys
+  - Cross Cut and Rehuenited
 
 CSS Wishlist:
 - While I'm busy working with a ton of CSS, there are some things I'd really love to see in future iterations of... I guess either CCSS or just future versions of CSS. I doubt these will ever get taken seriously (especially in this obscure README file), but here's hoping!

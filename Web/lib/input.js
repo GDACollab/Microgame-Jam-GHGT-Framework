@@ -71,6 +71,7 @@ class MicrogameKeyboard extends MicrogameInput {
 
     #keysToDown = new Set();
     static allKeysDown = new Set();
+    #gameLocation;
 
     constructor() {
         super();
@@ -84,7 +85,7 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputDown(ev) {
         MicrogameKeyboard.allKeysDown.add(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame && !(("location" in ev.target) && ev.target.location.href === document.getElementById("game").contentWindow.location.href)) {
+            if (GlobalGameLoader.inGame && !(("location" in ev.target && ev.target.location.href === this.#gameLocation) || (("baseURI" in ev.target) && ev.target.baseURI === this.#gameLocation))) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
                 MicrogameInputManager.pressKey(ev.key, "down");
             }
@@ -98,7 +99,7 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputUp(ev) {
         MicrogameKeyboard.allKeysDown.delete(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame && !(("location" in ev.target) && ev.target.location.href === document.getElementById("game").contentWindow.location.href)) {
+            if (GlobalGameLoader.inGame && !(("location" in ev.target && ev.target.location.href === this.#gameLocation) || (("baseURI" in ev.target) && ev.target.baseURI === this.#gameLocation))) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
                 MicrogameInputManager.pressKey(ev.key, "up");
             }
@@ -125,6 +126,7 @@ class MicrogameKeyboard extends MicrogameInput {
         super.gameStartInputUpdate(game);
         document.getElementById("game").contentWindow.addEventListener("keydown", this.#interruptInputDown.bind(this), {capture: true});
         document.getElementById("game").contentWindow.addEventListener("keyup", this.#interruptInputUp.bind(this), {capture: true});
+        this.#gameLocation = document.getElementById("game").contentWindow.location.href;
     }
 }
 
@@ -358,6 +360,7 @@ class MicrogameInputManager {
         this.#captureNextCallback = null;
     }
 
+    static gameTarget = null;
     static pressKey(key, isDown) {
         if (GlobalGameLoader.inGame) {
             var keyCodeConvert = {
@@ -367,7 +370,7 @@ class MicrogameInputManager {
                 "ArrowDown": 40,
                 " ": 32
             };
-            document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
+            MicrogameInputManager.gameTarget.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
                 key: key,
                 charCode: 0,
                 code: (key === " ") ? "Space" : key,
@@ -423,6 +426,12 @@ class MicrogameInputManager {
     gameStartInputUpdate(game) {
         for (var input in this.#microgameInputs) {
             this.#microgameInputs[input].gameStartInputUpdate(game);
+        }
+        
+        MicrogameInputManager.gameTarget = document.getElementById("game").contentWindow;
+        var potentialCanvas = MicrogameInputManager.gameTarget.document.querySelector("canvas");
+        if (potentialCanvas !== null) {
+            MicrogameInputManager.gameTarget = potentialCanvas;
         }
     }
 }
