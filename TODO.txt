@@ -28,10 +28,9 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
 
 To fix right now:
-- Settings menu
- - Add images for each game?
-- Menu sounds for keyboard controls
+- At end of credits, back button stops working?
 - Check browser compatibility
+  - Chrome and Edge seem to have issues with transitions
 - Add dry run games
 
 CSS Wishlist:

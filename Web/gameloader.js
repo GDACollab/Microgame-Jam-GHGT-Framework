@@ -80,9 +80,9 @@ class GameLoader {
                 } else {
                     difficulty = Math.max(Math.min(Math.floor(0.9 * Math.log(this.#totalGamesPlayed) + 1), 3), 0);
                 }
-                this.#totalGamesPlayed++;
             }
         }
+        this.#totalGamesPlayed++;
 
         // Return difficulty to the GameInterface:
         return difficulty;
