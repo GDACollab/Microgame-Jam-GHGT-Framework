@@ -467,7 +467,7 @@ class AnimationManager {
     }
 
     stopAllAnimations() {
-        this.animationsToClean = this.animationsToClean.concat(this.currAnimations.splice(0, this.currAnimations.length - 1));
+        this.animationsToClean = this.animationsToClean.concat(this.currAnimations.splice(0, this.currAnimations.length));
         this.cleanAllAnims();
     }
 }

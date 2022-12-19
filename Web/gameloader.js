@@ -189,6 +189,7 @@ class GameLoader {
     }
 
     animateTransition(transitionName) {
+        GlobalAnimManager.stopAllAnimations();
         document.getElementById("timer").setAttribute("hidden", "");
         document.getElementById("transitionContainer").removeAttribute("hidden");
         document.getElementById(transitionName + "Transition").removeAttribute("hidden");
