@@ -1,3 +1,5 @@
+import GlobalGameLoader from "../gameloader.js";
+
 class MicrogameInput {
     // FIX to be a map for all games.
     static bindings = new Map([["all", new Map([["w", "ArrowUp"], ["s", "ArrowDown"], ["a", "ArrowLeft"], ["d", "ArrowRight"]])]]);
@@ -82,6 +84,10 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputDown(ev) {
         MicrogameKeyboard.allKeysDown.add(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
+            if (GlobalGameLoader.inGame) {
+                // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
+                MicrogameInputManager.pressKey(ev.key, true);
+            }
             return;
         } else {
             this.#keysToDown.add(ev.key);
@@ -92,6 +98,10 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputUp(ev) {
         MicrogameKeyboard.allKeysDown.delete(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
+            if (GlobalGameLoader.inGame) {
+                // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
+                MicrogameInputManager.pressKey(ev.key, false);
+            }
             return;
         } else {
             this.#keysToDown.delete(ev.key);
@@ -348,10 +358,19 @@ class MicrogameInputManager {
         this.#captureNextCallback = null;
     }
 
-    #pressKey(key, isDown) {
+    static pressKey(key, isDown) {
+        var keyCodeConvert = {
+            "ArrowLeft": 37,
+            "ArrowRight": 39,
+            "ArrowUp": 38,
+            "ArrowDown": 40,
+            " ": 32
+        };
         document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
             key: key,
-            code: (key === " ") ? "Space" : key
+            code: (key === " ") ? "Space" : key,
+            // It's no surprise that Untiy WebGL is completely archaic and requires key codes to function properly:
+            keyCode: keyCodeConvert[key]
         }));
         
         document.body.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
@@ -385,10 +404,10 @@ class MicrogameInputManager {
                     var key = keyObj.key;
                     if (isDown && !this.#keysDown.has(key)) {
                         this.#keysDown.add(key);
-                        this.#pressKey(key, "down");
+                        MicrogameInputManager.pressKey(key, "down");
                     } else if (!isDown && this.#keysDown.has(key)) {
                         this.#keysDown.delete(key);
-                        this.#pressKey(key, "up");
+                        MicrogameInputManager.pressKey(key, "up");
                     }
                 });
             }

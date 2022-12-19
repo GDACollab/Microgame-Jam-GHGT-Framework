@@ -30,6 +30,9 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 To fix right now:
 - Settings menu
  - Add images for each game?
+- Lose game doesn't actually lose a life
+- Easeal Paint Bug (Allowing inputs breaks it immediately before gameStart. Disable inputs until gameStart for input.js)
+- Arrow keys and space aren't passed to game controls
 - Game over screen on 0 lives
 - Menu sounds for keyboard controls
 - Check browser compatibility

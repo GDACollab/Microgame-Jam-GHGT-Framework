@@ -72,11 +72,14 @@ class GameLoader {
             difficulty = DEBUG_DIFFICULTY;
         } else if (this.#gameToLoad !== null) {
             if (!this.#alreadyPlayedGames.includes(this.#gameToLoad)) {
-                debugger;
                 this.#alreadyPlayedGames.push(this.#gameToLoad);
                 difficulty = 1;
             } else {
-                difficulty = Math.max(Math.min(Math.floor(0.9 * Math.log(this.#totalGamesPlayed) + 1), 3), 0);
+                if (this.#totalGamesPlayed === 0) {
+                    difficulty = 1;
+                } else {
+                    difficulty = Math.max(Math.min(Math.floor(0.9 * Math.log(this.#totalGamesPlayed) + 1), 3), 0);
+                }
                 this.#totalGamesPlayed++;
             }
         }
@@ -93,14 +96,14 @@ class GameLoader {
             if (DEBUG_TEST === "sequential"){
                 document.body.onkeyup = function(event){
                     if (event.key === "1") {
-                        debug_index++;
+                        this.#debug_index++;
                         transition(true, function(){});
                     }
                 }
-                gameToLoad = Object.keys(this.#gamesList)[debug_index];
-                debug_index++;
-                if (debug_index > Object.keys(this.#gamesList).length) {
-                    debug_index = 0;
+                gameToLoad = Object.keys(this.#gamesList)[this.#debug_index];
+                this.#debug_index++;
+                if (this.#debug_index > Object.keys(this.#gamesList).length) {
+                    this.#debug_index = 0;
                 }
             } else {
                 gameToLoad = DEBUG_TEST;
@@ -125,6 +128,10 @@ class GameLoader {
         document.getElementById("game").removeAttribute("hidden");
         document.getElementById("timer").removeAttribute("hidden");
         this.#gameLoaded = true;
+    }
+
+    get inGame() {
+        return this.#gameLoaded;
     }
 
     loadUpdate() {
