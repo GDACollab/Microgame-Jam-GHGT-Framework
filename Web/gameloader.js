@@ -63,7 +63,7 @@ class GameLoader {
         
         var transitionName = (didWin)? "win" : "lose";
 
-        GlobalAudioManager.play(transitionName + "Jingle", this.masterVolume * 0.8, true);
+        GlobalAudioManager.play(transitionName + "Jingle", this.masterVolume * 0.4, true);
 
         this.animateTransition(transitionName);
         // Difficulty change:
@@ -180,7 +180,7 @@ class GameLoader {
 
                     document.getElementById("backButton").onclick = () => {
                         GlobalAudioManager.stop("endTheme");
-                        GlobalAudioManager.play("theme", this.masterVolume * 0.3, false, true);
+                        GlobalAudioManager.play("theme", this.masterVolume * 0.2, false, true);
                         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALgameoverTomain", {
                             onFinish: function(){
                                 document.getElementById("game-over").setAttribute("hidden", "");
@@ -197,7 +197,7 @@ class GameLoader {
                 document.getElementById("loseTransition").setAttribute("hidden", "");
                 document.getElementById("transitionContainer").setAttribute("hidden", "");
                 this.removeLives(1, true);
-                GlobalAudioManager.play("endTheme", this.masterVolume * 0.3, false, true);
+                GlobalAudioManager.play("endTheme", this.masterVolume * 0.2, false, true);
                 MainMenuManager.isInMenu = true;
                 MainMenuManager.resetMenuInputs();
             }.bind(this)

@@ -56,7 +56,7 @@ class MicrogameJam {
             this.GameMenus.onVolume = (vol) => {
                 this.masterVolume = vol;
                 GlobalGameLoader.masterVolume = this.masterVolume;
-                this.GameSound.updateSound("theme", this.masterVolume * 0.3);
+                this.GameSound.updateSound("theme", this.masterVolume * 0.2);
             };
         });
 
@@ -73,7 +73,7 @@ class MicrogameJam {
         }
 
         this.GameSound.onSetup.then(() => {
-            this.GameSound.play("theme", this.masterVolume * 0.3, false, true);
+            this.GameSound.play("theme", this.masterVolume * 0.2, false, true);
 
             for (const button of document.querySelectorAll("[id*=\"Button\"]")) {
                 button.addEventListener("mouseover", this.playButtonHover.bind(this));
