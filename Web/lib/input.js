@@ -369,9 +369,13 @@ class MicrogameInputManager {
             };
             document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
                 key: key,
+                charCode: 0,
                 code: (key === " ") ? "Space" : key,
                 // It's no surprise that Untiy WebGL is completely archaic and requires key codes to function properly:
-                keyCode: keyCodeConvert[key]
+                keyCode: keyCodeConvert[key],
+                // Construct 3 is just like Unity in that it uses a deprecated keyCode feature...
+                // Except it uses an entirely different property that has the same value. Go figure.
+                which: keyCodeConvert[key]
             }));
         } else {
             document.body.dispatchEvent(new KeyboardEvent(`key${isDown}`, {

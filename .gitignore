@@ -3,3 +3,4 @@ Web/jam-version-assets/*
 !Web/jam-version-assets/*config*
 !Web/jam-version-assets/*.css
 !Web/jam-version-assets/*.js
+*.zip

@@ -161,7 +161,7 @@ class GameLoader {
         var mainMenuDraw = false;
         this.setUpLifeCounter(1, true);
         var internalClock = performance.now();
-        var gamesWon = this.#totalGamesPlayed;
+        var gamesWon = this.#totalGamesPlayed - 3;
         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseAnimation", {
             shouldLoop: function(timestamp, animationObj) {
                 if (!mainMenuDraw && (timestamp - internalClock) > 600){
