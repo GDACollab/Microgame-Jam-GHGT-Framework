@@ -137,6 +137,10 @@ class MicrogameJamMenu {
         this.#inputReader.pauseInputs(ms);
     }
 
+    resetMenuInputs() {
+        this.#inputReader.resetMenuInputs();
+    }
+
     addSelectable(selectable) {
         this.#inputReader.addSelectable(selectable);
     }
@@ -223,6 +227,10 @@ class MicrogameJamMenu {
                 }.bind(this)
             });
         }
+    }
+
+    set isInMenu(val) {
+        this.#inputReader.isInMenu = val;
     }
 
     #initMainMenu() {
@@ -339,12 +347,14 @@ class MicrogameJamMenuInputReader {
     }
 
     #selectedElement = -1;
-    #isInMenu = true;
+    isInMenu = true;
     #pauseInputTimer = -1;
 
     #readMenuInputs(ev) {
-        if (this.#isInMenu) {
+        if (this.isInMenu) {
             ev.preventDefault();
+        } else {
+            return;
         }
         if (this.#pauseInputTimer > 0) {
             if (this.#pauseInputTimer > performance.now()){

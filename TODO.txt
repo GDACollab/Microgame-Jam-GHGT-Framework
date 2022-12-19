@@ -30,7 +30,6 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 To fix right now:
 - Settings menu
  - Add images for each game?
-- Make it so at least 2 games have to be enabled.
 - Menu sounds for keyboard controls
 - Check browser compatibility
 - Add dry run games

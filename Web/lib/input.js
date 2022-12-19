@@ -74,9 +74,9 @@ class MicrogameKeyboard extends MicrogameInput {
 
     constructor() {
         super();
-        document.body.addEventListener("keydown", this.#interruptInputDown.bind(this), {capture: true});
+        window.addEventListener("keydown", this.#interruptInputDown.bind(this), {capture: true});
         document.getElementById("game").contentWindow.addEventListener("keydown", this.#interruptInputDown.bind(this), {capture: true});
-        document.body.addEventListener("keyup", this.#interruptInputUp.bind(this), {capture: true});
+        window.addEventListener("keyup", this.#interruptInputUp.bind(this), {capture: true});
         document.getElementById("game").contentWindow.addEventListener("keyup", this.#interruptInputUp.bind(this), {capture: true});
     }
 
@@ -84,7 +84,7 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputDown(ev) {
         MicrogameKeyboard.allKeysDown.add(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame && "location" in ev.target && ev.target.location.href !== document.getElementById("game").contentWindow.location.href) {
+            if (GlobalGameLoader.inGame && !(("location" in ev.target) && ev.target.location.href === document.getElementById("game").contentWindow.location.href)) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
                 MicrogameInputManager.pressKey(ev.key, "down");
             }
@@ -98,7 +98,7 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputUp(ev) {
         MicrogameKeyboard.allKeysDown.delete(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame && "location" in ev.target && ev.target.location.href !== document.getElementById("game").contentWindow.location.href) {
+            if (GlobalGameLoader.inGame && !(("location" in ev.target) && ev.target.location.href === document.getElementById("game").contentWindow.location.href)) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
                 MicrogameInputManager.pressKey(ev.key, "up");
             }
@@ -359,24 +359,26 @@ class MicrogameInputManager {
     }
 
     static pressKey(key, isDown) {
-        var keyCodeConvert = {
-            "ArrowLeft": 37,
-            "ArrowRight": 39,
-            "ArrowUp": 38,
-            "ArrowDown": 40,
-            " ": 32
-        };
-        document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
-            key: key,
-            code: (key === " ") ? "Space" : key,
-            // It's no surprise that Untiy WebGL is completely archaic and requires key codes to function properly:
-            keyCode: keyCodeConvert[key]
-        }));
-        
-        document.body.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
-            key: key,
-            code: (key === " ") ? "Space" : key
-        }));
+        if (GlobalGameLoader.inGame) {
+            var keyCodeConvert = {
+                "ArrowLeft": 37,
+                "ArrowRight": 39,
+                "ArrowUp": 38,
+                "ArrowDown": 40,
+                " ": 32
+            };
+            document.getElementById("game").contentWindow.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
+                key: key,
+                code: (key === " ") ? "Space" : key,
+                // It's no surprise that Untiy WebGL is completely archaic and requires key codes to function properly:
+                keyCode: keyCodeConvert[key]
+            }));
+        } else {
+            document.body.dispatchEvent(new KeyboardEvent(`key${isDown}`, {
+                key: key,
+                code: (key === " ") ? "Space" : key
+            }));
+        }
     }
 
     updateInput() {

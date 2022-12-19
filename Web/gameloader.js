@@ -107,14 +107,14 @@ class GameLoader {
                 }
             } else {
                 gameToLoad = DEBUG_TEST;
-                console.log("DEBUG TESTING: " + gameToLoad + " - " + this.#gamesList[gameToLoad]);
             }
         } else {
             this.#recentGamesLoaded.push(gameToLoad);
-            if (this.#recentGamesLoaded.length === 4) {
-                this.#recentGamesLoaded.unshift();
+            if (this.#recentGamesLoaded.length >= 4) {
+                this.#recentGamesLoaded.shift();
             }
         }
+        console.log("DEBUG TESTING: " + gameToLoad + " - " + this.#gamesList[gameToLoad]);
         return gameToLoad;
     }
 
@@ -141,10 +141,6 @@ class GameLoader {
     }
 
     #iframeLoaded() {
-        // Click on the iframe so inputs get through:
-        document.getElementById("game").contentWindow.dispatchEvent(new MouseEvent("click"));
-        document.getElementById("game").contentWindow.focus();
-
         // For Unity Exports specifically (minimal Unity HTML templates work good enough, except for when it adds margin):
         document.getElementById("game").contentDocument.body.style.margin = "0";
         if (PicoInterface.isPicoRunning()){
@@ -165,6 +161,7 @@ class GameLoader {
         var mainMenuDraw = false;
         this.setUpLifeCounter(1, true);
         var internalClock = performance.now();
+        var gamesWon = this.#totalGamesPlayed;
         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseAnimation", {
             shouldLoop: function(timestamp, animationObj) {
                 if (!mainMenuDraw && (timestamp - internalClock) > 600){
@@ -173,7 +170,7 @@ class GameLoader {
                     document.getElementById("game").src = "about:blank";
                     document.getElementById("menu").removeAttribute("hidden");
 
-                    document.getElementById("game-over-text").innerText = `You won ${this.#totalGamesPlayed} games.`;
+                    document.getElementById("game-over-text").innerText = `You won ${gamesWon} games.`;
 
                     // Set up game over screen:
                     document.getElementById("game-over").removeAttribute("hidden");
@@ -187,6 +184,7 @@ class GameLoader {
                         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALgameoverTomain", {
                             onFinish: function(){
                                 document.getElementById("game-over").setAttribute("hidden", "");
+                                MainMenuManager.resetMenuInputs();
                             }
                         });
                         document.getElementById("backButton").style.transform = "";
@@ -200,6 +198,8 @@ class GameLoader {
                 document.getElementById("transitionContainer").setAttribute("hidden", "");
                 this.removeLives(1, true);
                 GlobalAudioManager.play("endTheme", this.masterVolume * 0.3, false, true);
+                MainMenuManager.isInMenu = true;
+                MainMenuManager.resetMenuInputs();
             }.bind(this)
         });
         // Reset the total number of games played, but don't reset recentGamesLoaded.

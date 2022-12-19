@@ -368,7 +368,7 @@ export class OptionsManager {
     }
 
     updateEnabled(game, event) {
-        if (event.target.checked === false && this.#enabledGames.size <= 2) {
+        if (event.target.checked === false && this.#enabledGames.size <= 4) {
             event.target.checked = true;
             return;
         }

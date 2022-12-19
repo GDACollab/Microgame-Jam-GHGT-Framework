@@ -58,7 +58,6 @@ var GameInterface = (function() {
             if (_lives === 0) {
                 _lives = 3;
             }
-            console.log("GAME START");
             _gameEnd = false;
             MicrogameJamMainManager.gameStarted();
             _currTimer = performance.now();

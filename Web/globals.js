@@ -11,7 +11,7 @@ const MAX_ALLOWED_TIMER = 15;
 const MIN_ALLOWED_TIMER = 5;
 const DEBUG_DIFFICULTY = -1;
 // Pick a game to repeatedly test. Set "sequential" to go through all the games in order:
-const DEBUG_TEST = "easeal-paint";
+const DEBUG_TEST = "";
 
 
 // Set to "win" to debug win transitions on loop, set to "lose" to debug lose transitions on loop. Set to "" or any other value to debug nothing.

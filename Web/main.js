@@ -94,6 +94,7 @@ class MicrogameJam {
     }
 
     startMicrogames() {
+        this.GameMenus.isInMenu = false;
         this.#inGame = false;
 
         this.GameSound.stop("theme");
