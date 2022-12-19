@@ -259,6 +259,10 @@
     transition: 0.25s;
 }
 
+#options-volume {
+    width: 158px;
+}
+
 #options-volume:hover~#options-volume-eye, #options-volume.hover~#options-volume-eye {
     width: 30px;
     height: 30px;

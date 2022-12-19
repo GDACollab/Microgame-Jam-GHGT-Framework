@@ -55,7 +55,7 @@ var GameInterface = (function() {
         },
 
         gameStart: function(){
-            if (_lives === 0) {
+            if (_lives <= 0) {
                 _lives = 3;
             }
             _gameEnd = false;
