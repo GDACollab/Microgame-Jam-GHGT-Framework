@@ -4,10 +4,12 @@
 }
 
 body {
-    margin: 0;
+    margin: auto;
     height: var(--height);
     width: var(--width);
     overflow: hidden;
+    margin-top: calc(50vh - var(--height)/2);
+    background-color: black;
 }
 canvas {
     z-index: 1;
