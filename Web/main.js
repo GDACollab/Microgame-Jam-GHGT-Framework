@@ -126,7 +126,7 @@ class MicrogameJam {
     }
 
     endGame(didWin) {
-        this.GameLoader.transition(didWin);
+        return this.GameLoader.transition(didWin);
     }
 }
 

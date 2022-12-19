@@ -13,6 +13,7 @@ var GameInterface = (function() {
     var _gameEnded = function(didWin) {
         _gameEnd = true;
         _maxTimer = MAX_ALLOWED_TIMER;
+        _currTimer = 0;
         _difficulty = MicrogameJamMainManager.endGame(didWin);
     };
 
@@ -54,9 +55,11 @@ var GameInterface = (function() {
         },
 
         gameStart: function(){
+            if (_lives === 0) {
+                _lives = 3;
+            }
             console.log("GAME START");
             _gameEnd = false;
-            _lives = 3;
             MicrogameJamMainManager.gameStarted();
             _currTimer = performance.now();
             return;

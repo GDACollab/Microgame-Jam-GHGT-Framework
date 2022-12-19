@@ -31,9 +31,8 @@ To fix right now:
 - Settings menu
  - Add images for each game?
 - Lose game doesn't actually lose a life
-- Easeal Paint Bug (Allowing inputs breaks it immediately before gameStart. Disable inputs until gameStart for input.js)
-- Arrow keys and space aren't passed to game controls
 - Game over screen on 0 lives
+- Easeal Paint Bug (Allowing inputs breaks it immediately before gameStart. Disable inputs until gameStart for input.js)
 - Menu sounds for keyboard controls
 - Check browser compatibility
 - Add dry run games
