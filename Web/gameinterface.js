@@ -6,14 +6,14 @@ var GameInterface = (function() {
         _difficulty = DEBUG_DIFFICULTY;
     }
     var _maxTimer = MAX_ALLOWED_TIMER;
-    var _currTimer = 0;
+    var _currTimer = -1;
     var _gameEnd = false;
     var MicrogameJamMainManager = null;
 
     var _gameEnded = function(didWin) {
         _gameEnd = true;
         _maxTimer = MAX_ALLOWED_TIMER;
-        _currTimer = 0;
+        _currTimer = -1;
         _difficulty = MicrogameJamMainManager.endGame(didWin);
     };
 
@@ -28,8 +28,11 @@ var GameInterface = (function() {
 
         // Returns the number of seconds left until the game is over.
         getTimer: function(){
-            if (_currTimer == 0) {
-                return -1;
+            if (_currTimer === -1) {
+                // We want to avoid messing with game logic as much as possible, especially while it's loading (and especially since we can't predict when gameStart will be called).
+                // So to prevent any accidental loseGame calls while our timer is not set up, we just return a large seconds value. That shouldn't mess with any games right now,
+                // but if it does you can say "I told you so" to me and figure out a better workaround.
+                return 100;
             } else {
                 return _maxTimer - ((performance.now() - _currTimer) / 1000);
             }
@@ -44,7 +47,7 @@ var GameInterface = (function() {
             return;
         },
 
-        loseGame: function(){
+        loseGame: function(){     
             _lives--;
             if (!_gameEnd){
                 _gameEnded(false);
