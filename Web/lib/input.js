@@ -434,6 +434,11 @@ class MicrogameInputManager {
         if (potentialCanvas !== null && potentialCanvas.id !== "unity-canvas") {
             MicrogameInputManager.gameTarget = potentialCanvas;
         }
+        // Our Twine script is similarly (and unintentionally) finnicky:
+        var potentialTwine = MicrogameInputManager.gameTarget.document.querySelector("tw-story");
+        if (potentialTwine !== null) {
+            MicrogameInputManager.gameTarget = MicrogameInputManager.gameTarget.document.body;
+        }
     }
 }
 

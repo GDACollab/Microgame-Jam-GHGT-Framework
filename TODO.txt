@@ -5,6 +5,8 @@ Future Improvements:
 
 - More Twine Story Formats
 
+- Update Twine extension to work with Input.js better (get inputs from window rather than document)
+
 - Upgrade to Typescript
 
 - Transition animator GUI of some kind (or automated in Blender)
@@ -28,7 +30,7 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
 
 To fix right now:
-- Creepy collage automatic lose?
+- Input bug with what is allowed on scren with menu (comes with CSS restlye I think)
 - Test dry run games
 - Remove as many setTimeouts and setIntervals as possible
 - Move debug logs to actual debugging sections
@@ -41,6 +43,7 @@ Potential Future Bugs:
 I didn't notice until now, but keys can be held down and keydown will be sent repeatedly. Doesn't seem to impact anything now, but it might.
 
 (Potentially) Fixed Bugs:
+- Creepy collage automatic lose?
 - Center body (Itch.io app doesn't center for you)
 - Games aren't unloaded during a transition until the end.
 - Can get in an infinite loop on the main menu (clicking "Play Again" just loops you back to the "Play Again" screen)
