@@ -27,7 +27,6 @@ function timerUpdate() {
 
 function initVersionStyle(config, manager) {
     setUpGooglyEyes();
-    initYarnTints();
     ini = config;
     MicrogameJamMainManager = manager;
 }

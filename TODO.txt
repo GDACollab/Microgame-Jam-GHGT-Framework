@@ -29,6 +29,8 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 
 - Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
 
+- With that, Joycon support (https://developer.mozilla.org/en-US/docs/Web/API/Navigator/hid currently, only supported in a few browsers)
+
 To fix right now:
 - To test: Jump On One of Them
 - Remove as many setTimeouts and setIntervals as possible
@@ -41,11 +43,11 @@ Potential Future Bugs:
 I didn't notice until now, but keys can be held down and keydown will be sent repeatedly. Doesn't seem to impact anything now, but it might.
 
 (Potentially) Fixed Bugs:
+- Can get in an infinite loop on the main menu (clicking "Play Again" just loops you back to the "Play Again" screen)
 - Input bug with what is allowed on scren with menu
 - Creepy collage automatic lose?
 - Center body (Itch.io app doesn't center for you)
 - Games aren't unloaded during a transition until the end.
-- Can get in an infinite loop on the main menu (clicking "Play Again" just loops you back to the "Play Again" screen)
 - Browser compatibility
   - Chrome and Edge seem to have issues with transitions
  - Googly eye doesn't show up in Chrome
