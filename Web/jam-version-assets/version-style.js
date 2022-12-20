@@ -1,5 +1,4 @@
 import { setUpGooglyEyes, updateGooglyEyes } from "./googly-eye.js";
-import {TintColor} from "./TintColor.js";
 
 var ini, MicrogameJamMainManager;
 
@@ -24,19 +23,6 @@ function timerUpdate() {
             GameInterface.loseGame();
         }
     }
-}
-
-var yarnTintDat = [];
-
-function initYarnTints(){
-    var colors = ["#ff0000", "#00ff00", "#0000ff"];
-    colors.forEach((c) => {
-        new TintColor("./jam-version-assets/art/yarnpiece.png", c).run().then((dat) => {
-            yarnTintDat.push(dat);
-        }).catch((err) => {
-            console.error(err);
-        });
-    });
 }
 
 function initVersionStyle(config, manager) {
