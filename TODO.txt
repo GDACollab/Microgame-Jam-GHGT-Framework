@@ -30,7 +30,7 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
 
 To fix right now:
-- Input bug with what is allowed on scren with menu (comes with CSS restlye I think)
+- To test: Jump On One of Them, Page Escape
 - Test dry run games
 - Remove as many setTimeouts and setIntervals as possible
 - Move debug logs to actual debugging sections
@@ -43,6 +43,7 @@ Potential Future Bugs:
 I didn't notice until now, but keys can be held down and keydown will be sent repeatedly. Doesn't seem to impact anything now, but it might.
 
 (Potentially) Fixed Bugs:
+- Input bug with what is allowed on scren with menu
 - Creepy collage automatic lose?
 - Center body (Itch.io app doesn't center for you)
 - Games aren't unloaded during a transition until the end.

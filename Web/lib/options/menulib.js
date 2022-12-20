@@ -223,7 +223,7 @@ class Selectable {
 
         if (select[selectableFunc]()) {
             arr.push(select);
-        } else {
+        } else if (element.getAttribute("hidden") === null) { // If the child elements aren't hidden, keep going:
             for (var i = 0; i < element.children.length; i++) {
                 var child = element.children[i];
                 var newPos = new MenuVector(select.position);
