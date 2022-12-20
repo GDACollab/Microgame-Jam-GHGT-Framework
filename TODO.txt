@@ -30,7 +30,7 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - Overhaul of Input.js. It suuuuuucks because I made/am making it last-minute. And it shows.
 
 To fix right now:
-- To test: Jump On One of Them, Page Escape
+- To test: Jump On One of Them
 - Remove as many setTimeouts and setIntervals as possible
 - Move debug logs to actual debugging sections
 - Minify where you can (shame Webpack requires restructuring to get working properly)

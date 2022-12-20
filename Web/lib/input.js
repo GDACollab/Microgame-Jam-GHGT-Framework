@@ -435,14 +435,17 @@ class MicrogameInputManager {
         
         MicrogameInputManager.gameTarget = document.getElementById("game").contentWindow;
         var potentialCanvas = MicrogameInputManager.gameTarget.document.querySelector("canvas");
+        // Might want to fix this logic structure if it gets more complicated than this. I don't want a tree of if-elses.
+
         // Unity is absolutely picky with how it wants to recieve inputs. On the absolute converse, Godot wants us to send inputs to canvases. So Javascript? Meet cheap workaround.
-        if (potentialCanvas !== null && potentialCanvas.id !== "unity-canvas") {
+        if (potentialCanvas !== null && potentialCanvas.id === "unity-canvas") {
             MicrogameInputManager.gameTarget = potentialCanvas;
-        }
-        // Our Twine script is similarly (and unintentionally) finnicky:
-        var potentialTwine = MicrogameInputManager.gameTarget.document.querySelector("tw-story");
-        if (potentialTwine !== null) {
-            MicrogameInputManager.gameTarget = MicrogameInputManager.gameTarget.document.body;
+        } else {
+            // Our Twine script is similarly (and unintentionally) finnicky:
+            var potentialTwine = MicrogameInputManager.gameTarget.document.querySelector("tw-story");
+            if (potentialTwine !== null) {
+                MicrogameInputManager.gameTarget = MicrogameInputManager.gameTarget.document.body;
+            }
         }
     }
 }
