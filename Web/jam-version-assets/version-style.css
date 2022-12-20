@@ -26,7 +26,8 @@
 }
 
 #timerFull {
-    background-color: #f00;
+    background-image: url(./art/timer.png);
+    background-color: white;
 }
 
 @keyframes wave {
