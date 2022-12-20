@@ -32,7 +32,6 @@ Relevant guide for GZIP: https://www.reddit.com/r/godot/comments/8b67lb/guide_ho
 - With that, Joycon support (https://developer.mozilla.org/en-US/docs/Web/API/Navigator/hid currently, only supported in a few browsers)
 
 To fix right now:
-- To test: Jump On One of Them
 - Remove as many setTimeouts and setIntervals as possible
 - Move debug logs to actual debugging sections
 - Minify where you can (shame Webpack requires restructuring to get working properly)
