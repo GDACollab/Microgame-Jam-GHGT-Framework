@@ -438,7 +438,7 @@ class MicrogameInputManager {
         // Might want to fix this logic structure if it gets more complicated than this. I don't want a tree of if-elses.
         
         // Unity is absolutely picky with how it wants to recieve inputs (same with Construct 3). On the absolute converse, Godot wants us to send inputs to canvases. So Javascript? Meet cheap workaround.
-        if (potentialCanvas !== null && potentialCanvas.id !== "unity-canvas" && !("C3" in MicrogameInputManager.gameTarget)) {
+        if (potentialCanvas !== null && potentialCanvas.id !== "unity-canvas" && !("C3_IsSupported" in MicrogameInputManager.gameTarget)) {
             MicrogameInputManager.gameTarget = potentialCanvas;
         } else {
             // Our Twine script is similarly (and unintentionally) finnicky:
