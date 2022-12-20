@@ -6,8 +6,9 @@ class MicrogameInput {
     static baseBindings = ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft", " "];
     
     #stateTracker = new Map();
-    #currBinding = MicrogameInput.bindings.get("all");
+    #currBinding;
     constructor() {
+        this.#currBinding = this.constructor.bindings.get("all");
         this.#currBinding.forEach((keyToPress, binding) => {
             this.#stateTracker.set(binding, {key: keyToPress, isDown: false});
         }, this);
@@ -17,7 +18,7 @@ class MicrogameInput {
         var keysToPress = [];
         
         // We also want to include the "all" inputs:
-        MicrogameInput.bindings.get("all").forEach((keyToPress, binding) => {
+        this.constructor.bindings.get("all").forEach((keyToPress, binding) => {
             if (!this.#stateTracker.has(binding)) {
                 this.#stateTracker.set(binding, {key: keyToPress, isDown: false, binding: binding});
             }
@@ -28,7 +29,7 @@ class MicrogameInput {
                 keysToPress.push(updatedState);
                 this.#stateTracker.set(binding, updatedState);
             }
-        });
+        }, this);
 
         this.#currBinding.forEach((keyToPress, binding) => {
             if (!this.#stateTracker.has(binding)) {
@@ -151,11 +152,15 @@ class MicrogameGamepad extends MicrogameInput {
     getInput(control) {
         if (typeof control === "string"){
             var inputVal = this.#inputMatch.exec(control);
-            var val = this.#gamepad[inputVal[2]][inputVal[3]];
-            if (val instanceof GamepadButton){
-                val = val.value;
+            if (inputVal !== null) {
+                var val = this.#gamepad[inputVal[2]][inputVal[3]];
+                if (val instanceof GamepadButton){
+                    val = val.value;
+                }
+                return ((inputVal[1] === "-") ? -1 : 1) * val >= this.#sensitivity;
+            } else {
+                return false;
             }
-            return ((inputVal[1] === "-") ? -1 : 1) * val >= this.#sensitivity;
         }
     }
 

@@ -214,14 +214,18 @@ class Selectable {
     }
 
     // Based on the stuff I did for the twine extension.
-    static generateSelectablesArr(element, position = new MenuVector(0, 0), selectableFunc = "isSelectableWithinBounds"){
+    static generateSelectablesArr(element, position = new MenuVector(0, 0), selectableFunc = "isSelectableWithinBounds", globalParentPos = null){
         if (element instanceof Element === false) {
             return;
         }
         var arr = [];
         var select = new Selectable(element, position);
 
-        if (select[selectableFunc]()) {
+        if (globalParentPos === null) {
+            globalParentPos = new MenuVector(select.position);
+        }
+
+        if (select[selectableFunc](globalParentPos)) {
             arr.push(select);
         } else if (element.getAttribute("hidden") === null) { // If the child elements aren't hidden, keep going:
             for (var i = 0; i < element.children.length; i++) {
@@ -230,7 +234,7 @@ class Selectable {
                 if (child.offsetParent === element.offsetParent) {
                     newPos.sub(element.offsetLeft, element.offsetTop);
                 }
-                var selectables = Selectable.generateSelectablesArr(child, newPos, selectableFunc);
+                var selectables = Selectable.generateSelectablesArr(child, newPos, selectableFunc, globalParentPos);
                 arr.push(...selectables);
             }
         }
@@ -263,11 +267,11 @@ class Selectable {
         return computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer";
     }
 
-    isSelectableWithinBounds(){
+    isSelectableWithinBounds(baseOffset){
         var computedStyle = window.getComputedStyle(this.element);
 
         // Is the HTML element positioned within the bounds of the frame?
-        var isWithinBounds = this.position.x > 0 && this.position.x < SCREEN_WIDTH && this.position.y > 0 && this.position.y < SCREEN_HEIGHT;
+        var isWithinBounds = this.position.x > baseOffset.x && this.position.x < SCREEN_WIDTH + baseOffset.x && this.position.y > baseOffset.y && this.position.y < SCREEN_HEIGHT + baseOffset.y;
         
         // Next, does the CSS contribute to the position at all?
         // Assumes transforms only:
@@ -276,7 +280,7 @@ class Selectable {
         var top = parseFloat( translateMatrix[5]);
         var isWithinCSSBounds = false;
         if (!isNaN(left) && !isNaN(top)){
-            isWithinCSSBounds = this.position.x + left > 0 && this.position.x + left < SCREEN_WIDTH && this.position.y + top > 0 && this.position.y + top < SCREEN_HEIGHT;
+            isWithinCSSBounds = this.position.x + left > baseOffset.x && this.position.x + left < SCREEN_WIDTH + baseOffset.x && this.position.y + top > baseOffset.y && this.position.y + top < SCREEN_HEIGHT + baseOffset.y;
         } else if (computedStyle.transform === "none" && isWithinBounds) { // If no transform is set, we assume that the element's position is based solely on posLeft and posTop.
             isWithinCSSBounds = true;
         }
