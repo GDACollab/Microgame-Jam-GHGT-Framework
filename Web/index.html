@@ -4,38 +4,8 @@
         <title>Microgame Jam 2022</title>
         <link rel="stylesheet" href="stylesheet.css"/>
         <link rel="stylesheet" href="./jam-version-assets/version-style.css" id="version-style"/>
-
         <script src="globals.js"></script>
-        <script src="lib/markdown-it.min.js"></script>
-        <script>
-            var ini;
-            
-            var markdown = window.markdownit({linkify: true});
-            var defaultRender = markdown.renderer.rules.link_open || function(tokens, idx, options, env, self) {
-               return self.renderToken(tokens, idx, options);
-            };
-
-            markdown.renderer.rules.link_open = function(tokens, idx, options, env, self) {
-                var aIndex = tokens[idx].attrIndex("target");
-                var bIndex = tokens[idx].attrIndex("tabindex");
-
-                if (aIndex < 0) {
-                    tokens[idx].attrPush(['target', '_blank']);
-                } else {
-                    tokens[idx].attrs[aIndex][1] = '_blank';
-                }
-
-                if (bIndex < 0) {
-                    tokens[idx].attrPush(['tabindex', '-1']);
-                } else {
-                    tokens[idx].attrs[bIndex][1] = '-1';
-                }
-
-                return defaultRender(tokens, idx, options, env, self);
-            }
-        </script>
         <script src="gameinterface.js"></script>
-        <script src="main.js" type="module"></script>
     </head>
     <body oncontextmenu="return false">
         <noscript>

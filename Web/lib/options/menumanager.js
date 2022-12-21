@@ -1,3 +1,29 @@
+import markdownit from "../markdown-it.min.js";
+
+var markdown = markdownit({linkify: true});
+var defaultRender = markdown.renderer.rules.link_open || function(tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+};
+
+markdown.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+    var aIndex = tokens[idx].attrIndex("target");
+    var bIndex = tokens[idx].attrIndex("tabindex");
+
+    if (aIndex < 0) {
+        tokens[idx].attrPush(['target', '_blank']);
+    } else {
+        tokens[idx].attrs[aIndex][1] = '_blank';
+    }
+
+    if (bIndex < 0) {
+        tokens[idx].attrPush(['tabindex', '-1']);
+    } else {
+        tokens[idx].attrs[bIndex][1] = '-1';
+    }
+
+    return defaultRender(tokens, idx, options, env, self);
+}
+
 import {OptionsManager} from "./optionsmanager.js"
 import {Selectable, MenuVector, MenuVectorField} from "./menulib.js"
 import GlobalAnimManager from "../animationmanager.js";

@@ -1,3 +1,4 @@
+import "./version-style.css";
 import { setUpGooglyEyes, updateGooglyEyes } from "./googly-eye.js";
 
 var ini, MicrogameJamMainManager;
