@@ -21,8 +21,13 @@
     width: 100%;
 }
 
+#timerTop {
+    background-image: url(./art/timertopframe.png);
+    z-index: 1;
+}
+
 #timerEmpty {
-    background-color: black;
+    background-image: url(./art/timerbackground.png);
 }
 
 #timerFull {
