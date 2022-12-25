@@ -108,13 +108,13 @@ class GameLoader {
             } else {
                 gameToLoad = DEBUG_TEST;
             }
+            console.log("DEBUG TESTING: " + gameToLoad + " - " + this.#gamesList[gameToLoad]);
         } else {
             this.#recentGamesLoaded.push(gameToLoad);
             if (this.#recentGamesLoaded.length >= 4) {
                 this.#recentGamesLoaded.shift();
             }
         }
-        console.log("DEBUG TESTING: " + gameToLoad + " - " + this.#gamesList[gameToLoad]);
         return gameToLoad;
     }
 
