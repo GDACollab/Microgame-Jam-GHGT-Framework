@@ -17,7 +17,6 @@ microgamejamcontroller = {
     is_game = peek(0x5f80) == 1,
     lives = 3,
     difficulty = 1,
-    lastrestart = 0,
     timer = time(),
     max_time = 15,
     win = false,
@@ -51,7 +50,7 @@ function microgamejamcontroller:gettimer()
     if(self.is_game) then
         self.timer = peek(0x5f85)
     else
-        self.timer = self.max_time - (time() - self.lastrestart)
+        self.timer = self.max_time - time()
     end
     return self.timer
 end
@@ -62,8 +61,9 @@ function microgamejamcontroller:wingame()
       if (self.is_game) then
         poke(0x5f86, 255)
       else
-        self.win = true
-        self.lastrestart = time()
+        self:drawgameresult()
+        self.win = false
+        stop()
       end
     end
 end
@@ -74,8 +74,9 @@ function microgamejamcontroller:losegame()
       if (self.is_game) then
         poke(0x5f86, 1)
       else
+        self:drawgameresult()
         self.win = false
-        self.lastrestart = time()
+        stop()
       end
     end
 end
@@ -116,6 +117,7 @@ function microgamejamcontroller:setdefaultdifficulty(diffNumber)
 end
 
 function microgamejamcontroller:drawgameresult()
+    cls()
     if (self.win) then 
         print("You won!")
     else 
