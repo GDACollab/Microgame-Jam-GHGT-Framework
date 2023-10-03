@@ -1,4 +1,32 @@
-import GlobalGameLoader from "../gameloader.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/input.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/input.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import GlobalGameLoader from "../gameloader.js";
 
 /** 
  * Input module, for detecting global keyboard and controller input.
@@ -144,7 +172,7 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputDown(ev) {
         MicrogameKeyboard.allKeysDown.add(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame && !(("location" in ev.target && ev.target.location.href === this.#gameLocation) || (("baseURI" in ev.target) && ev.target.baseURI === this.#gameLocation))) {
+            if (GlobalGameLoader.inGame &amp;&amp; !(("location" in ev.target &amp;&amp; ev.target.location.href === this.#gameLocation) || (("baseURI" in ev.target) &amp;&amp; ev.target.baseURI === this.#gameLocation))) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
                 MicrogameInputManager.pressKey(ev.key, "down");
             }
@@ -162,7 +190,7 @@ class MicrogameKeyboard extends MicrogameInput {
     #interruptInputUp(ev) {
         MicrogameKeyboard.allKeysDown.delete(ev.key);
         if (this.constructor.baseBindings.includes(ev.key)) {
-            if (GlobalGameLoader.inGame && !(("location" in ev.target && ev.target.location.href === this.#gameLocation) || (("baseURI" in ev.target) && ev.target.baseURI === this.#gameLocation))) {
+            if (GlobalGameLoader.inGame &amp;&amp; !(("location" in ev.target &amp;&amp; ev.target.location.href === this.#gameLocation) || (("baseURI" in ev.target) &amp;&amp; ev.target.baseURI === this.#gameLocation))) {
                 // For Unity games, we have to pass keyboard controls directly to the game in the iframe:
                 MicrogameInputManager.pressKey(ev.key, "up");
             }
@@ -490,10 +518,10 @@ class MicrogameInputManager {
                 keysToPress.forEach((keyObj) => {
                     var isDown = keyObj.isDown;
                     var key = keyObj.key;
-                    if (isDown && !this.#keysDown.has(key)) {
+                    if (isDown &amp;&amp; !this.#keysDown.has(key)) {
                         this.#keysDown.add(key);
                         MicrogameInputManager.pressKey(key, "down");
-                    } else if (!isDown && this.#keysDown.has(key)) {
+                    } else if (!isDown &amp;&amp; this.#keysDown.has(key)) {
                         this.#keysDown.delete(key);
                         MicrogameInputManager.pressKey(key, "up");
                     }
@@ -512,7 +540,7 @@ class MicrogameInputManager {
         // Might want to fix this logic structure if it gets more complicated than this. I don't want a tree of if-elses.
         
         // Unity is absolutely picky with how it wants to recieve inputs (same with Construct 3). On the absolute converse, Godot wants us to send inputs to canvases. So Javascript? Meet cheap workaround.
-        if (potentialCanvas !== null && potentialCanvas.id !== "unity-canvas" && !("C3_IsSupported" in MicrogameInputManager.gameTarget)) {
+        if (potentialCanvas !== null &amp;&amp; potentialCanvas.id !== "unity-canvas" &amp;&amp; !("C3_IsSupported" in MicrogameInputManager.gameTarget)) {
             MicrogameInputManager.gameTarget = potentialCanvas;
         } else {
             // Our Twine script is similarly (and unintentionally) finnicky:
@@ -526,4 +554,26 @@ class MicrogameInputManager {
 
 var GlobalInputManager = new MicrogameInputManager();
 
-export {GlobalInputManager as default, MicrogameKeyboard};
+export {GlobalInputManager as default, MicrogameKeyboard};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-input.html">input</a></li></ul><h3>Classes</h3><ul><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Oct 02 2023 17:04:40 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

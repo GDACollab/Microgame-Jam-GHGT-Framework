@@ -1,4 +1,32 @@
-import {PicoInterface} from "./lib/picointerface.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: gameloader.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: gameloader.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {PicoInterface} from "./lib/picointerface.js";
 import GlobalAudioManager from "./lib/gamesound.js";
 import GlobalAnimManager from "./lib/animationmanager.js";
 import MainMenuManager from "./lib/options/menumanager.js";
@@ -140,7 +168,7 @@ class GameLoader {
         this.animateTransition(transitionName);
         // Difficulty change:
         var difficulty = 1;
-        if (DEBUG_DIFFICULTY >= 1 && DEBUG_DIFFICULTY <= 3 && Number.isInteger(DEBUG_DIFFICULTY)) {
+        if (DEBUG_DIFFICULTY >= 1 &amp;&amp; DEBUG_DIFFICULTY &lt;= 3 &amp;&amp; Number.isInteger(DEBUG_DIFFICULTY)) {
             difficulty = DEBUG_DIFFICULTY;
         } else if (this.#gameToLoad !== null) {
             if (!this.#alreadyPlayedGames.includes(this.#gameToLoad)) {
@@ -293,7 +321,7 @@ class GameLoader {
         var gamesWon = this.#totalGamesPlayed - 3;
         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBALloseAnimation", {
             shouldLoop: function(timestamp, animationObj) {
-                if (!mainMenuDraw && (timestamp - internalClock) > 600){
+                if (!mainMenuDraw &amp;&amp; (timestamp - internalClock) > 600){
                     mainMenuDraw = true;
                     // Unload the iframe, load the main menu:
                     document.getElementById("game").src = "about:blank";
@@ -356,7 +384,7 @@ class GameLoader {
             numLives++;
         }
         
-        if ((transitionName === "lose" && numLives === 1) || numLives <= 0) {
+        if ((transitionName === "lose" &amp;&amp; numLives === 1) || numLives &lt;= 0) {
             this.loseGameTransition();
             this.#gameToLoad = null;
             return;
@@ -371,7 +399,7 @@ class GameLoader {
         GlobalAnimManager.playKeyframedAnimation("CCSSGLOBAL" + transitionName + "Animation", {
             shouldLoop: function(timestamp, animationObj){
                 // Should we load when we're looping? If yes, we have to actually wait until we're looping.
-                if (this.#gamesConfig["play-transition-prior"].includes(this.#gameToLoad) && !playTransitionPriorLoaded && "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)) {
+                if (this.#gamesConfig["play-transition-prior"].includes(this.#gameToLoad) &amp;&amp; !playTransitionPriorLoaded &amp;&amp; "loop" in animationObj.timeline.get(animationObj.currKeyframePlaying)) {
                     playTransitionPriorLoaded = true;
                     this.#loadGameHTML(this.#gameToLoad);
                 }
@@ -399,7 +427,7 @@ class GameLoader {
      * @param {boolean} lostLife Whether or not one of those lives will be lost.
      */
     setUpLifeCounter(numLives, lostLife) {
-        for (var i = 0; i < numLives; i++) {
+        for (var i = 0; i &lt; numLives; i++) {
             document.getElementById("intactLifeDiv" + ((i > 0)? (i - 1) : "")).classList.add("active-lives");
         }
 
@@ -440,4 +468,26 @@ class GameLoader {
 
 var GlobalGameLoader = new GameLoader();
 
-export default GlobalGameLoader;
+export default GlobalGameLoader;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-input.html">input</a></li></ul><h3>Classes</h3><ul><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Oct 02 2023 17:04:40 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: adding-games</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: adding-games</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>adding-games</h2>
+</header>
+
+<article>
+    <h1>How to Add Games and Theming</h1>
+<p>Here’s how it works (for now, this is really inefficient though):</p>
+<p>There’s a folder in the Github called Web. In that Web folder is jam-version-assets. In that folder is everything that is specific to the current iteration of the microgame jam. I.e., all the stuff that needs to be changed. So that contains:
+Main menu images
+Game data
+Theme specific .js and .css files
+And anything else that changes when the theme changes.</p>
+<p>To add games, all you need to do is make a “games” folder in jam-version-assets. Then drag and drop each game with a .html file into its own folder (the games folder is ignored by the .gitignore to avoid cluttering the Github with a lot of data).</p>
+<p>Then go into config.ini, and under <code>[Games]</code>, insert the game folder name and the location/name of the .html file. So for instance:
+bead-fast = index.html</p>
+<p>Would point to the bead-fast folder in Web/jam-version-assets/games.
+And index.html points to Web/jam-version-assets/games/bead-fast/index.html</p>
+<p>Then you need to add to <code>[GameNames]</code> to name each game (for user settings). It’s folder-name=Game Name. So for bead-fast, that’s:</p>
+<p><code>bead-fast = Bead Fast</code></p>
+<p>There are also special options that you can use for customizing the games if you have difficulty loading them. For instance, in the <code>[GamesConfig]</code> section. There are two options here:
+<code>play-transition-prior=</code>
+And
+<code>slightly-more-time=</code></p>
+<p>Which both can be set to blank values, like so. They can also be set to a comma separated list of game names:</p>
+<p><code>play-transition-prior=bead-fast,rossfight,etc.</code></p>
+<p><code>play-transition-prior</code> is for games that are chunky to load. Which means you should play the transition prior to loading them (otherwise your webpage will lag).</p>
+<p><code>slightly-more-time</code> games are for games where the developers cheated and only allow you to win a few seconds after an automatic lose. This should never happen, but does anyway. So you can give them some like a second more before they would autofail with this config setting.</p>
+<h2>Custom Sounds</h2>
+<p>This is pretty simple. It’s drag and drop. There are sounds with certain IDs, you can just store them in the Web/jam-version-assets/sound folder to configure what sounds play (this is also ignored by the .gitignore to avoid clogging with data again).</p>
+<p>Feel free to use the same naming conventions each time, though:</p>
+<pre class="prettyprint source lang-ini"><code>theme = theme.ogg ; the main menu theme
+endTheme = endtheme.ogg ; the theme that plays for the lose screen
+buttonHover = sfx_buttonHover.ogg ; button hover SFX
+buttonClick = sfx_button.ogg ; button click SFX
+winJingle = winJingle.wav ; The winning jingle
+loseJingle = loseJingle.wav ; The losing jingle
+</code></pre>
+<h2>The Crap that should be changed if you have time</h2>
+<p>Ugh, my worst nightmare. I decided to include the theme specific .CSS and .JS animations as something configurable in config.ini</p>
+<p>To make matters worse, the menu is also configurable in config.ini. What does that mean?</p>
+<p>Instead of writing HTML, for writing the whole menu system that has to be done with config.ini</p>
+<p>That makes some aspects easier. Like if you want to replace one menu image with another, you can just find where it’s defined in config.ini and change the source image (all stored in Web/jam-version-assets/art).</p>
+<p>If you have the spare time, I’d encourage you to re-work this somehow in a way that makes sense. If not, I’d stick to just replacing images.</p>
+<p>Config.Ini “HTML” Language
+You start with the header:
+<code>[HeaderName]</code></p>
+<p>Which defines a <code>&lt;div&gt;</code> element. Then you can add children:
+<code>[HeaderName.p1]</code></p>
+<p>Which defines either <code>&lt;p&gt;</code> tags or <code>&lt;img&gt;</code> tags. Then, you can add specific info depending on the tag you want.</p>
+<p>So for <code>[HeaderName.p1]</code>, you could add:</p>
+<pre class="prettyprint source lang-ini"><code>text=```
+Text here
+More text
+`` `
+</code></pre>
+<p>To add some markdown formatted text.</p>
+<p>For <code>[HeaderName.img]</code> you could add</p>
+<p><code>img=src.png</code></p>
+<p>To define a source from <code>Web/jam-version-assets/art/</code></p>
+<p>The Menu and Transitions art (as defined in <code>[Menu]</code> and <code>[Transitions]</code>) are created in <code>lib/options/menumanager.js</code> using the ElementCreator class.</p>
+<p>There’s also:</p>
+<p><code>offset=(x,y,z)</code> to define the image’s absolute position.
+<code>div=element-id-name</code> to define a <code>&lt;div&gt;</code> element (that will be created as a child of <code>[HeaderName]</code>) to store multiple elements under.</p>
+<h3>Jam-Version-Assets .css and .js</h3>
+<p>Okay, this is the only advantage that this system provides. Sort of.</p>
+<p>For .js, the only thing you should be concerned with is version-style.js, which defines initVersionStyle and versionStyleUpdate, both of which are used to control the timer based on the theme. That’s it.</p>
+<p>And for CSS: you can define custom .css for all of the elements created to customize it according to the theme. The only trade-off is that you need to be knowledgeable about CSS. And worse still, if you’re looking to animate things (like in the transitions), you need to know about a special CSS language variant I made (this could probably be like an SCSS plugin if we transition to something like typescript): CCSS. The tutorial for using it is in Web/jam-version-assets/win-transition.css. But basically:</p>
+<p>You define a global animation:</p>
+<pre class="prettyprint source lang-css"><code>@keyframes CCSSGLOBALanimationName {
+
+/*A percentage to start at (just like a regular animation):*/
+0% {
+	/*A time that percentage starts:*/
+	--time: Xs; /*(where Xs represents an arbitrary number of seconds, like 1s) */
+
+	/* You define: */
+	--ANIM-name: keyframesToPlay Ys selector; /*(where Ys is like Xs)*/
+
+}
+</code></pre>
+<p>And that’s it. You can also chain CCSS animations by just using <code>--ANIM-name</code> in any <code>@keyframes</code> that is called by a CCSSGLOBAL keyframe object.</p>
+<p>Feel free to also use @import to import more .css files to load in more styles and animations. That’s what version-style.css does.</p>
+<p>To be honest, this should all be like a Blender/Adobe Animate script or something to automate the process. This makes things very complicated and very dependent on the idea that you know CSS. So my apologies.</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-input.html">input</a></li></ul><h3>Classes</h3><ul><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Oct 02 2023 17:04:40 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: GameLoader</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: GameLoader</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-gameloader.html">gameloader</a>~</span>GameLoader<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    
+    <h4 class="name" id="GameLoader"><span class="type-signature"></span>new GameLoader<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Runs all loading behavior. That includes:Keeping track of what game to currently loadTransitioning into loaded gamesPlaying/animating transitions from games using the Animation Manager.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="alreadyPlayedGames"><span class="type-signature">(private) </span>alreadyPlayedGames<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Uses localStorage to arbitrarily set difficulty if games are wholly new to the user. Is a list, should also probably be a set.So if a game isn’t in the list in this.transition(), then the difficulty is set to 1 and the game is added to this list.Initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="currGame"><span class="type-signature"></span>currGame<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    String of the game ID (the game’s folder name) to load. Set in <a href="module-gameloader-GameLoader.html#loadGameHTML">loadGameHTML</a>. Primarily meant for debugging.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line209">line 209</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="debug_index"><span class="type-signature">(private) </span>debug_index<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    If <a href="global.html#DEBUG_TEST">DEBUG_TEST</a> is set to “sequential”, this will be used for the index of the current game played.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="game"><span class="type-signature">(readonly) </span>game<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Read-only accessor for <a href="module-gameloader-GameLoader.html#gameToLoad">module:gameloader~GameLoader#gameToLoad</a>.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line276">line 276</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gameLoaded"><span class="type-signature">(private) </span>gameLoaded<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Did the <a href="module-gameloader-GameLoader.html#gameStarted">gameStarted</a> function get called? Set to false on transition
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gameNames"><span class="type-signature">(private) </span>gameNames<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Dictionary to associate game IDs (how they’re stored in folders) with their actual names.Initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>. Stores the dictionary [Games] from config.ini
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gameNames"><span class="type-signature">(readonly) </span>gameNames<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Public read-only accessor of <a href="module-gameloader-GameLoader.html#gameNames">module:gameloader~GameLoader#gameNames</a>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line110">line 110</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gameToLoad"><span class="type-signature">(private) </span>gameToLoad<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A private reference for the current game we’re going to load throughout this.animateTransition().Set using <a href="module-gameloader-GameLoader.html#pickGameToLoad">pickGameToLoad</a>.Used in <a href="module-gameloader-GameLoader.html#loadGameHTML">loadGameHTML</a>.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line270">line 270</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gamesConfig"><span class="type-signature">(private) </span>gamesConfig<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Dictionary of games with special loading conditions. Initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>. Stores the dictionary [Games] from config.ini
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gamesList"><span class="type-signature">(private) </span>gamesList<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    The dictionary of games to load. Initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>. Stores the dictionary [Games] from config.ini
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line32">line 32</a>
+    </li></ul></dd>
+    
+
+    
+    <dt class="tag-tutorial">Tutorials:</dt>
+    <dd class="tag-tutorial">
+        <ul>
+            <li><a href="tutorial-adding-games.html">adding-games</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="inGame"><span class="type-signature">(readonly) </span>inGame<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Read-only property for <a href="module-gameloader-GameLoader.html#gameLoaded">module:gameloader~GameLoader#gameLoaded</a>. Used by <a href="module-input.html">input.js</a>.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line237">line 237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="masterVolume"><span class="type-signature"></span>masterVolume<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Set by <a href="MicrogameJam.html">MicrogameJam</a> to control the overall volume of the GAME LOADER’s volume. Has no effect on the volume of the games being loaded.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="picoInterface"><span class="type-signature"></span>picoInterface<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Reference to picointerface.js.Created if a PICO-8 game is detected in <a href="module-gameloader-GameLoader.html#iframeLoaded">module:gameloader~GameLoader#iframeLoaded</a>.Updated in <a href="module-gameloader-GameLoader.html#loadUpdate">module:gameloader~GameLoader#loadUpdate</a> if it exists.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line130">line 130</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="recentGamesLoaded"><span class="type-signature">(private) </span>recentGamesLoaded<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    A list (should probably be a set) of the games that were recently loaded to avoid loading them again.Initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>.Items are arbitrarily removed in <a href="module-gameloader-GameLoader.html#pickGameToLoad">pickGameToLoad</a>.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="setupPromise"><span class="type-signature">(private) </span>setupPromise<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    This WAS supposed to be for loading the ini file. configloader.js does this instead, so I’m pretty sure this is useless.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="totalGamesPlayed"><span class="type-signature">(private) </span>totalGamesPlayed<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used to set a difficulty curve. Modified in <a href="module-gameloader-GameLoader.html#transition">transition</a>.Look for the ridiculous max/min/floor/log monstrosity and that’s the difficulty curve.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line79">line 79</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="animateTransition"><span class="type-signature"></span>animateTransition<span class="signature">(transitionName)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Gets everything ready to animate (like hiding the timer, showing the transition div, etc.)Prepares the life counter (calling this.setupLifeCounter()).Then uses GlobalAnimationManager.playKeyframedAnimation using all these settings.Sets animation to loop until the game is loaded, or unless it has specific configurations in this.#gamesConfig.Once the animation is configured to play, runs this.#loadGameHTML() (should probably just be moved to this.transition()? Although this would break this.loseGameTransition() behavior).
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>transitionName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The name to use in the saved GlobalAnimationManager when calling module:animationmanager~CCSSGlobalAnimation#playKeyframedAnimation.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line347">line 347</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="clearGameHTML"><span class="type-signature">(private) </span>clearGameHTML<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Set the source of the iframe with ID “game” (in index.html) to “about:blank” for resetting purposes.Called only in <a href="module-gameloader-GameLoader.html#animateTransition">module:gameloader~GameLoader#animateTransition</a>.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line217">line 217</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="gameStarted"><span class="type-signature"></span>gameStarted<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Called by <a href="MicrogameJam.html#gameStarted">MicrogameJam#gameStarted</a>. Hides the timer and game and sets GameLoader#gameLoaded to true.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line226">line 226</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="iframeLoaded"><span class="type-signature">(private) </span>iframeLoaded<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Callback initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>. Fiddles with Unity and PICO-8 games if detected (initializes module:picointerface if detected), and tries to fix their behavior to work correctly.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line256">line 256</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loadGameHTML"><span class="type-signature">(private) </span>loadGameHTML<span class="signature">(gameToLoad)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Sets the iframe with ID “game” (in index.html) to point to the new game’s .html.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gameToLoad</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The name of the game’s folder to use.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line202">line 202</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loadUpdate"><span class="type-signature"></span>loadUpdate<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Called by <a href="MicrogameJam.html#update">MicrogameJam#update</a>. Only calls module:picointerface~PicoInterface#picoUpdate if the current game is running PICO-8.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line244">line 244</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loseGameTransition"><span class="type-signature"></span>loseGameTransition<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Special function called by <a href="module-gameloader-GameLoader.html#animateTransition">animateTransition</a> for animating a complete loss of the game (1 or 0 lives remaining).Should probably be merged with animateTransition at some point?Uses module:animationmanager to do custom loss behavior (like removing lives, and exiting back to the home screen on a finished game).Other than that, it mostly acts like exactly how <a href="module-gameloader-GameLoader.html#animateTransition">animateTransition</a> would play out, if allowed to continue.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line289">line 289</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="pickGameToLoad"><span class="type-signature"></span>pickGameToLoad<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Pick a random game to load using Math.random, as long as it isn’t <a href="module-gameloader-GameLoader.html#recentGamesLoaded">module:gameloader~GameLoader#recentGamesLoaded</a>.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line166">line 166</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeLives"><span class="type-signature"></span>removeLives<span class="signature">(numLives, lostLife)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Called by module:gameloader~GameLoader#animationTransition to tweak CSS settings for the intactLifeDiv s to remove them if they’ve been lost. And to hide them after the animation has finished.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>numLives</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">How many lives we have left</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lostLife</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Whether or not one of those lives will be lost.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line430">line 430</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setUpLifeCounter"><span class="type-signature"></span>setUpLifeCounter<span class="signature">(numLives, lostLife)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Show the number intactLifeDiv s (setup in config.ini) based on numLives. And play a loseLife animation with module:animationmanager if lostLife is true.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>numLives</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">How many lives we have left</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lostLife</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Whether or not one of those lives will be lost.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line401">line 401</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setupGameLoader"><span class="type-signature">(private) </span>setupGameLoader<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Initialize all the properties we need.Set the iframe with ID “game” (in index.html) to call <a href="module-gameloader-GameLoader.html#iframeLoaded">module:gameloader~GameLoader#iframeLoaded</a> on load.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="transition"><span class="type-signature"></span>transition<span class="signature">(didWin)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Main function where all the loading actually happens.Call <a href="module-gameloader-GameLoader.html#animateTransition">module:gameloader~GameLoader#animateTransition</a> according to didWin, and increase the difficulty accordingly.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>didWin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Are we meant to treat this as a loss (false) or a win (true)?</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line123">line 123</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Make game picking more robust, add difficulty increases, etc.</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The difficulty number.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-input.html">input</a></li></ul><h3>Classes</h3><ul><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Oct 02 2023 17:04:40 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
