@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: extension-godot</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: extension-godot</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>extension-godot</h2>
+</header>
+
+<article>
+    <h2>Installing</h2>
+<h3>Godot 4: (Last Tested Version: 4.1.1)</h3>
+<p><em>Godot 4 Projects cannot use C#, as Godot 4 currently does not support web builds using C#.</em></p>
+<p>As per <a href="https://docs.godotengine.org/en/4.1/tutorials/plugins/editor/installing_plugins.html">the official Godot documentation</a>:</p>
+<ul>
+<li>Create your Godot project.
+<ul>
+<li>Forward+ renderer recommended.</li>
+</ul>
+</li>
+<li><a href="https://drive.google.com/file/d/1H_ha1L8sD2NoMkEQNNDFWhTsQyaNI3nF/view?usp=sharing">Download the .ZIP</a></li>
+<li>Extract the contents of the .ZIP to the addons/ folder of your project. (Create an “addons” folder in your project if it doesn’t exist yet)</li>
+<li>Close your Godot project, and re-open it.</li>
+<li>Open AssetLib -&gt; Plugins</li>
+<li>Go to the Plugins Tab</li>
+<li>Enable the Plugin.</li>
+<li>Click “OK” when the Plugin prompts you to update project settings.</li>
+</ul>
+<h3>Godot 3:</h3>
+<p>As per <a href="https://docs.godotengine.org/en/3.6/tutorials/plugins/editor/installing_plugins.html">the official Godot documentation</a>:</p>
+<ul>
+<li>Create your Godot project.
+<ul>
+<li>It is recommended you use GLES 2 for your project.</li>
+</ul>
+</li>
+<li><a href="https://drive.google.com/file/d/1pMrbvMp2BiLrWexbOs8S-vRTlz_io_tE/view?usp=sharing">Download the .ZIP</a></li>
+<li>Extract the contents of the .ZIP to the addons/ folder of your project.</li>
+<li>Close your Godot project, and re-open it.</li>
+<li>Open Project -&gt; Project Settings</li>
+<li>Go to the Plugins Tab</li>
+<li>Enable the Plugin.</li>
+<li>Click “OK” when the Plugin prompts you to update project settings.</li>
+</ul>
+<h2>Exporting</h2>
+<ul>
+<li>Open Project -&gt; Export</li>
+<li>Click “Add…” in the top</li>
+<li>Click “HTML5”.</li>
+<li>You might see an error below with a “Manage Export Templates”. If so…
+<ul>
+<li>Click “Manage Export Templates”</li>
+<li>In the new window that pops up, click “Download and Install”</li>
+</ul>
+</li>
+<li>Click “Export Project…”</li>
+<li>Save the project to an empty folder</li>
+<li>Zip the entire folder, and submit to the itch.io jam page.</li>
+</ul>
+<h2>Using the Extension</h2>
+<p>Call MicrogameJamController.FUNCTION at any time, in any script in order to use the functionality. Here are the associated functions:</p>
+<h3>MicrogameJamController.SetMaxTimer(seconds)</h3>
+<p>This MUST be called in the _ready function of any object. It won’t accept any inputs after that.</p>
+<p>This will set the maximum time that your game will be allowed to run for. It will only accept a range of 5 to 15 seconds.</p>
+<h3>MicrogameJamController.WinGame()</h3>
+<p>This tells the controller that your game has won. This should automatically restart your scene if your game is not part of our infrastructure.</p>
+<h3>MicrogameJamController.LoseGame()</h3>
+<p>This tells the controller that your game has been lost. This should automatically restart your scene if your game is not part of our infrastructure.</p>
+<p>This will be automatically called if MicrogameJamController.GetTimer() is &lt;= 0.</p>
+<h3>MicrogameJamController.GetDifficulty()</h3>
+<p>Returns a value from 1 to 3, where 1 is the easiest difficulty, and 3 is the highest difficulty. You can ignore this function if you don’t want your Microgame’s difficulty to change.</p>
+<p>We will adjust this automatically in our infrastructure, but you can change the default value for testing/standalone builds with MicrogameJamController.dev_difficulty</p>
+<h3>MicrogameJamController.GetLives()</h3>
+<p>Gets the number of lives the player currently has. When your game is not part of our infrastructure, this value can be set by default with MicrogameJamController.dev_lives.</p>
+<h3>MicrogameJamController.GetTimer()</h3>
+<p>Returns the number of seconds until MicrogameJamController.LoseGame() is called.</p>
+<h3>MicrogameJamController.dev_difficulty</h3>
+<p>This can be set at any time in any script. This is the default value that MicrogameJamController.GetDifficulty() will return if our infrastructure is not detected.</p>
+<p>DO NOT, and I repeat DO NOT USE THIS VALUE TO GET DIFFICULTY. That’s what MicrogameJamController.GetDifficulty() is for.</p>
+<h3>MicrogameJamController.dev_lives</h3>
+<p>This can be set at any time in any script. This is the default value that MicrogameJamController.GetLives() will return if our infrastructure is not detected.</p>
+<p>DO NOT, and I repeat DO NOT USE THIS VALUE TO GET LIVES. That’s what MicrogameJamController.GetLives() is for.</p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-input.html">input</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li><li><a href="tutorial-extension-godot.html">extension-godot</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Oct 02 2023 20:16:32 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
