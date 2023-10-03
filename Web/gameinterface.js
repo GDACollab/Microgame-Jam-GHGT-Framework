@@ -158,7 +158,7 @@ var GameInterface = (
         },
 
         /**
-         * Set {@link GameInterface~manager} from {@link MicrogameJam}.
+         * Set {@link GameInterface~MicrogameJamMainManager} from {@link MicrogameJam}.
          * @param {MicrogameJam} manager The microgamejam manager.
          * @constructs GameInterface
          */
