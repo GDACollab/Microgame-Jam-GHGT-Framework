@@ -35,7 +35,8 @@ const MIN_ALLOWED_TIMER = 5;
  * The difficulty to set if DEBUG_TEST is set to sequential. 
  * @type {number} */
 const DEBUG_DIFFICULTY = -1;
-/** Pick a game to repeatedly test. Set "sequential" to go through all the games in order:
+/** Pick a game to repeatedly test. Set "sequential" to go through all the games in order.
+ * Either that or set it to a Game ID from the [Game] list from config.ini, and it will play that game on loop.
  * @type {string}
  * @default 
 */
