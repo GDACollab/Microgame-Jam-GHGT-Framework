@@ -1,4 +1,32 @@
-import iniReader from "./configloader.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/animationmanager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/animationmanager.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import iniReader from "./configloader.js";
 /**
  * Module for managing all custom CCSS animations
  * @module animationmanager
@@ -47,7 +75,7 @@ class CCSSAnimationBase {
 
         // Everything else is selectors:
         animDat.selectors = [];
-        for (var i = 2; i < animProps.length; i++){
+        for (var i = 2; i &lt; animProps.length; i++){
             animDat.selectors.push(animProps[i].replaceAll(" ", ""));
         }
 
@@ -56,7 +84,7 @@ class CCSSAnimationBase {
 
     readToAnimStore(frame){
         var animationStore = {setVariables: {}};
-        for (var i = 0; i < frame.style.length; i++) {
+        for (var i = 0; i &lt; frame.style.length; i++) {
             var styleName = frame.style[i];
             if (styleName.substring(0, 7) === "--ANIM-") {
                 var fullAnimName = styleName.substring(7);
@@ -270,7 +298,7 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
         var shouldLoop = this._shouldLoop(time, this);
 
         // We need to be able to transition out of a loop ASAP for loading.
-        if ("postLoop" in this.currFrame && !shouldLoop) {
+        if ("postLoop" in this.currFrame &amp;&amp; !shouldLoop) {
             var start = this.timeline.get(this.currFrame.postLoop).index;
 
             // Because we've been looping for who knows how long, we need to treat it as if we were playing the animation normally:
@@ -294,7 +322,7 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
             this.currKeyframePlaying = nextTime;
 
             // Loop if we need to continue:
-            if ("loop" in this.currFrame && shouldLoop){
+            if ("loop" in this.currFrame &amp;&amp; shouldLoop){
                 var start = this.timeline.get(this.currFrame.loop).index;
 
                 // We've started looping again! Forget the old play stack, we're on this now:
@@ -361,7 +389,7 @@ class AnimationManager {
     frameUpdate(time){
         // I might update to using the Javascript Web Animation API if current timings prove to be too inconsistent: https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API
         
-        for (var i = 0; i < this.currAnimations.length; i++) {
+        for (var i = 0; i &lt; this.currAnimations.length; i++) {
             var animation = this.currAnimations[i];
 
             var frameUpdateDat = animation.frameUpdate(time);
@@ -395,7 +423,7 @@ class AnimationManager {
                 if (frameUpdateDat.isFinished) {
                     var finished = this.currAnimations.splice(i, 1)[0];
 
-                    if (!("avoidAnimCleanup" in finished.options && finished.options.avoidAnimCleanup)) {
+                    if (!("avoidAnimCleanup" in finished.options &amp;&amp; finished.options.avoidAnimCleanup)) {
                         this.animationsToClean.push(finished);
                     }
 
@@ -419,7 +447,7 @@ class AnimationManager {
     }
 
     playKeyframedAnimation(name, options = {}){
-        if (name.substring(0, 10) === "CCSSGLOBAL" && this.animations[name] instanceof CCSSGlobalAnimation) {
+        if (name.substring(0, 10) === "CCSSGLOBAL" &amp;&amp; this.animations[name] instanceof CCSSGlobalAnimation) {
             // Duplicate the animation:
             this.currAnimations.push(this.animations[name]);
             // Performance.now() is an acceptable substitute for the timestamp from frameUpdate, see https://stackoverflow.com/questions/38360250/requestanimationframe-now-vs-performance-now-time-discrepancy
@@ -444,10 +472,10 @@ class AnimationManager {
     }
 
     cleanAnimsOfName(name){
-        for (var i = 0; i < this.animationsToClean.length; i++) {
+        for (var i = 0; i &lt; this.animationsToClean.length; i++) {
             var anim = this.animationsToClean[i];
             if (anim.name === name || anim.globalParent === name) {
-                if (anim instanceof CCSSAnimation && ini["Transitions"]["debug-loop"] !== "pause"){
+                if (anim instanceof CCSSAnimation &amp;&amp; ini["Transitions"]["debug-loop"] !== "pause"){
                     anim.clearAnimation();
                 }
                 this.animationsToClean.splice(i, 1);
@@ -457,9 +485,9 @@ class AnimationManager {
     }
 
     cleanAllAnims() {
-        for (var i = 0; i < this.animationsToClean.length; i++) {
+        for (var i = 0; i &lt; this.animationsToClean.length; i++) {
             var anim = this.animationsToClean[i];
-            if (anim instanceof CCSSAnimation && ini["Transitions"]["debug-loop"] !== "pause") {
+            if (anim instanceof CCSSAnimation &amp;&amp; ini["Transitions"]["debug-loop"] !== "pause") {
                 anim.clearAnimation();
             }
             this.animationsToClean.splice(i, 1);
@@ -468,7 +496,7 @@ class AnimationManager {
     }
 
     stopAllKeyframedAnimationOf(name) {
-        for (var i = 0; i < this.currAnimations.length; i++) {
+        for (var i = 0; i &lt; this.currAnimations.length; i++) {
             var anim = this.currAnimations[i];
             if (anim.name === name || anim.globalParent === name) {
                 this.animationsToClean.push(this.currAnimations.splice(i, 1)[0]);
@@ -487,4 +515,26 @@ class AnimationManager {
 var GlobalAnimManager = new AnimationManager(document.getElementById("version-style").href);
 GlobalAnimManager.evaluateMainSheet();
 
-export default GlobalAnimManager;
+export default GlobalAnimManager;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-input.html">input</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Oct 02 2023 18:29:20 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,7 +1,19 @@
+/**
+ * The javascript module for version specific styles (i.e., showing a timer)
+ * @file
+ */
+/**
+ * The javascript module for version specific styles (i.e., showing a timer)
+ * @module versionstyle
+ */
 import { setUpGooglyEyes, updateGooglyEyes } from "./googly-eye.js";
 
 var ini, MicrogameJamMainManager;
 
+/**
+ * Update every frame from {@link MicrogameJam}.
+ * @param {boolean} isInGame Are we currently in the game? 
+ */
 function versionStyleUpdate(isInGame) {
     updateGooglyEyes();
 
@@ -10,7 +22,9 @@ function versionStyleUpdate(isInGame) {
     }
 }
 
-// Included in version-style because we might want to change how the timer animates based on the style.
+/**
+ * Included in version-style because we might want to change how the timer animates based on the style. Called by {@link module:versionstyle#versionStyleUpdate}.
+ */
 function timerUpdate() {
     document.getElementById("timerFull").style.left = "-" + ((1 - GameInterface.getTimer()/GameInterface.getMaxTimer()) * 100) + "%";
     var timer = GameInterface.getTimer();
@@ -25,6 +39,11 @@ function timerUpdate() {
     }
 }
 
+/**
+ * Set up all the initial style stuff.
+ * @param {Object} config Ini file from {@link module:configloader}. 
+ * @param {MicrogameJam} manager Microgame Jam manager. 
+ */
 function initVersionStyle(config, manager) {
     setUpGooglyEyes();
     ini = config;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: MicrogameKeyboard</title>
+    <title>JSDoc: Class: MicrogameGamepad</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: MicrogameKeyboard</h1>
+    <h1 class="page-title">Class: MicrogameGamepad</h1>
 
     
 
@@ -29,7 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-input.html">input</a>~</span>MicrogameKeyboard<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-input.html">input</a>~</span>MicrogameGamepad<span class="signature">(gamepad)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">For controlling the game by gamepad.Translates gamepad input to keyboard output.</div>
         
     
 </header>
@@ -40,25 +42,72 @@
         
 
     
-
-    
-    <h4 class="name" id="MicrogameKeyboard"><span class="type-signature"></span>new MicrogameKeyboard<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h2>Constructor</h2>
     
 
     
+    <h4 class="name" id="MicrogameGamepad"><span class="type-signature"></span>new MicrogameGamepad<span class="signature">(gamepad)</span><span class="type-signature"></span></h4>
+    
 
-
-
-<div class="description">
-    Keyboard bindings.Because the Keyboard API is still experimental, we're just going to use standard oninput stuff.
-</div>
-
-
+    
 
 
 
 
 
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gamepad</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Gamepad</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A gamepad from the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API">Gamepad API</a></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -94,7 +143,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line107">line 107</a>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line217">line 217</a>
     </li></ul></dd>
     
 
@@ -155,68 +204,6 @@
 
         
             
-<h4 class="name" id="allKeysDown"><span class="type-signature"></span>allKeysDown<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Set of keys used across all MicrogameKeyboards to list all keys currently being pressed.Set in <a href="module-input-MicrogameKeyboard.html#interruptInputUp">module:input~MicrogameKeyboard#interruptInputUp</a> and <a href="module-input-MicrogameKeyboard.html#interruptInputDown">module:input~MicrogameKeyboard#interruptInputDown</a>.Used only in module:optionsmanager.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line126">line 126</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
 <h4 class="name" id="baseBindings"><span class="type-signature"></span>baseBindings<span class="type-signature"></span></h4>
 
 
@@ -239,12 +226,12 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="module-input-MicrogameInput.html#baseBindings">module:input~MicrogameInput#baseBindings</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -290,7 +277,7 @@
 
 
 <div class="description">
-    A map of maps.The bindings to use for each game (or all of them).
+    Binding of <a href="https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API">Gamepad API</a> specific controls to key codes.
 </div>
 
 
@@ -306,8 +293,10 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="module-input-MicrogameInput.html#bindings">module:input~MicrogameInput#bindings</a>
     </li></ul></dd>
     
@@ -329,11 +318,9 @@
     
 
     
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line24">line 24</a>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line229">line 229</a>
     </li></ul></dd>
     
 
@@ -341,13 +328,6 @@
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>FIX to be a map for all games.</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -380,12 +360,12 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="module-input-MicrogameInput.html#currBinding">module:input~MicrogameInput#currBinding</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -425,13 +405,13 @@
 
         
             
-<h4 class="name" id="gameLocation"><span class="type-signature">(private) </span>gameLocation<span class="type-signature"></span></h4>
+<h4 class="name" id="gamepad"><span class="type-signature">(private) </span>gamepad<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    The HREF of the current game loaded. Used to ignore key presses if a keyboard event is targeting the gameLocation.
+    Reference to the gamepad from the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API">Gamepad API</a>
 </div>
 
 
@@ -469,7 +449,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line132">line 132</a>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line221">line 221</a>
     </li></ul></dd>
     
 
@@ -487,13 +467,80 @@
 
         
             
-<h4 class="name" id="keysToDown"><span class="type-signature">(private) </span>keysToDown<span class="type-signature"></span></h4>
+<h4 class="name" id="inputMatch"><span class="type-signature">(private) </span>inputMatch<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    Set of keys that are currently being pressed. Accessed through <a href="module-input-MicrogameKeyboard.html#getAnyInput">module:input~MicrogameKeyboard#getAnyInput</a> and <a href="module-input-MicrogameKeyboard.html#getInput">module:input~MicrogameKeyboard#getInput</a>.
+    Regex to match input values.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>/(-)?(axes|buttons)(\d)+/</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line250">line 250</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="sensitivity"><span class="type-signature">(private) </span>sensitivity<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    How much input do we want to recieve from a gamepad before we translate it into output?
 </div>
 
 
@@ -531,7 +578,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line118">line 118</a>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line225">line 225</a>
     </li></ul></dd>
     
 
@@ -571,12 +618,12 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="module-input-MicrogameInput.html#stateTracker">module:input~MicrogameInput#stateTracker</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -634,7 +681,7 @@
 
 
 <div class="description">
-    Called whenever a game starts. Resets the module:input~MicrogameKeyboard#interruptInput Down and Up bindings. Also sets <a href="module-input-MicrogameKeyboard.html#gameLocation">module:input~MicrogameKeyboard#gameLocation</a>.
+    Resets <a href="module-input-MicrogameInput.html#stateTracker">module:input~MicrogameInput#stateTracker</a> and <a href="module-input-MicrogameInput.html#currBinding">module:input~MicrogameInput#currBinding</a> based on game. If the game’s bindings exist in MicrogameInput.baseBindings, use those. Otherwise, use “all”.
 </div>
 
 
@@ -686,7 +733,7 @@
 
             
 
-            <td class="description last"><a href="module-gameloader-GameLoader.html#game">module:gameloader~GameLoader#game</a></td>
+            <td class="description last">Current game being played.</td>
         </tr>
 
     
@@ -732,7 +779,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line204">line 204</a>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -768,7 +815,7 @@
     
 
     
-    <h4 class="name" id="getAnyInput"><span class="type-signature"></span>getAnyInput<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="getAnyInput"><span class="type-signature"></span>getAnyInput<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -816,7 +863,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line183">line 183</a>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line276">line 276</a>
     </li></ul></dd>
     
 
@@ -845,22 +892,10 @@
 
         
 <div class="param-desc">
-    {control: key, type: MicrogameKeyboard} being pressed if it detects any input. null otherwise.
+    If any input from the gamepad is being pressed.
 </div>
 
 
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
 
     
 
@@ -930,7 +965,7 @@
 
             
 
-            <td class="description last">The key code that we’re checking for</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -971,7 +1006,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line196">line 196</a>
+        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line257">line 257</a>
     </li></ul></dd>
     
 
@@ -1000,7 +1035,7 @@
 
         
 <div class="param-desc">
-    Is the key code that we’re checking for being pressed?
+    if the control is being pressed.
 </div>
 
 
@@ -1018,189 +1053,6 @@
 </dl>
 
     
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="interruptInputDown"><span class="type-signature">(private) </span>interruptInputDown<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    When any key is pressed, check to see if it’s a <a href="module-input-MicrogameKeyboard.html#baseBindings">baseBinding</a> (i.e., an allowed keyboard press). If so, press it. If not, add it to the list of keys to be queried for input (<a href="module-input-MicrogameKeyboard.html#keysToDown">module:input~MicrogameKeyboard#keysToDown</a>).
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line148">line 148</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Fix to work so that you can send keys in place of the standard arrows.</li>
-        </ul>
-    </dd>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="interruptInputUp"><span class="type-signature"></span>interruptInputUp<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <a href="module-input-MicrogameKeyboard.html#interruptInputDown">module:input~MicrogameKeyboard#interruptInputDown</a>, but for when keys are released. And so delete from <a href="module-input-MicrogameKeyboard.html#keysToDown">module:input~MicrogameKeyboard#keysToDown</a>.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_input.js.html">lib/input.js</a>, <a href="lib_input.js.html#line166">line 166</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1242,12 +1094,12 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="module-input-MicrogameInput.html#update">module:input~MicrogameInput#update</a>
     </li></ul></dd>
-    
-
     
 
     

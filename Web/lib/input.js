@@ -1,4 +1,8 @@
 import GlobalGameLoader from "../gameloader.js";
+/**
+ * For managing global inputs.
+ * @file
+ */
 
 /** 
  * Input module, for detecting global keyboard and controller input.
@@ -205,9 +209,23 @@ class MicrogameKeyboard extends MicrogameInput {
     }
 }
 
+/**
+ * For controlling the game by gamepad.
+ * Translates gamepad input to keyboard output.
+ * @extends module:input~MicrogameInput
+ */
 class MicrogameGamepad extends MicrogameInput {
+    /**
+     * Reference to the gamepad from the [Gamepad API]{@link https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API}
+     */
     #gamepad;
+    /**
+     * How much input do we want to recieve from a gamepad before we translate it into output?
+     */
     #sensitivity = 0.4;
+    /**
+     * Binding of [Gamepad API]{@link https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API} specific controls to key codes.
+     */
     static bindings = new Map([
         ["all", new Map([["-axes1", "ArrowUp"],
         ["axes1", "ArrowDown"],
@@ -216,13 +234,26 @@ class MicrogameGamepad extends MicrogameInput {
         ["buttons0", " "]])]
     ]);
 
+    /**
+     * @constructs MicrogameGamepad
+     * @param {Gamepad} gamepad A gamepad from the [Gamepad API]{@link https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API}
+     */
     constructor(gamepad) {
         super();
         this.#gamepad = gamepad;
     }
 
+    /**
+     * Regex to match input values.
+     * @default /(-)?(axes|buttons)(\d)+/
+     */
     #inputMatch = /(-)?(axes|buttons)(\d)+/;
 
+    /**
+     * 
+     * @param {string} control 
+     * @returns {boolean} if the control is being pressed.
+     */
     getInput(control) {
         if (typeof control === "string"){
             var inputVal = this.#inputMatch.exec(control);
@@ -238,6 +269,10 @@ class MicrogameGamepad extends MicrogameInput {
         }
     }
 
+    /**
+     * 
+     * @returns If any input from the gamepad is being pressed.
+     */
     getAnyInput() {
         this.#gamepad.axes.forEach((axis, index) => {
             if (this.getInput("axes" + index)) {
@@ -255,24 +290,67 @@ class MicrogameGamepad extends MicrogameInput {
     }
 }
 
+/**
+ * Manages ALL inputs for the Microgame Jam.
+ */
 class MicrogameInputManager {
+    /**
+     * Default dictionary of how arrow key presses are controlled by bindings.
+     * @default getBindingsStrings("all")
+     * @see {@link module:input~MicrogameInputManager#getBindingsStrings}
+     * @type {Object.<string, string>}
+     */
     #defaultBindingStrings = {};
+    /**
+     * Default list of how arrow key presses are controlled by bindings.
+     * @default getBindingsStringsByBindingName("all")
+     * @see {@link module:input~MicrogameInputManager#getBindingsStringsByBindingName}
+     * @type {Object.<string, string>}
+     */
     #defaultBindingStringsByBindingName = {};
+    /**
+     * Default bindings for controls.
+     * Set in constructor.
+     * @default getBindings("all")
+     * @see {@link module:input~MicrogameInputManager#getAllBindings, getAllBindings("all")}
+     * @type {Object.<string, Map.<string, type>>}
+     */
     #defaultBindings;
     
+    /**
+     * The keys currently being pressed.
+     * @type {Set}
+     */
     #keysDown = new Set();
+    /**
+     * List of all input methods.
+     * @default {"keyboard": new MicrogameKeyboard()};
+     */
     #microgameInputs = { "keyboard": new MicrogameKeyboard()};
 
+    /**
+     * @constructs MicrogameInputManager
+     */
     constructor() {
         this.#defaultBindings = this.getAllBindings("all");
         this.#defaultBindingStrings = this.getBindingsStrings("all");
         this.#defaultBindingStringsByBindingName = this.getBindingsStringsByBindingName("all");
     }
 
+    /**
+     * Returns {@link module:input~MicrogameInputManager#defaultBindingStrings}
+     * @readonly
+     */
     get defaultBindingStrings() {
         return this.#defaultBindingStrings;
     }
 
+    /**
+     * Called exclusively by {@link module:optionsmanager~OptionsManager}.
+     * @param {string} game Game Name 
+     * @param {string} direction Something like "ArrowUp" or "ArrowLeft".
+     * @param {Array.<{type: type, control: string}, string>} option Settings array for one direction from one game.
+     */
     setBindingFromOption(game, direction, option) {
         option.forEach((bindingObj, bindingName) => {
             var type = bindingObj.type;
@@ -289,10 +367,20 @@ class MicrogameInputManager {
         });
     }
 
+    /**
+     * Does the current game differ from our default bindings?
+     * @param {string} game  Game Name
+     * @returns {boolean}
+     */
     hasAdjustedBindings(game) {
         return MicrogameKeyboard.bindings.has(game) || MicrogameGamepad.bindings.has(game);
     }
 
+    /**
+     * 
+     * @param {string} game Game Name 
+     * @returns {Object.<string, Map.<string, type>>} A dictionary of bindings by the keys to press. Each binding associates with a map that associates with a specific control (i.e., an input from {@link module:input~MicrogameInput}) and the associated type of {@link module:input~MicrogameInput}. 
+     */
     getAllBindings(game) {
         var bindings = {};
 
@@ -315,6 +403,12 @@ class MicrogameInputManager {
         return bindings;
     }
 
+    /**
+     * 
+     * @param {string} game  Game Name
+     * @param {string} bindingName The arrow key to bind to as what's pressed when binding is pressed (it's confusing, I'm sorry)
+     * @param {{control: string, type: type}} binding The control pressed to add as a binding. Grabbed from {@link module:input~MicrogameInput} from children's getAnyInput function.
+     */
     addBinding(game, bindingName, binding){
         var map = binding.type.bindings;
         if (!map.has(game)) {
@@ -325,6 +419,12 @@ class MicrogameInputManager {
         map.get(game).set(binding.control, bindingName);
     }
 
+    /**
+     * 
+     * @param {string} game Game Name 
+     * @param {{control: string, type: type}} binding The control that's been pressed.
+     * @returns {boolean} Is this control bound somewhere?
+     */
     hasBinding(game, binding) {
         var map = binding.type.bindings;
         if (!map.has(game)) {
@@ -333,6 +433,11 @@ class MicrogameInputManager {
         return {has: map.get(game).has(binding.control), bindingName: map.get(game).get(binding.control)};
     } 
 
+    /**
+     * Clear all the bindings for a given game and direction.
+     * @param {string} game Game Name 
+     * @param {string} bindingName Direction (ArrowUp, ArrowLeft, etc.)
+     */
     clearBindings(game, bindingName) {
         if (!this.hasAdjustedBindings(game)) {
             MicrogameGamepad.bindings.set(game, MicrogameGamepad.bindings.get("all"));
@@ -351,12 +456,22 @@ class MicrogameInputManager {
         });
     }
 
+    /**
+     * Reset a game's bindings to their default values.
+     * @param {string} game Game Name 
+     * @param {string} bindingName Direction (ArrowUp, ArrowLeft, etc.)
+     */
     resetBindings(game, bindingName) {
         this.#defaultBindings[bindingName].forEach((bindingObj, binding) => {
             bindingObj.type.bindings.get(game).set(binding, bindingName);
         });
     }
 
+    /**
+     * 
+     * @param {string} game Game Name
+     * @returns {Object.<string, string>} Dictionary of how arrow key presses relate to input bindings (i.e., what bindings represent what arrow key presses, but in reverse.)
+     */
     getBindingsStrings(game) {
         if (!this.hasAdjustedBindings(game)) {
             return this.#defaultBindingStrings;
@@ -392,6 +507,11 @@ class MicrogameInputManager {
         return s;
     }
 
+    /**
+     * Like {@link module:input~MicrogameInputManager#getBindingsStrings}, except meant to be formatted in a more display friendly format. Used exclusively by {@link module:optionsmanager}.
+     * @param {string} game Game Name 
+     * @returns {Object.<string, string>} Dictionary of how arrow key presses relate to input bindings (i.e., what bindings represent what arrow key presses, but in reverse.)
+     */
     getBindingsStringsByBindingName(game) {
         if (!this.hasAdjustedBindings(game)) {
             return this.#defaultBindingStringsByBindingName;
@@ -421,6 +541,10 @@ class MicrogameInputManager {
         return s;
     }
 
+    /**
+     * From all of {@link module:input~MicrogameInputManager#microgameInputs}, check if any controls are being pressed from one.
+     * @returns A given control, or null if no input is down.
+     */
     getAnyInput() {
         for (var input in this.#microgameInputs) {
             var any = this.#microgameInputs[input].getAnyInput();
@@ -431,15 +555,38 @@ class MicrogameInputManager {
         return null;
     }
 
+    /**
+     * Callback to call after an input is recieved. Set in {@link module:input~MicrogameInputManager#captureNextInput}.
+     */
     #captureNextCallback = null;
+    /**
+     * Set {@link module:input~MicrogameInputManager#captureNextCallback}
+     * @param {function} callback To call in {@link module:input~MicrogameInputManager#updateInput}
+     * @see {@link module:input~MicrogameInputManager#cancelCaptureInput} 
+     */
     captureNextInput(callback) {
         this.#captureNextCallback = callback;
     }
+    /**
+     * Clear {@link module:input~MicrogameInputManager#captureNextCallback}
+     * @see {@link module:input~MicrogameInputManager#captureNextInput}
+     */
     cancelCaptureInput() {
         this.#captureNextCallback = null;
     }
 
+    /**
+     * The current iframe to target.
+     * @type {Element}
+     * @static
+     */
     static gameTarget = null;
+    /**
+     * Press a key to the active game.
+     * @param {string} key Keycode 
+     * @param {boolean} isDown Are we pressing up or down?
+     * @static
+     */
     static pressKey(key, isDown) {
         if (GlobalGameLoader.inGame) {
             var keyCodeConvert = {
@@ -467,6 +614,9 @@ class MicrogameInputManager {
         }
     }
 
+    /**
+     * Run every frame or so by {@link MicrogameJam#update}.
+     */
     updateInput() {
         if (!!navigator.getGamepads) {
             for (var gamepad of navigator.getGamepads()) {
@@ -502,6 +652,12 @@ class MicrogameInputManager {
         }
     }
 
+    /**
+     * Calls gameStartInput update on all the child {@link module:input~MicrogameInput}s.
+     * Sets the current game target to send inputs to.
+     * Called by {@link MicrogameJam#gameStarted}.
+     * @param {string} game Game Name
+     */
     gameStartInputUpdate(game) {
         for (var input in this.#microgameInputs) {
             this.#microgameInputs[input].gameStartInputUpdate(game);

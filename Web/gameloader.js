@@ -3,6 +3,10 @@ import GlobalAudioManager from "./lib/gamesound.js";
 import GlobalAnimManager from "./lib/animationmanager.js";
 import MainMenuManager from "./lib/options/menumanager.js";
 import iniReader from "./lib/configloader.js";
+/**
+ * For loading games.
+ * @file
+ */
 /** Game loader, for everything to do with transitions: playing animations, playing sounds, selecting the next game, changing difficulty. 
  * @module gameloader
 */
