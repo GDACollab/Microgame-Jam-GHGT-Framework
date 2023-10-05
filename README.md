@@ -12,4 +12,4 @@ Made with [JSDoc]{@link https://jsdoc.app/} (jsdoc ./web/main.js ./web/globals.j
 
 A brief diagram of how it works:
 
-<img src="diagram.png"/>
+<img src="./img/diagram.png"/>
