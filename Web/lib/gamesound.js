@@ -1,7 +1,20 @@
 import iniReader from "./configloader.js";
 
 var ini;
+/**
+ * For playing sounds.
+ * @file
+ */
 
+/**
+ * For playing sounds.
+ * @module gamesound
+ */
+
+/**
+ * A way to play sounds and vary their pitch.
+ * Used for the main menu.
+ */
 class AudioManager {
     #setupPromise;
 

@@ -48,7 +48,7 @@
 <p>I also recommend reading TODO.txt in the repository for suggested next steps: <a href="https://github.com/GDACollab/Microgame-Jam-GHGT-Framework">https://github.com/GDACollab/Microgame-Jam-GHGT-Framework</a></p>
 <p>Or you can come talk to me (Tyler, that’s me. If you don’t know who me is, come check me out: <a href="https://ambiguousname.github.io/">https://ambiguousname.github.io/</a>)</p>
 <p>The quick tutorial is available here <a href="https://gdacollab.github.io/Microgame-Jam-GHGT-Framework/tutorial-adding-games.html">https://gdacollab.github.io/Microgame-Jam-GHGT-Framework/tutorial-adding-games.html</a>.</p>
-<p>Made with <a href="https://jsdoc.app/">JSDoc</a> (jsdoc ./web/main.js ./web/globals.js ./web/gameinterface.js ./web/gameloader.js ./web/lib/input.js ./web/jam-version-assets/version-style.js ./web/lib/animationmanager.js -u ./web/tutorials -d docs -R README.md -p)</p>
+<p>Made with <a href="https://jsdoc.app/">JSDoc</a> (jsdoc ./web/main.js ./web/globals.js ./web/gameinterface.js ./web/gameloader.js ./web/lib/input.js ./web/jam-version-assets/version-style.js ./web/lib/animationmanager.js ./web/lib/configloader.js ./web/lib/markdown-it.min.js ./web/lib/gamesound.js -u ./web/tutorials -d docs -R README.md -p)</p>
 <p>A brief diagram of how it works:</p>
 <img src="./img/diagram.png"/></article>
     </section>
@@ -437,6 +437,195 @@
 
 <header>
     
+        <h2>lib/configloader.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Based on <a href="https://github.com/shockie/node-iniparser/blob/master/lib/node-iniparser.js">https://github.com/shockie/node-iniparser/blob/master/lib/node-iniparser.js</a></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Copyright (c) 2009-2010 Jordy van Gelder <jordyvangelder@gmail.com> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_configloader.js.html">lib/configloader.js</a>, <a href="lib_configloader.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>lib/gamesound.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">For playing sounds.</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_gamesound.js.html">lib/gamesound.js</a>, <a href="lib_gamesound.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
         <h2>lib/input.js</h2>
         
     
@@ -523,16 +712,112 @@
 
 
 
+
+
+
+<section>
+
+<header>
+    
+        <h2>lib/markdown-it.min.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">markdown-it 13.0.1 <a href="https://github.com/markdown-it/markdown-it">https://github.com/markdown-it/markdown-it</a></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-license">License:</dt>
+    <dd class="tag-license"><ul class="dummy"><li>MIT</li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_markdown-it.min.js.html">lib/markdown-it.min.js</a>, <a href="lib_markdown-it.min.js.html#line2">line 2</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-input.html">input</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-AnimationManager.html">AnimationManager</a></li><li><a href="module-animationmanager-CCSSAnimation.html">CCSSAnimation</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-animationmanager-CCSSGlobalAnimation.html">CCSSGlobalAnimation</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li><li><a href="tutorial-extension-construct3.html">extension-construct3</a></li><li><a href="tutorial-extension-godot.html">extension-godot</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-configloader.html">configloader</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-gamesound.html">gamesound</a></li><li><a href="module-input.html">input</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-AnimationManager.html">AnimationManager</a></li><li><a href="module-animationmanager-CCSSAnimation.html">CCSSAnimation</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-animationmanager-CCSSGlobalAnimation.html">CCSSGlobalAnimation</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-gamesound-AudioManager.html">AudioManager</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li><li><a href="tutorial-extension-construct3.html">extension-construct3</a></li><li><a href="tutorial-extension-godot.html">extension-godot</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Oct 04 2023 17:06:23 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Oct 04 2023 17:18:36 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
