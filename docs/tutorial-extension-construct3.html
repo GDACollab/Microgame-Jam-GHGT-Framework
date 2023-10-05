@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: jam-version-assets/version-style.js</title>
+    <title>JSDoc: Tutorial: extension-construct3</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,73 +17,61 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: jam-version-assets/version-style.js</h1>
+    <h1 class="page-title">Tutorial: extension-construct3</h1>
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * The javascript module for version specific styles (i.e., showing a timer)
- * @file
- */
-/**
- * The javascript module for version specific styles (i.e., showing a timer)
- * @module versionstyle
- */
-import { setUpGooglyEyes, updateGooglyEyes } from "./googly-eye.js";
 
-var ini, MicrogameJamMainManager;
+<header>
+    
 
-/**
- * Update every frame from {@link MicrogameJam}.
- * @param {boolean} isInGame Are we currently in the game? 
- */
-function versionStyleUpdate(isInGame) {
-    updateGooglyEyes();
+    <h2>extension-construct3</h2>
+</header>
 
-    if (isInGame) {
-        timerUpdate();
-    }
-}
+<article>
+    <h2>Installing</h2>
+<h3>Installation Link</h3>
+<p><a href="https://drive.google.com/file/d/18_Em6snaGC8t_jDbkTFl0hglOoM2SXXE/view?usp=sharing"><em>Please install the Construct 3 Extension here</em></a></p>
+<h3>Installation Procedure:</h3>
+<p>As per <a href="https://docs.godotengine.org/en/3.6/tutorials/plugins/editor/installing_plugins.html">the official Godot documentation</a>:</p>
+<ul>
+<li>Download the .c3addon from the link above</li>
+<li>Open Construct 3</li>
+</ul>
+<img src="img/construct3/manager.png"/>
+<ul>
+<li>Open the “Addon Manager”</li>
+</ul>
+<img src="img/construct3/install.png"/>
+<ul>
+<li>Select the “Install New Addon” button:</li>
+</ul>
+<img src="img/construct3/add.png"/>
+<ul>
+<li>Add the Controller to your game:</li>
+</ul>
+<img src="img/construct3/controller.png"/>
+<ul>
+<li><em>You'll see the option to add it in the &quot;Create new object type&quot; menu</em></li>
+</ul>
+<img src="img/construct3/scene.png"/>
+<ul>
+<li><em>The controller should be added to your level!</em></li>
+</ul>
+<h2>Exporting</h2>
+<ul>
+<li>Open Menu -&gt; Project -&gt; Export</li>
+<li>Click “Web (HTML 5)” at the top</li>
+<li>It should give you a .zip containing your project.</li>
+<li>Submit the .zip to the itch.io jam page.</li>
+</ul>
+<h2>Using the Extension</h2>
+<h3>Conditions</h3>
+<img src="img/construct3/conditions.jpg"/>
+<h3>Actions</h3>
+<img src="img/construct3/actions.jpg"/>
+</article>
 
-/**
- * Included in version-style because we might want to change how the timer animates based on the style. Called by {@link module:versionstyle#versionStyleUpdate}.
- */
-function timerUpdate() {
-    document.getElementById("timerFull").style.left = "-" + ((1 - GameInterface.getTimer()/GameInterface.getMaxTimer()) * 100) + "%";
-    var timer = GameInterface.getTimer();
-    if (timer !== -1 &amp;&amp; timer &lt;= 0) {
-        if (ini["GamesConfig"]["slightly-more-time"].includes(MicrogameJamMainManager.GameLoader.currGame)) {
-            if (GameInterface.getTimer() &lt;= -0.2){
-                GameInterface.loseGame();
-            }
-        } else {
-            GameInterface.loseGame();
-        }
-    }
-}
-
-/**
- * Set up all the initial style stuff.
- * @param {Object} config Ini file from {@link module:configloader}. 
- * @param {MicrogameJam} manager Microgame Jam manager. 
- */
-function initVersionStyle(config, manager) {
-    setUpGooglyEyes();
-    ini = config;
-    MicrogameJamMainManager = manager;
-}
-
-export {initVersionStyle, versionStyleUpdate};</code></pre>
-        </article>
-    </section>
-
-
-
+</section>
 
 </div>
 

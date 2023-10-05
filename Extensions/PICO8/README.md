@@ -42,7 +42,7 @@ end
 ```
 
 Parameter X will be replaced by the number of maximum seconds your
-microgame will be.
+microgame will be. By default it's 15 seconds. 
 
 2. Once your timer is set up, there are a few extra lines of code you will need to add to make sure your game starts *after* the timer, creating a small "buffer" window. Don't worry too much about this works - just copy and paste the code in the correct function.
 
