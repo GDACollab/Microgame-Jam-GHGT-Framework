@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: CCSSAnimationBase</title>
+    <title>JSDoc: Class: CCSSGlobalAnimation</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: CCSSAnimationBase</h1>
+    <h1 class="page-title">Class: CCSSGlobalAnimation</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-animationmanager.html">animationmanager</a>~</span>CCSSAnimationBase<span class="signature">(cssRule)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-animationmanager.html">animationmanager</a>~</span>CCSSGlobalAnimation<span class="signature">(cssRule)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Base for all animations.</div>
+            <div class="class-description">Keyframed animation that controls all other animations.Unique from other CSS animations that have keyframes in that it precisely controls when certain animations start and stop.See version-style.css for more info.</div>
         
     
 </header>
@@ -46,12 +46,16 @@
     
 
     
-    <h4 class="name" id="CCSSAnimationBase"><span class="type-signature"></span>new CCSSAnimationBase<span class="signature">(cssRule)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CCSSGlobalAnimation"><span class="type-signature"></span>new CCSSGlobalAnimation<span class="signature">(cssRule)</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    This constructor is with the assumption that the keyframes start with CCSSGLOBAL, and that you follow how CCSSGLOBAL animations are supposed to work according to version-style.css.
+</div>
 
 
 
@@ -92,7 +96,7 @@
             <td class="type">
             
                 
-<span class="param-type">CSSRule</span>
+<span class="param-type">CSSKeyframesRule</span>
 
 
             
@@ -102,7 +106,7 @@
 
             
 
-            <td class="description last">The associated CSSRule we're constructing this from (i.e., the relevant @keyframes bit)</td>
+            <td class="description last">Associated @keyframes rule.</td>
         </tr>
 
     
@@ -143,12 +147,19 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line16">line 16</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-versionstyle.html">module:versionstyle</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -175,6 +186,17 @@
 
     
     </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a></li>
+    </ul>
+
 
     
 
@@ -216,6 +238,11 @@
 
     
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#currTime">module:animationmanager~CCSSAnimationBase#currTime</a>
+    </li></ul></dd>
     
 
     
@@ -286,6 +313,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#globalParent">module:animationmanager~CCSSAnimationBase#globalParent</a>
+    </li></ul></dd>
     
 
     
@@ -359,6 +391,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#name">module:animationmanager~CCSSAnimationBase#name</a>
+    </li></ul></dd>
+    
 
     
 
@@ -421,6 +458,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#nextTimeOffset">module:animationmanager~CCSSAnimationBase#nextTimeOffset</a>
+    </li></ul></dd>
+    
 
     
 
@@ -482,6 +524,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#options">module:animationmanager~CCSSAnimationBase#options</a>
+    </li></ul></dd>
     
 
     
@@ -547,6 +594,11 @@
     
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#playStack">module:animationmanager~CCSSAnimationBase#playStack</a>
+    </li></ul></dd>
+    
 
     
 
@@ -585,13 +637,13 @@
 
         
             
-<h4 class="name" id="timeline"><span class="type-signature"></span>timeline<span class="type-signature"> :Map.&lt;number, {animations: Array.&lt;CCSSAnimationBase>, some_store: number}></span></h4>
+<h4 class="name" id="timeline"><span class="type-signature"></span>timeline<span class="type-signature"> :Map.&lt;number, {animations: Array.&lt;CCSSAnimationBase>, index: number}></span></h4>
 
 
 
 
 <div class="description">
-    A map of all the keyframes by the time that they will play at.Uses a map to guarantee insertion order.some_store is actually not set here. Rather, it will either be "index" or "percent", depending on the descendant.
+    A map of all the keyframes at the time that they will play it, by miliseconds.
 </div>
 
 
@@ -600,7 +652,7 @@
     <ul>
         <li>
             
-<span class="param-type">Map.&lt;number, {animations: Array.&lt;CCSSAnimationBase>, some_store: number}></span>
+<span class="param-type">Map.&lt;number, {animations: Array.&lt;CCSSAnimationBase>, index: number}></span>
 
 
         </li>
@@ -618,6 +670,11 @@
 
     
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#timeline">module:animationmanager~CCSSAnimationBase#timeline</a>
+    </li></ul></dd>
     
 
     
@@ -639,7 +696,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line39">line 39</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line347">line 347</a>
     </li></ul></dd>
     
 
@@ -745,6 +802,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#evaluateCCSSAnimProp">module:animationmanager~CCSSAnimationBase#evaluateCCSSAnimProp</a>
+    </li></ul></dd>
     
 
     
@@ -925,6 +987,11 @@
 
     
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#frameUpdate">module:animationmanager~CCSSAnimationBase#frameUpdate</a>
+    </li></ul></dd>
     
 
     
@@ -1108,6 +1175,11 @@
     
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#initPlay">module:animationmanager~CCSSAnimationBase#initPlay</a>
+    </li></ul></dd>
+    
 
     
 
@@ -1242,6 +1314,11 @@
 
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="module-animationmanager-CCSSAnimationBase.html#readToAnimStore">module:animationmanager~CCSSAnimationBase#readToAnimStore</a>
+    </li></ul></dd>
     
 
     

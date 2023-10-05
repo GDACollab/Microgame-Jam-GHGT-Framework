@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: CCSSAnimationBase</title>
+    <title>JSDoc: Class: AnimationManager</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: CCSSAnimationBase</h1>
+    <h1 class="page-title">Class: AnimationManager</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-animationmanager.html">animationmanager</a>~</span>CCSSAnimationBase<span class="signature">(cssRule)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-animationmanager.html">animationmanager</a>~</span>AnimationManager<span class="signature">(stylesheetLink)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Base for all animations.</div>
+            <div class="class-description">The manager for all <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a> animations.</div>
         
     
 </header>
@@ -46,12 +46,16 @@
     
 
     
-    <h4 class="name" id="CCSSAnimationBase"><span class="type-signature"></span>new CCSSAnimationBase<span class="signature">(cssRule)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="AnimationManager"><span class="type-signature"></span>new AnimationManager<span class="signature">(stylesheetLink)</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    Start building <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a>s from a given stylesheet. Factors in @import statements.
+</div>
 
 
 
@@ -86,13 +90,13 @@
 
         <tr>
             
-                <td class="name"><code>cssRule</code></td>
+                <td class="name"><code>stylesheetLink</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">CSSRule</span>
+<span class="param-type">string</span>
 
 
             
@@ -102,7 +106,7 @@
 
             
 
-            <td class="description last">The associated CSSRule we're constructing this from (i.e., the relevant @keyframes bit)</td>
+            <td class="description last">HREF to the stylesheet.</td>
         </tr>
 
     
@@ -143,7 +147,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line16">line 16</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line414">line 414</a>
     </li></ul></dd>
     
 
@@ -193,13 +197,13 @@
 
         
             
-<h4 class="name" id="currTime"><span class="type-signature"></span>currTime<span class="type-signature"></span></h4>
+<h4 class="name" id="animations"><span class="type-signature"></span>animations<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    The time when this animation started playing.
+    All possible animations, in a hierarchy tree.
 </div>
 
 
@@ -237,7 +241,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line154">line 154</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line436">line 436</a>
     </li></ul></dd>
     
 
@@ -255,13 +259,13 @@
 
         
             
-<h4 class="name" id="globalParent"><span class="type-signature"></span>globalParent<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="animationsToClean"><span class="type-signature"></span>animationsToClean<span class="type-signature"> :Array.&lt;CCSSAnimationBase></span></h4>
 
 
 
 
 <div class="description">
-    What animation this belongs to.
+    A list of animations done playing, but that we still need CSS properties to rest at. If we stop automatically, that can screw up some other animations that are dependent on the one we've stopped.Called by <a href="module-animationmanager-AnimationManager.html#cleanAnimsOfName">module:animationmanager~AnimationManager#cleanAnimsOfName</a> and <a href="module-animationmanager-AnimationManager.html#cleanAllAnims">module:animationmanager~AnimationManager#cleanAllAnims</a>.
 </div>
 
 
@@ -270,7 +274,7 @@
     <ul>
         <li>
             
-<span class="param-type">string</span>
+<span class="param-type">Array.&lt;CCSSAnimationBase></span>
 
 
         </li>
@@ -309,7 +313,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line31">line 31</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line447">line 447</a>
     </li></ul></dd>
     
 
@@ -327,13 +331,13 @@
 
         
             
-<h4 class="name" id="name"><span class="type-signature"></span>name<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="currAnimations"><span class="type-signature"></span>currAnimations<span class="type-signature"> :Array.&lt;CCSSAnimationBase></span></h4>
 
 
 
 
 <div class="description">
-    The animation name.
+    A list of the animations currently playing.
 </div>
 
 
@@ -342,7 +346,7 @@
     <ul>
         <li>
             
-<span class="param-type">string</span>
+<span class="param-type">Array.&lt;CCSSAnimationBase></span>
 
 
         </li>
@@ -381,7 +385,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line26">line 26</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line441">line 441</a>
     </li></ul></dd>
     
 
@@ -399,199 +403,13 @@
 
         
             
-<h4 class="name" id="nextTimeOffset"><span class="type-signature"></span>nextTimeOffset<span class="type-signature"></span></h4>
+<h4 class="name" id="onFinishes"><span class="type-signature"></span>onFinishes<span class="type-signature"> :Object.&lt;string, function()></span></h4>
 
 
 
 
 <div class="description">
-    If the animation is playing but needs to be delayed for a certain amount of time, how much time (in ms) we should wait. Not set in this class, but in its descendants.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line158">line 158</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="options"><span class="type-signature"></span>options<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    The options inherited from the parent <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a>, ultimately created by module:animationmanager~CCSSGlobalAnimation#playKeyframedAnimation.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line166">line 166</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="playStack"><span class="type-signature"></span>playStack<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    A stack of all the keyframes to play one after the other.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line162">line 162</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="timeline"><span class="type-signature"></span>timeline<span class="type-signature"> :Map.&lt;number, {animations: Array.&lt;CCSSAnimationBase>, some_store: number}></span></h4>
-
-
-
-
-<div class="description">
-    A map of all the keyframes by the time that they will play at.Uses a map to guarantee insertion order.some_store is actually not set here. Rather, it will either be "index" or "percent", depending on the descendant.
+    Callbacks for when an animation of a given name finishes.
 </div>
 
 
@@ -600,7 +418,7 @@
     <ul>
         <li>
             
-<span class="param-type">Map.&lt;number, {animations: Array.&lt;CCSSAnimationBase>, some_store: number}></span>
+<span class="param-type">Object.&lt;string, function()></span>
 
 
         </li>
@@ -639,7 +457,69 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line39">line 39</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line454">line 454</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="stylesheet"><span class="type-signature"></span>stylesheet<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    The stylesheet that this animation manager represents.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line427">line 427</a>
     </li></ul></dd>
     
 
@@ -667,7 +547,7 @@
     
 
     
-    <h4 class="name" id="evaluateCCSSAnimProp"><span class="type-signature"></span>evaluateCCSSAnimProp<span class="signature">(animProp)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="cleanAllAnims"><span class="type-signature"></span>cleanAllAnims<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -675,7 +555,95 @@
 
 
 <div class="description">
-    Called exclusively by <a href="module-animationmanager-CCSSAnimationBase.html#readToAnimStore">module:animationmanager~CCSSAnimationBase#readToAnimStore</a> for reading an animation property and getting data.
+    Clean every animation (i.e., stop them all from playing)
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line599">line 599</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="cleanAnimsOfName"><span class="type-signature"></span>cleanAnimsOfName<span class="signature">(name)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Clean all animations of a given name (i.e., stop them from playing)
 </div>
 
 
@@ -711,7 +679,7 @@
 
         <tr>
             
-                <td class="name"><code>animProp</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
@@ -727,7 +695,7 @@
 
             
 
-            <td class="description last">Property value for animation</td>
+            <td class="description last">Name of animation to stop.</td>
         </tr>
 
     
@@ -768,7 +736,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line52">line 52</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line583">line 583</a>
     </li></ul></dd>
     
 
@@ -793,28 +761,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    An object containing animation data.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -826,12 +772,104 @@
     
 
     
-    <h4 class="name" id="frameUpdate"><span class="type-signature"></span>frameUpdate<span class="signature">(totalPlayTime, nextTime)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="evaluateMainSheet"><span class="type-signature"></span>evaluateMainSheet<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    Evaluate the main stylesheet.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line481">line 481</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="evaluateSheet"><span class="type-signature"></span>evaluateSheet<span class="signature">(stylesheet)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Recursively find stylesheets to read with @import statements included.
+</div>
 
 
 
@@ -866,13 +904,13 @@
 
         <tr>
             
-                <td class="name"><code>totalPlayTime</code></td>
+                <td class="name"><code>stylesheet</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">StyleSheet</span>
 
 
             
@@ -882,30 +920,7 @@
 
             
 
-            <td class="description last">Total duration this animation has been playing for.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>nextTime</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The time the next keyframe will start.</td>
+            <td class="description last">The stylesheet to read.</td>
         </tr>
 
     
@@ -946,7 +961,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line122">line 122</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line462">line 462</a>
     </li></ul></dd>
     
 
@@ -955,44 +970,29 @@
     
 
     
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Animations is the result of (or an object in the shape of the result of) <a href="module-animationmanager-CCSSAnimationBase.html#readToAnimStore">module:animationmanager~CCSSAnimationBase#readToAnimStore</a>.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Make this a compilation process instead of real-time.</li>
+        </ul>
     </dd>
+    
 </dl>
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1004,7 +1004,7 @@
     
 
     
-    <h4 class="name" id="initPlay"><span class="type-signature"></span>initPlay<span class="signature">(time, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="frameUpdate"><span class="type-signature"></span>frameUpdate<span class="signature">(time)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1012,7 +1012,7 @@
 
 
 <div class="description">
-    Starts playing the animation.
+    Run every frame to update <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a>s. Called by <a href="MicrogameJam.html#update">MicrogameJam#update</a>.
 </div>
 
 
@@ -1064,30 +1064,7 @@
 
             
 
-            <td class="description last">The time from <a href="module-animationmanager-AnimationManager.html#frameUpdate">module:animationmanager~AnimationManager#frameUpdate</a>.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, Object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A set of options inherited from the parent <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a>, ultimately created by module:animationmanager~CCSSGlobalAnimation#playKeyframedAnimation</td>
+            <td class="description last">The time in ms.</td>
         </tr>
 
     
@@ -1128,7 +1105,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line150">line 150</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line490">line 490</a>
     </li></ul></dd>
     
 
@@ -1136,6 +1113,13 @@
 
     
 
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>I might update to using the Javascript Web Animation API if current timings prove to be too inconsistent: https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -1164,7 +1148,7 @@
     
 
     
-    <h4 class="name" id="readToAnimStore"><span class="type-signature"></span>readToAnimStore<span class="signature">(frame)</span><span class="type-signature"> &rarr; {Object.&lt;string, {animName: string, duration: number, selectors: Array.&lt;string>}>}</span></h4>
+    <h4 class="name" id="playKeyframedAnimation"><span class="type-signature"></span>playKeyframedAnimation<span class="signature">(name, options)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1172,7 +1156,7 @@
 
 
 <div class="description">
-    Reads a CSSKeyframeRule and stores all the relevant CCSS Information (like variable and timing information from --ANIM- variables) to a store.
+    Play a <a href="module-animationmanager-CCSSGlobalAnimation.html">module:animationmanager~CCSSGlobalAnimation</a> as long as it starts with the name CCSSGLOBAL, and it has been evaluated by this animation manager.
 </div>
 
 
@@ -1208,13 +1192,13 @@
 
         <tr>
             
-                <td class="name"><code>frame</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">CSSKeyframeRule</span>
+<span class="param-type">string</span>
 
 
             
@@ -1224,7 +1208,30 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">the name of the animation.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A set of options to load into this animation.</td>
         </tr>
 
     
@@ -1265,7 +1272,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line79">line 79</a>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line554">line 554</a>
     </li></ul></dd>
     
 
@@ -1290,28 +1297,231 @@
 
 
 
-<h5>Returns:</h5>
+
+
+
+
 
         
-<div class="param-desc">
-    Store of all frame animation values.
+            
+
+    
+
+    
+    <h4 class="name" id="stopAllAnimations"><span class="type-signature"></span>stopAllAnimations<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Stop all animations from playing.
 </div>
 
 
 
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object.&lt;string, {animName: string, duration: number, selectors: Array.&lt;string>}></span>
 
 
-    </dd>
-</dl>
+
+
+
+
+
+
+
+
+<dl class="details">
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line628">line 628</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stopAllKeyframedAnimationOf"><span class="type-signature"></span>stopAllKeyframedAnimationOf<span class="signature">(name)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Prepare a set of animations to be cleaned, then clean them using <a href="module-animationmanager-AnimationManager.html#cleanAnimsOfName">module:animationmanager~AnimationManager#cleanAnimsOfName</a>.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Animation to stop playing.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line614">line 614</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

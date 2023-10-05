@@ -19,11 +19,23 @@ class CCSSAnimationBase {
      * @param {CSSRule} cssRule The associated CSSRule we're constructing this from (i.e., the relevant @keyframes bit)
      */
     constructor(cssRule) {
+        /**
+         * The animation name.
+         * @type {string}
+         */
         this.name = cssRule.name;
-        // What animation this belongs to:
+        /**
+         * What animation this belongs to.
+         * @type {string}
+         */
         this.globalParent = "";
 
-        // Use a map to guarantee insertion order:
+        /**
+         * A map of all the keyframes by the time that they will play at.
+         * Uses a map to guarantee insertion order.
+         * some_store is actually not set here. Rather, it will either be "index" or "percent", depending on the descendant.
+         * @type {Map.<number, {animations: Array.<CCSSAnimationBase>, some_store: number}>}
+         */
         this.timeline = new Map();
 
         this.currTime = 0;
@@ -32,6 +44,11 @@ class CCSSAnimationBase {
         
     }
 
+    /**
+     * Called exclusively by {@link module:animationmanager~CCSSAnimationBase#readToAnimStore} for reading an animation property and getting data.
+     * @param {string} animProp Property value for animation
+     * @returns {{animName: string, duration: number, selectors: Array.<string>}} An object containing animation data.
+     */
     evaluateCCSSAnimProp(animProp) {
         var animDat = {};
 
@@ -54,6 +71,11 @@ class CCSSAnimationBase {
         return animDat;
     }
 
+    /**
+     * Reads a CSSKeyframeRule and stores all the relevant CCSS Information (like variable and timing information from --ANIM- variables) to a store.
+     * @param {CSSKeyframeRule} frame
+     * @returns {Object.<string, {animName: string, duration: number, selectors: Array.<string>}>} Store of all frame animation values.
+     */
     readToAnimStore(frame){
         var animationStore = {setVariables: {}};
         for (var i = 0; i < frame.style.length; i++) {
@@ -91,6 +113,12 @@ class CCSSAnimationBase {
         return animationStore;
     }
 
+    /**
+     * 
+     * @param {number} totalPlayTime Total duration this animation has been playing for.
+     * @param {number} nextTime The time the next keyframe will start.
+     * @returns {{animations: Object.<string, Object.<string, *>>, isFinished: boolean}} Animations is the result of (or an object in the shape of the result of) {@link module:animationmanager~CCSSAnimationBase#readToAnimStore}.
+     */
     frameUpdate(totalPlayTime, nextTime){
         // The offset is used for things like delays.
         if (totalPlayTime >= nextTime + this.nextTimeOffset) {
@@ -114,21 +142,58 @@ class CCSSAnimationBase {
         return null;
     }
 
+    /**
+     * Starts playing the animation.
+     * @param {number} time The time from {@link module:animationmanager~AnimationManager#frameUpdate}.
+     * @param {Object.<string, Object>} options A set of options inherited from the parent {@link module:animationmanager~CCSSAnimationBase}, ultimately created by {@link module:animationmanager~CCSSGlobalAnimation#playKeyframedAnimation} 
+     */
     initPlay(time, options){
+        /**
+         * The time when this animation started playing.
+         */
         this.currTime = time;
+        /**
+         * If the animation is playing but needs to be delayed for a certain amount of time, how much time (in ms) we should wait. Not set in this class, but in its descendants.
+         */
         this.nextTimeOffset = 0;
+        /**
+         * A stack of all the keyframes to play one after the other.
+         */
         this.playStack = Array.from(this.timeline.keys());
+        /**
+         * The options inherited from the parent {@link module:animationmanager~CCSSAnimationBase}, ultimately created by {@link module:animationmanager~CCSSGlobalAnimation#playKeyframedAnimation}.
+         */
         this.options = options;
     }
 }
 
-// Regular CSS animation with some CCSS properties to use.
+/**
+ * Regular CSS animation with some CCSS properties to use.
+ * @extends module:animationmanager~CCSSAnimationBase
+
+*/ 
 class CCSSAnimation extends CCSSAnimationBase {
-    // Takes a CSSKeyframesRule class as input.
+    /**
+     * A map of all the keyframes at the time that they will play it, by a percentage (from 0 to 100).
+     * @member {Map.<number, {animations: Array.<CCSSAnimationBase>, fraction: number}>} 
+     * @extends {module:animationmanager~CCSSAnimationBase#timeline}
+     */
+    timeline;
+    /** 
+     * @constructs CCSSAnimation
+     * @param {CSSKeyframesRule} cssRule The associated CSSRule we're constructing this from (i.e., the relevant @keyframes bit)
+     */
     constructor(cssRule){
         super(cssRule);
 
+        /**
+         * How long the animation will last for. Set in {@link module:animationmanager~CCSSAnimation#initPlay}.
+         * @type {number}
+         */
         this.duration = 0;
+        /**
+         * The elements this animation is influencing. Set in {@link module:animationmanager~CCSSAnimation#initPlay}.
+         */
         this.elements = [];
 
         for (var frame of cssRule.cssRules) {
@@ -151,6 +216,11 @@ class CCSSAnimation extends CCSSAnimationBase {
         return super.frameUpdate(totalPlayTime, nextTime);
     }
 
+    /**
+     * Called by {@link module:animationmanager~CCSSAnimation#initPlay}. This should probably be a static function.
+     * @param {Object.<string, Object>} animationObj Animation object. Ultimately generated by {@link module:animationmanager~CCSSAnimationBase#frameUpdate}.
+     * @param {HTMLElement} element An element that this animation is attached to.
+     */
     genProps(animationObj, element) {
         if ("timing-function" in animationObj) {
             element.style.animationTimingFunction = animationObj["timing-function"];
@@ -199,7 +269,11 @@ class CCSSAnimation extends CCSSAnimationBase {
         }, this);
     }
 
-    clearAnimation(){ //We keep animations so that CSS info can persist after something happens. Call this only after you want to stop ALL animations. 
+    /**
+     * We keep animations so that CSS info can persist after something happens. Call this only after you want to stop ALL animations.
+     * Should probably be static.
+     */
+    clearAnimation(){
         this.elements.forEach(function(element) {
             element.style.animationTimingFunction = "";
             element.style.animationDirection = "";
@@ -213,11 +287,19 @@ class CCSSAnimation extends CCSSAnimationBase {
     }
 }
 
-// Keyframed animation that controls all other animations.
-// Unique from other CSS animations that have keyframes in that it precisely controls when certain animations start and stop.
-// See version-style.css for more info.
+/**
+ * Keyframed animation that controls all other animations.
+ * Unique from other CSS animations that have keyframes in that it precisely controls when certain animations start and stop.
+ * See version-style.css for more info.
+ * @see {@link module:versionstyle}
+ */
 class CCSSGlobalAnimation extends CCSSAnimationBase {
-    // Takes a CSSKeyframesRule class as input. This is with the assumption that the keyframes start with CCSSGLOBAL, and that you follow how CCSSGLOBAL animations are supposed to work according to version-style.css.
+    /**
+     * This constructor is with the assumption that the keyframes start with CCSSGLOBAL, and that you follow how CCSSGLOBAL animations are supposed to work according to version-style.css.
+     * @param {CSSKeyframesRule} cssRule Associated @keyframes rule.
+     * @constructs CCSSGlobalAnimation
+     * @extends module:animationmanager~CCSSAnimationBase
+     */
     constructor(cssRule){
         super(cssRule);
 
@@ -257,6 +339,12 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
             this.timeline.set(time, timeDat);
         }
     }
+    /**
+     * A map of all the keyframes at the time that they will play it, by miliseconds.
+     * @member {Map.<number, {animations: Array.<CCSSAnimationBase>, index: number}>} 
+     * @extends {module:animationmanager~CCSSAnimationBase#timeline}
+     */
+    timeline;
 
     frameUpdate(time){
         // Because the time we pull from in CSS is in terms of seconds, we convert to that here:
@@ -320,24 +408,57 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
     }
 }
 
+/**
+ * The manager for all {@link module:animationmanager~CCSSAnimationBase} animations.
+ */
 class AnimationManager {
+    /**
+     * Start building {@link module:animationmanager~CCSSAnimationBase}s from a given stylesheet. Factors in @import statements.
+     * @constructs AnimationManager
+     * @param {string} stylesheetLink HREF to the stylesheet. 
+     */
     constructor(stylesheetLink){
         for (const sheet of document.styleSheets) {
             if (sheet.href === stylesheetLink) {
+                /**
+                 * The stylesheet that this animation manager represents.
+                 * @param {StyleSheet}
+                 */
                 this.stylesheet = sheet;
             }
         }
         if (this.stylesheet === undefined) {
             console.error("[CCSS] Could not init AnimationManager for " + stylesheetLink);
         } else {
+            /**
+             * All possible animations, in a hierarchy tree.
+             */
             this.animations = {};
+            /**
+             * A list of the animations currently playing.
+             * @type {Array.<CCSSAnimationBase>}
+             */
             this.currAnimations = [];
+            /**
+             * A list of animations done playing, but that we still need CSS properties to rest at. If we stop automatically, that can screw up some other animations that are dependent on the one we've stopped.
+             * Called by {@link module:animationmanager~AnimationManager#cleanAnimsOfName} and {@link module:animationmanager~AnimationManager#cleanAllAnims}.
+             * @type {Array.<CCSSAnimationBase>}
+             */
             this.animationsToClean = [];
         }
 
+        /**
+         * Callbacks for when an animation of a given name finishes.
+         * @type {Object.<string, function>}
+         */
         this.onFinishes = {};
     }
 
+    /**
+     * Recursively find stylesheets to read with @import statements included.
+     * @param {StyleSheet} stylesheet The stylesheet to read. 
+     * @todo Make this a compilation process instead of real-time.
+     */
     evaluateSheet(stylesheet){
         for(const rule of stylesheet.cssRules) {
             if (rule instanceof CSSKeyframesRule) {
@@ -354,12 +475,19 @@ class AnimationManager {
         }
     }
 
+    /**
+     * Evaluate the main stylesheet.
+     */
     evaluateMainSheet(){
         this.evaluateSheet(this.stylesheet);
     }
 
+    /**
+     * Run every frame to update {@link module:animationmanager~CCSSAnimationBase}s. Called by {@link MicrogameJam#update}.
+     * @param {number} time The time in ms. 
+     * @todo I might update to using the Javascript Web Animation API if current timings prove to be too inconsistent: https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API
+     */
     frameUpdate(time){
-        // I might update to using the Javascript Web Animation API if current timings prove to be too inconsistent: https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API
         
         for (var i = 0; i < this.currAnimations.length; i++) {
             var animation = this.currAnimations[i];
@@ -418,6 +546,11 @@ class AnimationManager {
         }
     }
 
+    /**
+     * Play a {@link module:animationmanager~CCSSGlobalAnimation} as long as it starts with the name CCSSGLOBAL, and it has been evaluated by this animation manager.
+     * @param {string} name the name of the animation. 
+     * @param {Object.<string, *>} options A set of options to load into this animation.
+     */
     playKeyframedAnimation(name, options = {}){
         if (name.substring(0, 10) === "CCSSGLOBAL" && this.animations[name] instanceof CCSSGlobalAnimation) {
             // Duplicate the animation:
@@ -443,6 +576,10 @@ class AnimationManager {
         }
     }
 
+    /**
+     * Clean all animations of a given name (i.e., stop them from playing)
+     * @param {string} name Name of animation to stop.
+     */
     cleanAnimsOfName(name){
         for (var i = 0; i < this.animationsToClean.length; i++) {
             var anim = this.animationsToClean[i];
@@ -456,6 +593,9 @@ class AnimationManager {
         }
     }
 
+    /**
+     * Clean every animation (i.e., stop them all from playing)
+     */
     cleanAllAnims() {
         for (var i = 0; i < this.animationsToClean.length; i++) {
             var anim = this.animationsToClean[i];
@@ -467,6 +607,10 @@ class AnimationManager {
         }
     }
 
+    /**
+     * Prepare a set of animations to be cleaned, then clean them using {@link module:animationmanager~AnimationManager#cleanAnimsOfName}.
+     * @param {string} name Animation to stop playing. 
+     */
     stopAllKeyframedAnimationOf(name) {
         for (var i = 0; i < this.currAnimations.length; i++) {
             var anim = this.currAnimations[i];
@@ -478,6 +622,9 @@ class AnimationManager {
         this.cleanAnimsOfName(name);
     }
 
+    /**
+     * Stop all animations from playing.
+     */
     stopAllAnimations() {
         this.animationsToClean = this.animationsToClean.concat(this.currAnimations.splice(0, this.currAnimations.length));
         this.cleanAllAnims();
