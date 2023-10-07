@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/options/menulib.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/options/menulib.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * For storing various main menu functions and classes to help with navigation.
  * @file
  */
@@ -22,7 +50,7 @@ class MenuVector {
      */
     #y;
     /**
-     * @param {({x: number, y: number}|Tuple.<number, number>|...number)} arguments An object representing x and y, a tuple of x and y, or an arg list of x and y.
+     * @param {({x: number, y: number}|Tuple.&lt;number, number>|...number)} arguments An object representing x and y, a tuple of x and y, or an arg list of x and y.
      * @constructs MenuVector
      */
     constructor() {
@@ -32,7 +60,7 @@ class MenuVector {
         } else if (arguments[0] instanceof MenuVector) {
             this.#x = arguments[0].x;
             this.#y = arguments[0].y;
-        } else if (!isNaN(arguments[0]) && !isNaN(arguments[1])) {
+        } else if (!isNaN(arguments[0]) &amp;&amp; !isNaN(arguments[1])) {
             this.#x = arguments[0];
             this.#y = arguments[1];
         } else {
@@ -76,14 +104,14 @@ class MenuVector {
     // Being able to set your own shorthand for macros in the script. Like .= for calling the dot product on a vector or something.
     /**
      * Add arguments to self.
-     * @param {({x: number, y: number}|Tuple.<number, number>|...number)} arguments An object representing x and y, a tuple of x and y, or an arg list of x and y.
+     * @param {({x: number, y: number}|Tuple.&lt;number, number>|...number)} arguments An object representing x and y, a tuple of x and y, or an arg list of x and y.
      * @returns {MenuVector} Self.
      */
     add() {
         if (arguments[0] instanceof MenuVector) {
             this.#x += arguments[0].x;
             this.#y += arguments[0].y;
-        } else if (!isNaN(arguments[0]) && !isNaN(arguments[1])) {
+        } else if (!isNaN(arguments[0]) &amp;&amp; !isNaN(arguments[1])) {
             this.#x += arguments[0];
             this.#y += arguments[1];
         } else {
@@ -93,14 +121,14 @@ class MenuVector {
     }
     /**
      * Subtract arguments from self.
-     * @param {({x: number, y: number}|Tuple.<number, number>|...number)} arguments An object representing x and y, a tuple of x and y, or an arg list of x and y.
+     * @param {({x: number, y: number}|Tuple.&lt;number, number>|...number)} arguments An object representing x and y, a tuple of x and y, or an arg list of x and y.
      * @returns {MenuVector} Self.
      */
     sub(otherVector) {
         if (arguments[0] instanceof MenuVector) {
             this.#x -= otherVector.x;
             this.#y -= otherVector.y;
-        } else if (!isNaN(arguments[0]) && !isNaN(arguments[1])) {
+        } else if (!isNaN(arguments[0]) &amp;&amp; !isNaN(arguments[1])) {
             this.#x -= arguments[0];
             this.#y -= arguments[1];
         } else {
@@ -184,7 +212,7 @@ class MenuVector {
 class MenuVectorField {
     /**
      * List of selectables associated with this MenuVectorField.
-     * @type {Array.<Selectable>}
+     * @type {Array.&lt;Selectable>}
      */
     #selectables;
     /**
@@ -194,7 +222,7 @@ class MenuVectorField {
     #currPos;
     /**
      * @constructs MenuVectorField
-     * @param {Array.<Selectable>} selectables 
+     * @param {Array.&lt;Selectable>} selectables 
      * @param {number} initialPos 
      */
     constructor(selectables, initialPos){
@@ -254,10 +282,10 @@ class MenuVectorField {
                     var dist = dirClose.dist(selectable.center);
 
                     var selectFullPos = selectable.fullPos;
-                    var withinRectBounds = dirClose.x >= selectFullPos.x && dirClose.x <= selectFullPos.x + selectable.element.offsetWidth && dirClose.y >= selectFullPos.y && dirClose.y <= selectFullPos.y + selectable.element.offsetHeight;
+                    var withinRectBounds = dirClose.x >= selectFullPos.x &amp;&amp; dirClose.x &lt;= selectFullPos.x + selectable.element.offsetWidth &amp;&amp; dirClose.y >= selectFullPos.y &amp;&amp; dirClose.y &lt;= selectFullPos.y + selectable.element.offsetHeight;
 
                     var actualElementDist = from.dist(selectable.center);
-                    if ((dist <= threshold || withinRectBounds) && (actualElementDist < closestDir || closestDir === -1)) {
+                    if ((dist &lt;= threshold || withinRectBounds) &amp;&amp; (actualElementDist &lt; closestDir || closestDir === -1)) {
                         closestDir = actualElementDist;
                         i = index;
                     } 
@@ -333,7 +361,7 @@ class Selectable {
         var translateMatrix = window.getComputedStyle(this.element).transform.replace(")", "").split(",");
         var left = parseFloat(translateMatrix[4]);
         var top = parseFloat( translateMatrix[5]);
-        if (!isNaN(left) && !isNaN(top)){
+        if (!isNaN(left) &amp;&amp; !isNaN(top)){
             toReturn.add(left, top);
         }
         return toReturn;
@@ -349,7 +377,7 @@ class Selectable {
         var translateMatrix = window.getComputedStyle(this.element).transform.replace(")", "").split(",");
         var left = parseFloat(translateMatrix[4]);
         var top = parseFloat( translateMatrix[5]);
-        if (!isNaN(left) && !isNaN(top)){
+        if (!isNaN(left) &amp;&amp; !isNaN(top)){
             toReturn.add(left, top);
         }
         return toReturn;
@@ -362,7 +390,7 @@ class Selectable {
      * @param {*} position Offset of position to start from.
      * @param {*} selectableFunc The {@link module:menulib~Selectable} function to call with a position to determine whether or not it's added to the array.
      * @param {*} globalParentPos The position of the current parent.
-     * @returns {Array.<Selectable>}
+     * @returns {Array.&lt;Selectable>}
      */
     static generateSelectablesArr(element, position = new MenuVector(0, 0), selectableFunc = "isSelectableWithinBounds", globalParentPos = null){
         if (element instanceof Element === false) {
@@ -378,7 +406,7 @@ class Selectable {
         if (select[selectableFunc](globalParentPos)) {
             arr.push(select);
         } else if (element.getAttribute("hidden") === null) { // If the child elements aren't hidden, keep going:
-            for (var i = 0; i < element.children.length; i++) {
+            for (var i = 0; i &lt; element.children.length; i++) {
                 var child = element.children[i];
                 var newPos = new MenuVector(select.position);
                 if (child.offsetParent === element.offsetParent) {
@@ -417,7 +445,7 @@ class Selectable {
         this.position = new MenuVector(this.element.offsetLeft, this.element.offsetTop);
         var par = this.element.parentElement;
         while (par !== null) {
-            if (par.parentElement !== null && par.parentElement.offsetParent !== par.offsetParent){
+            if (par.parentElement !== null &amp;&amp; par.parentElement.offsetParent !== par.offsetParent){
                 this.position.add(par.offsetLeft, par.offsetTop);
             }
             par = par.parentElement;
@@ -430,7 +458,7 @@ class Selectable {
      */
     isSelectable() {
         var computedStyle = window.getComputedStyle(this.element);
-        return computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer";
+        return computedStyle.display !== "none" &amp;&amp; computedStyle.visibility !== "hidden" &amp;&amp; computedStyle.cursor === "pointer";
     }
 
     /**
@@ -442,7 +470,7 @@ class Selectable {
         var computedStyle = window.getComputedStyle(this.element);
 
         // Is the HTML element positioned within the bounds of the frame?
-        var isWithinBounds = this.position.x > baseOffset.x && this.position.x < SCREEN_WIDTH + baseOffset.x && this.position.y > baseOffset.y && this.position.y < SCREEN_HEIGHT + baseOffset.y;
+        var isWithinBounds = this.position.x > baseOffset.x &amp;&amp; this.position.x &lt; SCREEN_WIDTH + baseOffset.x &amp;&amp; this.position.y > baseOffset.y &amp;&amp; this.position.y &lt; SCREEN_HEIGHT + baseOffset.y;
         
         // Next, does the CSS contribute to the position at all?
         // Assumes transforms only:
@@ -450,14 +478,36 @@ class Selectable {
         var left = parseFloat(translateMatrix[4]);
         var top = parseFloat( translateMatrix[5]);
         var isWithinCSSBounds = false;
-        if (!isNaN(left) && !isNaN(top)){
-            isWithinCSSBounds = this.position.x + left > baseOffset.x && this.position.x + left < SCREEN_WIDTH + baseOffset.x && this.position.y + top > baseOffset.y && this.position.y + top < SCREEN_HEIGHT + baseOffset.y;
-        } else if (computedStyle.transform === "none" && isWithinBounds) { // If no transform is set, we assume that the element's position is based solely on posLeft and posTop.
+        if (!isNaN(left) &amp;&amp; !isNaN(top)){
+            isWithinCSSBounds = this.position.x + left > baseOffset.x &amp;&amp; this.position.x + left &lt; SCREEN_WIDTH + baseOffset.x &amp;&amp; this.position.y + top > baseOffset.y &amp;&amp; this.position.y + top &lt; SCREEN_HEIGHT + baseOffset.y;
+        } else if (computedStyle.transform === "none" &amp;&amp; isWithinBounds) { // If no transform is set, we assume that the element's position is based solely on posLeft and posTop.
             isWithinCSSBounds = true;
         }
 
-        return isWithinCSSBounds && computedStyle.display !== "none" && computedStyle.visibility !== "hidden" && computedStyle.cursor === "pointer";
+        return isWithinCSSBounds &amp;&amp; computedStyle.display !== "none" &amp;&amp; computedStyle.visibility !== "hidden" &amp;&amp; computedStyle.cursor === "pointer";
     }
 }
 
-export {Selectable, MenuVector, MenuVectorField};
+export {Selectable, MenuVector, MenuVectorField};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-configloader.html">configloader</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-gamesound.html">gamesound</a></li><li><a href="module-input.html">input</a></li><li><a href="module-menulib.html">menulib</a></li><li><a href="module-menumanager.html">menumanager</a></li><li><a href="module-optionsmanager.html">optionsmanager</a></li><li><a href="module-picointerface.html">picointerface</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-AnimationManager.html">AnimationManager</a></li><li><a href="module-animationmanager-CCSSAnimation.html">CCSSAnimation</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-animationmanager-CCSSGlobalAnimation.html">CCSSGlobalAnimation</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-gamesound.html#~AudioManager">AudioManager</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li><li><a href="module-menulib-MenuVector.html">MenuVector</a></li><li><a href="module-menulib-MenuVectorField.html">MenuVectorField</a></li><li><a href="module-menulib-Selectable.html">Selectable</a></li><li><a href="module-menumanager-ElementCreator.html">ElementCreator</a></li><li><a href="module-menumanager-MicrogameJamMenu.html">MicrogameJamMenu</a></li><li><a href="module-menumanager-MicrogameJamMenuInputReader.html">MicrogameJamMenuInputReader</a></li><li><a href="module-optionsmanager-GameList.html">GameList</a></li><li><a href="module-picointerface-PicoInterface.html">PicoInterface</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li><li><a href="tutorial-extension-construct3.html">extension-construct3</a></li><li><a href="tutorial-extension-godot.html">extension-godot</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Oct 07 2023 16:16:16 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

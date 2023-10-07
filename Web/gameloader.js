@@ -244,6 +244,7 @@ class GameLoader {
 
     /**
      * Called by {@link MicrogameJam#update}. Only calls {@link module:picointerface~PicoInterface#picoUpdate} if the current game is running PICO-8.
+     * @todo Should we call this.picoInterface.picoUpdate(this.picoInterface)???
      */
     loadUpdate() {
         if (PicoInterface.isPicoRunning()){

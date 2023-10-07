@@ -374,7 +374,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line280">line 280</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line281">line 281</a>
     </li></ul></dd>
     
 
@@ -622,7 +622,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line274">line 274</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line275">line 275</a>
     </li></ul></dd>
     
 
@@ -901,7 +901,7 @@
 
 
 <div class="description">
-    Reference to picointerface.js.Created if a PICO-8 game is detected in <a href="module-gameloader-GameLoader.html#iframeLoaded">module:gameloader~GameLoader#iframeLoaded</a>.Updated in <a href="module-gameloader-GameLoader.html#loadUpdate">module:gameloader~GameLoader#loadUpdate</a> if it exists.
+    Reference to <a href="module-picointerface.html">picointerface.js</a>.Created if a PICO-8 game is detected in <a href="module-gameloader-GameLoader.html#iframeLoaded">module:gameloader~GameLoader#iframeLoaded</a>.Updated in <a href="module-gameloader-GameLoader.html#loadUpdate">module:gameloader~GameLoader#loadUpdate</a> if it exists.
 </div>
 
 
@@ -1254,7 +1254,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line351">line 351</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line352">line 352</a>
     </li></ul></dd>
     
 
@@ -1474,7 +1474,7 @@
 
 
 <div class="description">
-    Callback initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>. Fiddles with Unity and PICO-8 games if detected (initializes module:picointerface if detected), and tries to fix their behavior to work correctly.
+    Callback initialized in <a href="module-gameloader-GameLoader.html#setupGameLoader">setupGameLoader</a>. Fiddles with Unity and PICO-8 games if detected (initializes <a href="module-picointerface.html">module:picointerface</a> if detected), and tries to fix their behavior to work correctly.
 </div>
 
 
@@ -1518,7 +1518,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line260">line 260</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line261">line 261</a>
     </li></ul></dd>
     
 
@@ -1699,7 +1699,7 @@
 
 
 <div class="description">
-    Called by <a href="MicrogameJam.html#update">MicrogameJam#update</a>. Only calls module:picointerface~PicoInterface#picoUpdate if the current game is running PICO-8.
+    Called by <a href="MicrogameJam.html#update">MicrogameJam#update</a>. Only calls <a href="module-picointerface-PicoInterface.html#picoUpdate">module:picointerface~PicoInterface#picoUpdate</a> if the current game is running PICO-8.
 </div>
 
 
@@ -1743,7 +1743,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line248">line 248</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -1751,6 +1751,13 @@
 
     
 
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Should we call this.picoInterface.picoUpdate(this.picoInterface)???</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -1831,7 +1838,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line293">line 293</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line294">line 294</a>
     </li></ul></dd>
     
 
@@ -2079,7 +2086,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line434">line 434</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line435">line 435</a>
     </li></ul></dd>
     
 
@@ -2239,7 +2246,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line405">line 405</a>
+        <a href="gameloader.js.html">gameloader.js</a>, <a href="gameloader.js.html#line406">line 406</a>
     </li></ul></dd>
     
 
@@ -2539,13 +2546,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-configloader.html">configloader</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-gamesound.html">gamesound</a></li><li><a href="module-input.html">input</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-AnimationManager.html">AnimationManager</a></li><li><a href="module-animationmanager-CCSSAnimation.html">CCSSAnimation</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-animationmanager-CCSSGlobalAnimation.html">CCSSGlobalAnimation</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-gamesound-AudioManager.html">AudioManager</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li><li><a href="tutorial-extension-construct3.html">extension-construct3</a></li><li><a href="tutorial-extension-godot.html">extension-godot</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-configloader.html">configloader</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-gamesound.html">gamesound</a></li><li><a href="module-input.html">input</a></li><li><a href="module-menulib.html">menulib</a></li><li><a href="module-menumanager.html">menumanager</a></li><li><a href="module-optionsmanager.html">optionsmanager</a></li><li><a href="module-picointerface.html">picointerface</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-AnimationManager.html">AnimationManager</a></li><li><a href="module-animationmanager-CCSSAnimation.html">CCSSAnimation</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-animationmanager-CCSSGlobalAnimation.html">CCSSGlobalAnimation</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-gamesound.html#~AudioManager">AudioManager</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li><li><a href="module-menulib-MenuVector.html">MenuVector</a></li><li><a href="module-menulib-MenuVectorField.html">MenuVectorField</a></li><li><a href="module-menulib-Selectable.html">Selectable</a></li><li><a href="module-menumanager-ElementCreator.html">ElementCreator</a></li><li><a href="module-menumanager-MicrogameJamMenu.html">MicrogameJamMenu</a></li><li><a href="module-menumanager-MicrogameJamMenuInputReader.html">MicrogameJamMenuInputReader</a></li><li><a href="module-optionsmanager-GameList.html">GameList</a></li><li><a href="module-picointerface-PicoInterface.html">PicoInterface</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li><li><a href="tutorial-extension-construct3.html">extension-construct3</a></li><li><a href="tutorial-extension-godot.html">extension-godot</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Oct 04 2023 17:18:36 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Oct 07 2023 16:16:17 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

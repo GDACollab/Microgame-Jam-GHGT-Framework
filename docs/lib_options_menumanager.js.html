@@ -1,4 +1,32 @@
-import {OptionsManager} from "./optionsmanager.js"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/options/menumanager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/options/menumanager.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {OptionsManager} from "./optionsmanager.js"
 import {Selectable, MenuVector, MenuVectorField} from "./menulib.js"
 import GlobalAnimManager from "../animationmanager.js";
 import iniReader from "../configloader.js";
@@ -51,7 +79,7 @@ class ElementCreator {
         this._srcDir = srcDir;
         /**
          * Child elements that this class has created.
-         * @type {Array.<Element>}
+         * @type {Array.&lt;Element>}
          */
         this.elements = [];
         
@@ -66,12 +94,12 @@ class ElementCreator {
     drawElements(){
         var elementsToSearch = Object.entries(this._iniObj);
 
-        for (var i = 0; i < elementsToSearch.length; i++) {
+        for (var i = 0; i &lt; elementsToSearch.length; i++) {
             var elementName = elementsToSearch[i][0];
             var element = elementsToSearch[i][1];
 
             // If it's actually an element:
-            if (typeof element === "object" && ("img" in element || "text" in element)) {
+            if (typeof element === "object" &amp;&amp; ("img" in element || "text" in element)) {
                 var offset = [0, 0, 0];
                 if ("offset" in element) {
                     offset = element.offset.replace(/\(|\)/, "").split(",");
@@ -121,7 +149,7 @@ class ElementCreator {
 
                 var id = newElement.id;
 
-                for (var j = 0; j < timesToDupe; j++){
+                for (var j = 0; j &lt; timesToDupe; j++){
                     var dupe = newElement.cloneNode();
                     dupe.id = id + j;
                     if ("individualDiv" in element) {
@@ -253,12 +281,12 @@ class MicrogameJamMenu {
      * shouldLoop returns a boolean as to whether or not the menu's transition animation should loop.
      * backCallback is the function to call when you hit the "back" button.
      * onFinish is what to call when the menu's transition animation is finished.
-     * @type {Object.<string, {shouldLoop: function, backCallback: function, onFinish: function}>}
+     * @type {Object.&lt;string, {shouldLoop: function, backCallback: function, onFinish: function}>}
      */
     #menuMapping = {
         "credits": {
             shouldLoop: function(time, animationObj){
-                if (!this.#creditsInputsDrawn && animationObj.currFrame.index === 3) {
+                if (!this.#creditsInputsDrawn &amp;&amp; animationObj.currFrame.index === 3) {
                     this.#inputReader.resetMenuInputs();
                     if (this.#inputReader.selectableElements.length > 0){
                         this.#creditsInputsDrawn = true;
@@ -392,7 +420,7 @@ class MicrogameJamMenuInputReader {
 
     /**
      * List of elements that we can select from.
-     * @type {Array.<Selectable>}
+     * @type {Array.&lt;Selectable>}
      */
     #selectableElements = [];
 
@@ -580,4 +608,26 @@ class MicrogameJamMenuInputReader {
 
 var MainMenuManager = new MicrogameJamMenu();
 
-export default MainMenuManager;
+export default MainMenuManager;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-animationmanager.html">animationmanager</a></li><li><a href="module-configloader.html">configloader</a></li><li><a href="module-gameloader.html">gameloader</a></li><li><a href="module-gamesound.html">gamesound</a></li><li><a href="module-input.html">input</a></li><li><a href="module-menulib.html">menulib</a></li><li><a href="module-menumanager.html">menumanager</a></li><li><a href="module-optionsmanager.html">optionsmanager</a></li><li><a href="module-picointerface.html">picointerface</a></li><li><a href="module-versionstyle.html">versionstyle</a></li></ul><h3>Classes</h3><ul><li><a href="GameInterface.html">GameInterface</a></li><li><a href="MicrogameJam.html">MicrogameJam</a></li><li><a href="module-animationmanager-AnimationManager.html">AnimationManager</a></li><li><a href="module-animationmanager-CCSSAnimation.html">CCSSAnimation</a></li><li><a href="module-animationmanager-CCSSAnimationBase.html">CCSSAnimationBase</a></li><li><a href="module-animationmanager-CCSSGlobalAnimation.html">CCSSGlobalAnimation</a></li><li><a href="module-gameloader-GameLoader.html">GameLoader</a></li><li><a href="module-gamesound.html#~AudioManager">AudioManager</a></li><li><a href="module-input-MicrogameGamepad.html">MicrogameGamepad</a></li><li><a href="module-input-MicrogameInput.html">MicrogameInput</a></li><li><a href="module-input-MicrogameInputManager.html">MicrogameInputManager</a></li><li><a href="module-input-MicrogameKeyboard.html">MicrogameKeyboard</a></li><li><a href="module-menulib-MenuVector.html">MenuVector</a></li><li><a href="module-menulib-MenuVectorField.html">MenuVectorField</a></li><li><a href="module-menulib-Selectable.html">Selectable</a></li><li><a href="module-menumanager-ElementCreator.html">ElementCreator</a></li><li><a href="module-menumanager-MicrogameJamMenu.html">MicrogameJamMenu</a></li><li><a href="module-menumanager-MicrogameJamMenuInputReader.html">MicrogameJamMenuInputReader</a></li><li><a href="module-optionsmanager-GameList.html">GameList</a></li><li><a href="module-picointerface-PicoInterface.html">PicoInterface</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-adding-games.html">adding-games</a></li><li><a href="tutorial-extension-construct3.html">extension-construct3</a></li><li><a href="tutorial-extension-godot.html">extension-godot</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG_DIFFICULTY">DEBUG_DIFFICULTY</a></li><li><a href="global.html#DEBUG_TEST">DEBUG_TEST</a></li><li><a href="global.html#DEBUG_TRANSITION">DEBUG_TRANSITION</a></li><li><a href="global.html#DEBUG_TRANSITION_LIFE_LOST">DEBUG_TRANSITION_LIFE_LOST</a></li><li><a href="global.html#DEBUG_TRANSITION_LIVES">DEBUG_TRANSITION_LIVES</a></li><li><a href="global.html#DEBUG_TRANSITION_LOOP">DEBUG_TRANSITION_LOOP</a></li><li><a href="global.html#MAX_ALLOWED_TIMER">MAX_ALLOWED_TIMER</a></li><li><a href="global.html#MIN_ALLOWED_TIMER">MIN_ALLOWED_TIMER</a></li><li><a href="global.html#SCREEN_HEIGHT">SCREEN_HEIGHT</a></li><li><a href="global.html#SCREEN_WIDTH">SCREEN_WIDTH</a></li><li><a href="global.html#debugLoopTransition">debugLoopTransition</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Oct 07 2023 16:16:16 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

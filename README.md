@@ -8,7 +8,7 @@ Or you can come talk to me (Tyler, that’s me. If you don’t know who me is, c
 
 The quick tutorial is available here {@link https://gdacollab.github.io/Microgame-Jam-GHGT-Framework/tutorial-adding-games.html}.
 
-Made with [JSDoc]{@link https://jsdoc.app/} (jsdoc ./web/main.js ./web/globals.js ./web/gameinterface.js ./web/gameloader.js ./web/lib/input.js ./web/jam-version-assets/version-style.js ./web/lib/animationmanager.js ./web/lib/configloader.js ./web/lib/markdown-it.min.js ./web/lib/gamesound.js -u ./web/tutorials -d docs -R README.md -p)
+Made with [JSDoc]{@link https://jsdoc.app/} (jsdoc ./web/main.js ./web/globals.js ./web/gameinterface.js ./web/gameloader.js ./web/lib/input.js ./web/jam-version-assets/version-style.js ./web/lib/animationmanager.js ./web/lib/configloader.js ./web/lib/markdown-it.min.js ./web/lib/gamesound.js ./web/lib/picointerface.js ./web/lib/options/menulib.js ./web/lib/options/menumanager.js ./web/lib/options/optionsmanager.js -u ./web/tutorials -d docs -R README.md -p)
 
 A brief diagram of how it works:
 

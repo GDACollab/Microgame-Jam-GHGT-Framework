@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: AnimationManager</title>
+    <title>JSDoc: Class: MicrogameJamMenuInputReader</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: AnimationManager</h1>
+    <h1 class="page-title">Class: MicrogameJamMenuInputReader</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-animationmanager.html">animationmanager</a>~</span>AnimationManager<span class="signature">(stylesheetLink)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-menumanager.html">menumanager</a>~</span>MicrogameJamMenuInputReader<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">The manager for all <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a> animations.</div>
+            <div class="class-description">Read inputs for the main menu.</div>
         
     
 </header>
@@ -46,72 +46,19 @@
     
 
     
-    <h4 class="name" id="AnimationManager"><span class="type-signature"></span>new AnimationManager<span class="signature">(stylesheetLink)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="MicrogameJamMenuInputReader"><span class="type-signature"></span>new MicrogameJamMenuInputReader<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
 
-<div class="description">
-    Start building <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a>s from a given stylesheet. Factors in @import statements.
-</div>
 
 
 
 
 
 
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>stylesheetLink</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">HREF to the stylesheet.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -147,7 +94,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line414">line 414</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line391">line 391</a>
     </li></ul></dd>
     
 
@@ -197,75 +144,13 @@
 
         
             
-<h4 class="name" id="animations"><span class="type-signature"></span>animations<span class="type-signature"></span></h4>
+<h4 class="name" id="isInMenu"><span class="type-signature"></span>isInMenu<span class="type-signature"> :boolean</span></h4>
 
 
 
 
 <div class="description">
-    All possible animations, in a hierarchy tree.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line436">line 436</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="animationsToClean"><span class="type-signature"></span>animationsToClean<span class="type-signature"> :Array:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;CCSSAnimationBase:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>></span></h4>
-
-
-
-
-<div class="description">
-    A list of animations done playing, but that we still need CSS properties to rest at. If we stop automatically, that can screw up some other animations that are dependent on the one we've stopped.Called by <a href="module-animationmanager-AnimationManager.html#cleanAnimsOfName">module:animationmanager~AnimationManager#cleanAnimsOfName</a> and <a href="module-animationmanager-AnimationManager.html#cleanAllAnims">module:animationmanager~AnimationManager#cleanAllAnims</a>.
+    Are we currently in the menu? If not, we're in Microgames.
 </div>
 
 
@@ -274,7 +159,7 @@
     <ul>
         <li>
             
-<span class="param-type">Array:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;CCSSAnimationBase:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>></span>
+<span class="param-type">boolean</span>
 
 
         </li>
@@ -313,7 +198,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line447">line 447</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line522">line 522</a>
     </li></ul></dd>
     
 
@@ -331,13 +216,13 @@
 
         
             
-<h4 class="name" id="currAnimations"><span class="type-signature"></span>currAnimations<span class="type-signature"> :Array:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;CCSSAnimationBase:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>></span></h4>
+<h4 class="name" id="pauseInputTimer"><span class="type-signature">(private) </span>pauseInputTimer<span class="type-signature"> :number</span></h4>
 
 
 
 
 <div class="description">
-    A list of the animations currently playing.
+    Some time in the future that we should be pausing input for. Set in <a href="module-menumanager-MicrogameJamMenuInputReader.html#pauseInputs">module:menumanager~MicrogameJamMenuInputReader#pauseInputs</a>.
 </div>
 
 
@@ -346,7 +231,7 @@
     <ul>
         <li>
             
-<span class="param-type">Array:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;CCSSAnimationBase:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>></span>
+<span class="param-type">number</span>
 
 
         </li>
@@ -385,7 +270,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line441">line 441</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line527">line 527</a>
     </li></ul></dd>
     
 
@@ -403,13 +288,13 @@
 
         
             
-<h4 class="name" id="onFinishes"><span class="type-signature"></span>onFinishes<span class="type-signature"> :Object:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;string:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>, function()></span></h4>
+<h4 class="name" id="selectableElements"><span class="type-signature">(private) </span>selectableElements<span class="type-signature"> :Array:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;Selectable:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>></span></h4>
 
 
 
 
 <div class="description">
-    Callbacks for when an animation of a given name finishes.
+    List of elements that we can select from.
 </div>
 
 
@@ -418,7 +303,7 @@
     <ul>
         <li>
             
-<span class="param-type">Object:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;string:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>, function()></span>
+<span class="param-type">Array:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;Selectable:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>></span>
 
 
         </li>
@@ -457,7 +342,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line454">line 454</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line397">line 397</a>
     </li></ul></dd>
     
 
@@ -475,13 +360,13 @@
 
         
             
-<h4 class="name" id="stylesheet"><span class="type-signature"></span>stylesheet<span class="type-signature"></span></h4>
+<h4 class="name" id="selectableElements"><span class="type-signature">(readonly) </span>selectableElements<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    The stylesheet that this animation manager represents.
+    Return <a href="module-menumanager-MicrogameJamMenuInputReader.html#selectableElements">module:menumanager~MicrogameJamMenuInputReader#selectableElements</a>.
 </div>
 
 
@@ -519,7 +404,213 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line427">line 427</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line429">line 429</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="selectableVectorField"><span class="type-signature">(private) </span>selectableVectorField<span class="type-signature"> :MenuVectorField</span></h4>
+
+
+
+
+<div class="description">
+    The vector field we're using for the current menu state.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">MenuVectorField</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line437">line 437</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="selectablesToAdd"><span class="type-signature">(private) </span>selectablesToAdd<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Buffer of selectables to add as things we can select.Not added immediately so we can transition between menu states.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line415">line 415</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="selectedElement"><span class="type-signature">(private) </span>selectedElement<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    The current element we've selected.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line517">line 517</a>
     </li></ul></dd>
     
 
@@ -547,7 +638,7 @@
     
 
     
-    <h4 class="name" id="cleanAllAnims"><span class="type-signature"></span>cleanAllAnims<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=""><span class="type-signature"></span><span class="signature">(direction)</span><span class="type-signature"></span></h4>
     
 
     
@@ -555,95 +646,7 @@
 
 
 <div class="description">
-    Clean every animation (i.e., stop them all from playing)
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line599">line 599</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="cleanAnimsOfName"><span class="type-signature"></span>cleanAnimsOfName<span class="signature">(name)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Clean all animations of a given name (i.e., stop them from playing)
+    Mostly a wrapper for module:menumanager~MenuVectorField#getFromDir, but has some functionality for picking an element to highlight if one cannot be found.
 </div>
 
 
@@ -679,13 +682,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>direction</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">MenuVector</span>
 
 
             
@@ -695,7 +698,7 @@
 
             
 
-            <td class="description last">Name of animation to stop.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -736,7 +739,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line583">line 583</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line490">line 490</a>
     </li></ul></dd>
     
 
@@ -772,7 +775,7 @@
     
 
     
-    <h4 class="name" id="evaluateMainSheet"><span class="type-signature"></span>evaluateMainSheet<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addSelectable"><span class="type-signature"></span>addSelectable<span class="signature">(selectable)</span><span class="type-signature"></span></h4>
     
 
     
@@ -780,95 +783,7 @@
 
 
 <div class="description">
-    Evaluate the main stylesheet.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line481">line 481</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="evaluateSheet"><span class="type-signature"></span>evaluateSheet<span class="signature">(stylesheet)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Recursively find stylesheets to read with @import statements included.
+    Add a selectable to <a href="module-menumanager-MicrogameJamMenuInputReader.html#selectablesToAdd">module:menumanager~MicrogameJamMenuInputReader#selectablesToAdd</a>
 </div>
 
 
@@ -904,13 +819,13 @@
 
         <tr>
             
-                <td class="name"><code>stylesheet</code></td>
+                <td class="name"><code>selectable</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">StyleSheet</span>
+<span class="param-type">Selectable</span>
 
 
             
@@ -920,7 +835,7 @@
 
             
 
-            <td class="description last">The stylesheet to read.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -961,7 +876,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line462">line 462</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line421">line 421</a>
     </li></ul></dd>
     
 
@@ -969,13 +884,6 @@
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Make this a compilation process instead of real-time.</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -1004,7 +912,7 @@
     
 
     
-    <h4 class="name" id="frameUpdate"><span class="type-signature"></span>frameUpdate<span class="signature">(time)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="clearSelect"><span class="type-signature"></span>clearSelect<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1012,7 +920,95 @@
 
 
 <div class="description">
-    Run every frame to update <a href="module-animationmanager-CCSSAnimationBase.html">module:animationmanager~CCSSAnimationBase</a>s. Called by <a href="MicrogameJam.html#update">MicrogameJam#update</a>.
+    Clear selection of current selectables.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line470">line 470</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="pauseInputs"><span class="type-signature"></span>pauseInputs<span class="signature">(ms)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Pause recieving inputs. Set <a href="module-menumanager-MicrogameJamMenuInputReader.html#pauseInputTimer">module:menumanager~MicrogameJamMenuInputReader#pauseInputTimer</a>.
 </div>
 
 
@@ -1048,7 +1044,7 @@
 
         <tr>
             
-                <td class="name"><code>time</code></td>
+                <td class="name"><code>ms</code></td>
             
 
             <td class="type">
@@ -1064,7 +1060,7 @@
 
             
 
-            <td class="description last">The time in ms.</td>
+            <td class="description last">The duration of the input pause.</td>
         </tr>
 
     
@@ -1105,7 +1101,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line490">line 490</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line576">line 576</a>
     </li></ul></dd>
     
 
@@ -1113,13 +1109,6 @@
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>I might update to using the Javascript Web Animation API if current timings prove to be too inconsistent: https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -1148,7 +1137,7 @@
     
 
     
-    <h4 class="name" id="playKeyframedAnimation"><span class="type-signature"></span>playKeyframedAnimation<span class="signature">(name, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="readMenuInputs"><span class="type-signature"></span>readMenuInputs<span class="signature">(ev)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1156,7 +1145,7 @@
 
 
 <div class="description">
-    Play a <a href="module-animationmanager-CCSSGlobalAnimation.html">module:animationmanager~CCSSGlobalAnimation</a> as long as it starts with the name CCSSGLOBAL, and it has been evaluated by this animation manager.
+    Read an input and apply it to the menu. Called by onkeydown by the constructor of <a href="module-menumanager-MicrogameJamMenuInputReader.html">module:menumanager~MicrogameJamMenuInputReader</a>.
 </div>
 
 
@@ -1192,13 +1181,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>ev</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Event</span>
 
 
             
@@ -1208,30 +1197,7 @@
 
             
 
-            <td class="description last">the name of the animation.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>.&lt;string:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>, *:<a href="module-menumanager-MicrogameJamMenuInputReader.html"></a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A set of options to load into this animation.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -1272,7 +1238,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line554">line 554</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line534">line 534</a>
     </li></ul></dd>
     
 
@@ -1308,7 +1274,7 @@
     
 
     
-    <h4 class="name" id="stopAllAnimations"><span class="type-signature"></span>stopAllAnimations<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="resetMenuInputs"><span class="type-signature"></span>resetMenuInputs<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1316,7 +1282,7 @@
 
 
 <div class="description">
-    Stop all animations from playing.
+    Called on a menu state change. Reset inputs for a new set of selectables.Calls <a href="module-menumanager-MicrogameJamMenuInputReader.html#setUpMenuInputs">module:menumanager~MicrogameJamMenuInputReader#setUpMenuInputs</a> and <a href="module-menumanager-MicrogameJamMenuInputReader.html#clearSelect">module:menumanager~MicrogameJamMenuInputReader#clearSelect</a>.
 </div>
 
 
@@ -1360,7 +1326,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line628">line 628</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line461">line 461</a>
     </li></ul></dd>
     
 
@@ -1396,7 +1362,7 @@
     
 
     
-    <h4 class="name" id="stopAllKeyframedAnimationOf"><span class="type-signature"></span>stopAllKeyframedAnimationOf<span class="signature">(name)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setElement"><span class="type-signature"></span>setElement<span class="signature">(index)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1404,7 +1370,7 @@
 
 
 <div class="description">
-    Prepare a set of animations to be cleaned, then clean them using <a href="module-animationmanager-AnimationManager.html#cleanAnimsOfName">module:animationmanager~AnimationManager#cleanAnimsOfName</a>.
+    Select an element given an index.
 </div>
 
 
@@ -1440,13 +1406,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>index</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
             
@@ -1456,7 +1422,7 @@
 
             
 
-            <td class="description last">Animation to stop playing.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -1497,7 +1463,95 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_animationmanager.js.html">lib/animationmanager.js</a>, <a href="lib_animationmanager.js.html#line614">line 614</a>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line480">line 480</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setUpMenuInputs"><span class="type-signature"></span>setUpMenuInputs<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Called with every state change to a new menu state. Set up the current selectables and MenuVectorField from those selectables.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_options_menumanager.js.html">lib/options/menumanager.js</a>, <a href="lib_options_menumanager.js.html#line443">line 443</a>
     </li></ul></dd>
     
 
