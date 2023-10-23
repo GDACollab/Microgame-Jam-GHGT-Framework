@@ -195,7 +195,7 @@ class MicrogameJamMenu {
     }
 
     /**
-     * Returns {@link module:optionsmanager~OptionsManager#enabledGames}.
+     * Returns {@link module:optionsmanager.OptionsManager#enabledGames}.
      * @readonly
      */
     get enabledGames() {

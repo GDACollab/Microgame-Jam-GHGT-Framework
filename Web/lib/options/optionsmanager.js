@@ -12,6 +12,7 @@ import GlobalGameLoader from "../../gameloader.js";
 
 /**
  * A list of games that we can select and do options for.
+ * @extends module:menulib~Selectable
  */
 class GameList extends Selectable {
     /**
@@ -20,7 +21,8 @@ class GameList extends Selectable {
      */
     #selected = 0;
     /**
-     * 
+     * A list of options to select from.
+     * @type {{field: MenuVectorField, element: HTMLElement, selectables: Array.<Selectable>}}
      */
     #optionFields = [];
     constructor(baseElement) {
@@ -35,10 +37,23 @@ class GameList extends Selectable {
         this.#optionsSubSelect = false;
         this.#optionsPick = -1;
     }
-
+    /**
+     * Are we in the sub-selection menu for a given option?
+     * @type {boolean}
+     */
     #optionsSubSelect = false;
+    /**
+     * What set of options have we currently selected?
+     * @type {number}
+     */
     #optionsPick = -1;
 
+    /**
+     * Given an input direction (with the assumption that we are currently in the options menu), select a given option from either the list of options by game, or the sub-list of options for a game.
+     * @param {module:menulib~MenuVector} direction 
+     * @param {module:menumanager~MicrogameJamMenuInputReader} inputReader 
+     * @returns {?boolean} Did we land on a valid element and select it?
+     */
     optionsSelect(direction, inputReader){
         if (direction.x !== 0 && this.#optionFields[this.#selected].selectables[this.#optionsPick].element.type === "range") {
             var element = this.#optionFields[this.#selected].selectables[this.#optionsPick].element;
@@ -69,7 +84,11 @@ class GameList extends Selectable {
         }
     }
 
-    // Pick an element to select from a direction.
+    /**
+     * Pick an element to select from a direction.
+     * @param {module:menulib~MenuVector} direction 
+     * @param {module:menumanager~MicrogameJamMenuInputReader} inputReader 
+     */
     selectElement(direction, inputReader){
         if (this.#optionsSubSelect) {
             if (this.optionsSelect(direction, inputReader)) {
@@ -104,8 +123,10 @@ class GameList extends Selectable {
         this.select();
     }
 
-    // Actually hover over the selected element. 
-    // Called when this element is first selected (and gets overrided by selectElement for subsequent calls with the arrow keys).
+    /**
+     * Actually hover over the selected element. 
+     * Called when this element is first selected (and gets overrided by {@link module:optionsmanager~GameList#selectElement} for subsequent calls with the arrow keys).
+     */
     select() {
         if (this.#optionsSubSelect) {
             this.#optionFields[this.#selected].selectables[this.#optionsPick].element.classList.add("hover");
@@ -126,6 +147,9 @@ class GameList extends Selectable {
         }
     }
 
+    /**
+     * Click over the selected element.
+     */
     click() {
         if (this.#optionsSubSelect) {
             this.#optionFields[this.#selected].selectables[this.#optionsPick].element.click();
@@ -144,6 +168,9 @@ class GameList extends Selectable {
         }
     }
 
+    /**
+     * Clear the currently selected element.
+     */
     clearSelect() {
         if (this.#optionsSubSelect) {
             this.#optionFields[this.#selected].selectables[this.#optionsPick].element.classList.remove("hover");
@@ -153,19 +180,51 @@ class GameList extends Selectable {
     }
 }
 
+/**
+ * The global manager for options.
+ */
 export class OptionsManager {
+    /**
+     * Currently selected option.
+     */
 	#currentOption = "all";
+    /**
+     * Reference to MainMenuManager.
+     * @type {module:menumanager~MainMenuManager}
+     */
     #MainMenuManager;
+    /**
+     * Set of games to allow play for.
+     * @type {Set.<string>}
+     */
     #enabledGames = new Set();
+    /**
+     * The currently selected options element.
+     * @type {HTMLElement}
+     */
     #optionsSelect;
+    /**
+     * The list of options from localStorage. The keys are the folder IDs of games.
+     * @type {Object.<string, Map|string>}
+     */
     #optionsStorage;
 
     #onVolume;
+    /**
+     * The internal callback for when the game's volume is set. Can only be set (not gotten)
+     */
     set onVolume(val) {
         this.#onVolume = val;
         val(parseInt(localStorage.getItem("volume"))/100);
     } 
 
+    /**
+     * Constructs an options storage HTML div using localStorage for previously stored options.
+     * This is literally where all the HTML is constructed, and there's a lot of it.
+     * @constructs OptionsManager
+     * @param {module:menumanager~MainMenuManager} MainMenuManager 
+     * @todo This could probably be pre-compiled.
+     */
 	constructor(MainMenuManager) {
         this.#optionsStorage = localStorage.getItem("options");
         if (this.#optionsStorage === null) {
@@ -369,6 +428,9 @@ export class OptionsManager {
         this.optionsSave();
 	}
 
+    /**
+     * Save the options to localStorage.
+     */
     optionsSave() {
         // From https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
         localStorage.setItem("options", JSON.stringify(this.#optionsStorage, (key, value) => {
@@ -385,6 +447,11 @@ export class OptionsManager {
         }));
     }
 
+    /**
+     * Update whether or not a game has been enabled.
+     * @param {string} game Game ID.
+     * @param {Event} event Event for the checkbox.
+     */
     updateEnabled(game, event) {
         if (event.target.checked === false && this.#enabledGames.size <= 4) {
             event.target.checked = true;
@@ -404,8 +471,18 @@ export class OptionsManager {
         this.optionsSave();
     }
 
+    /**
+     * Did we press a button to bind a key?
+     */
     #selectPressed = false;
 
+    /**
+     * Update a binding when we recieve a key press from {@link module:input~MicrogameInputManager}
+     * @param {HTMLElement} target The element we're displaying the key pressed on.
+     * @param {string} game Game ID
+     * @param {string} bindingName The direction we're binding to. Usually ArrowUp, ArrowDown, ArrowLeft, ArrowRight, or Space.
+     * @param {{control: iter.value, type: module:input~MicrogameInput}} bindingPressed 
+     */
     updateBindingCapture(target, game, bindingName, bindingPressed) {
         if (!MicrogameKeyboard.allKeysDown.has(" ")) {
             this.#selectPressed = false;
@@ -437,6 +514,9 @@ export class OptionsManager {
         }
     }
 
+    /**
+     * Stop trying to find a key to bind for.
+     */
     stopBinding() {
         if (this.#bindingTarget !== null){
             this.#bindingTarget.element.innerText = GlobalInputManager.getBindingsStringsByBindingName(this.#bindingTarget.gameName)[this.#bindingTarget.bindingName];
@@ -445,8 +525,18 @@ export class OptionsManager {
         }
     }
 
+    /**
+     * The thing we're currently trying to bind.
+     * @type {{element: HTMLElement, bindingName: string, gameName: string}}
+     */
     #bindingTarget = null;
 
+    /**
+     * Start binding a game's control.
+     * @param {string} game Game ID.
+     * @param {string} bindingName Binding ID.
+     * @param {Event} event The event that started this action.
+     */
     updateBinding(game, bindingName, event) {
         if (this.#bindingTarget !== null) {
             this.stopBinding();
@@ -463,6 +553,12 @@ export class OptionsManager {
         event.currentTarget.parentElement.parentElement.querySelector(".clear-button .remap-button-text").innerText = "Clear";
     }
 
+    /**
+     * Called when the clear button gets pressed. Resets all the relevant bindings.
+     * @param {string} game Game ID
+     * @param {string} bindingName Binding ID
+     * @param {Event} ev The event that called the push to the clear button.
+     */
     clearBindButton(game, bindingName, ev) {
         if (this.#bindingTarget !== null) {
             this.stopBinding();
@@ -485,24 +581,46 @@ export class OptionsManager {
         this.optionsSave();
     }
 
+    /**
+     * Make some calls to {@link module:input~MicrogameInputManager} to reset our current bindings. Update {@link module:optionsmanager.OptionsManager#optionsStorage}.
+     * @param {string} gameName Game ID
+     * @param {string} bindingName Binding ID
+     */
     resetBindings(gameName, bindingName) {
         GlobalInputManager.resetBindings(gameName, bindingName);
         this.#optionsStorage[gameName].dir[bindingName] = GlobalInputManager.getAllBindings(gameName)[bindingName];
     }
 
+    /**
+     * Clear ALL bindings.
+     * @param {string} gameName Game ID
+     * @param {string} bindingName Binding ID
+     */
     clearBindings(gameName, bindingName) {
         GlobalInputManager.clearBindings(gameName, bindingName);
         this.#optionsStorage[gameName].dir[bindingName].clear();
     }
 
+    /**
+     * Add our current options to the selectables list in {@link module:menumanager~MainMenuManager}.
+     */
     startManagingOptions() {
         this.#MainMenuManager.addSelectable(new GameList(this.#optionsSelect));
     }
 
+    /**
+     * Return {@link module:optionsmanager.OptionsManager#enabledGames}
+     * @readonly
+     */
     get enabledGames() {
         return this.#enabledGames;
     }
 
+    /**
+     * Select a game's options to swap to.
+     * @param {string} gameName Game ID.
+     * @alias module:optionsmanager.OptionsManager#swapToOptions
+     */
 	#swapToOptions(gameName) {
         if (this.#currentOption !== gameName) {
             if (this.#bindingTarget !== null) {

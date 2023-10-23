@@ -346,7 +346,7 @@ class MicrogameInputManager {
     }
 
     /**
-     * Called exclusively by {@link module:optionsmanager~OptionsManager}.
+     * Called exclusively by {@link module:optionsmanager.OptionsManager}.
      * @param {string} game Game Name 
      * @param {string} direction Something like "ArrowUp" or "ArrowLeft".
      * @param {Array.<{type: type, control: string}, string>} option Settings array for one direction from one game.
@@ -543,7 +543,7 @@ class MicrogameInputManager {
 
     /**
      * From all of {@link module:input~MicrogameInputManager#microgameInputs}, check if any controls are being pressed from one.
-     * @returns A given control, or null if no input is down.
+     * @returns {{control: iter.value, type: MicrogameInput}} A given control, or null if no input is down.
      */
     getAnyInput() {
         for (var input in this.#microgameInputs) {

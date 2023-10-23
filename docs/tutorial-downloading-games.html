@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: optionsmanager</title>
+    <title>JSDoc: Tutorial: downloading-games</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,109 +17,60 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: optionsmanager</h1>
+    <h1 class="page-title">Tutorial: downloading-games</h1>
 
-    
-
-
-
-
-<section>
+    <section>
 
 <header>
     
+
+    <h2>downloading-games</h2>
 </header>
 
 <article>
-    <div class="container-overview">
-    
-        
-            <div class="description">For managing options (the "options" button in the menu.)</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_options_optionsmanager.js.html">lib/options/optionsmanager.js</a>, <a href="lib_options_optionsmanager.js.html#line8">line 8</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="module-optionsmanager.OptionsManager.html">OptionsManager</a></dt>
-            <dd></dd>
-        
-            <dt><a href="module-optionsmanager-GameList.html">GameList</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    <h1>How to download HTML Games from itch.io</h1>
+<p>These dinguses don't submit their games as an easily downloadable .ZIP sometimes. And that's okay. There's really only one thing to be done.</p>
+<h2>Step One: Install wget</h2>
+<p>I'd just look up how to do it if you don't have it. There are a few different ways to install.</p>
+<p>For windows though, you could try installing with chocolatey:</p>
+<p>https://chocolatey.org/install</p>
+<p>Then just run <code>choco install wget</code>.</p>
+<p>Don't trust <code>wget</code> on Windows Powershell unless you KNOW you've installed it. Microsoft just aliases <code>wget</code> to be Invoke-WebRequest, which doesn't have the functionality we're looking for.</p>
+<p>So for chocolatey, you should be able to run <code>C:\ProgramData\chocolatey\lib\Wget\tools\wget.exe</code> from powershell once installed.</p>
+<h2>Step Two: Go to the game's itch page</h2>
+<p>We'll use my Unity game with a web build as an example: (https://ambiguousname.itch.io/lights-camera-competence).</p>
+<p>Right click the &quot;Run Game&quot; button and &quot;Inspect&quot; or &quot;Inspect Element&quot; (depending on your browser). Above the button element you should see the &quot;iframe placeholder&quot; element.</p>
+<img src="./img/selecting_div.png"/>
+<p>Now look for the URL that contains <code>ssl.hwcdn.net</code> (for Unity games. <code>itch.zone</code> is also a possibility), usually under <code>data-iframe</code> or <code>iframe</code>.</p>
+<p>Copy it, and now type the following command:</p>
+<p><code>wget --page-requisites URLHERE</code></p>
+<p>So in that case, for my game it'd be:</p>
+<p><code>C:\ProgramData\chocolatey\lib\Wget\tools\wget.exe --page-requisites https://v6p9d9t4.ssl.hwcdn.net/html/4076998/index.html</code></p>
+<p>If you get something like &quot;OpenSSL failed&quot;, that means you've probably downloaded an old version of wget, and you'll need a newer one (for Windows, Chocolatey had the latest version for me. Any modern package manager should do the trick for you)</p>
+<p>But there will be some files missing for EITHER Unity or Godot (or anything that runs on web assembly and/or has a loading bar), so you'll have to do the following:</p>
+<h2>Step Three (Unity)</h2>
+<p>Unity doesn't automatically define its Javascript files for its pre-requisistes, so make sure you do:</p>
+<p><code>wget --page-requisites URLHERE/Build/WebGL.wasm</code>
+<code>wget --page-requisites URLHERE/Build/WebGL.loader.js</code>
+<code>wget --page-requisites URLHERE/Build/WebGL.framework.js</code></p>
+<p>(We include --page-requisites to place it in the same oflder as your other files)</p>
+<p>So for our example:
+<code>C:\ProgramData\chocolatey\lib\Wget\tools\wget.exe --page-requisites https://v6p9d9t4.ssl.hwcdn.net/html/4076998/Build/WebGL.wasm</code>
+<code>C:\ProgramData\chocolatey\lib\Wget\tools\wget.exe --page-requisites https://v6p9d9t4.ssl.hwcdn.net/html/4076998/Build/WebGL.loader.js</code>
+<code>C:\ProgramData\chocolatey\lib\Wget\tools\wget.exe --page-requisites https://v6p9d9t4.ssl.hwcdn.net/html/4076998/Build/WebGL.framework.js</code></p>
+<h2>Step Three (Godot)</h2>
+<p><code>wget --page-requisites URLHERE/GameName.wasm</code>
+<code>wget --page-requisites URLHERE/GameName.pck</code></p>
+<p>So for something like TacoChess (https://game-design-art-collab.itch.io/tacochess):</p>
+<p><code>wget --page-requisites https://html.itch.zone/html/7626690/index.html</code></p>
+<p><code>wget --page-requisites https://html.itch.zone/html/7626690/TacoChess.wasm</code></p>
+<p><code>wget --page-requisites https://html.itch.zone/html/7626690/TacoChess.pck</code></p>
+<p>There may be .side.wasm? Maybe? I don't know. You literally can't know unless you know what the compiled game looked like</p>
+<h2>Step Four (It's Still Broken)</h2>
+<p>Well, bully for you. Ask your jammers to provide you with an actual .zip file, because you're going to be stuck in troubleshooting hell otherwise. Why do this to yourself?</p>
 </article>
 
 </section>
-
-
-
 
 </div>
 
