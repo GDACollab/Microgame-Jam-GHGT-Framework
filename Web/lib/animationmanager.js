@@ -173,12 +173,6 @@ class CCSSAnimationBase {
 
 */ 
 class CCSSAnimation extends CCSSAnimationBase {
-    /**
-     * A map of all the keyframes at the time that they will play it, by a percentage (from 0 to 100).
-     * @member {Map.<number, {animations: Array.<CCSSAnimationBase>, fraction: number}>} 
-     * @extends {module:animationmanager~CCSSAnimationBase#timeline}
-     */
-    timeline;
     /** 
      * @constructs CCSSAnimation
      * @param {CSSKeyframesRule} cssRule The associated CSSRule we're constructing this from (i.e., the relevant @keyframes bit)
@@ -339,12 +333,6 @@ class CCSSGlobalAnimation extends CCSSAnimationBase {
             this.timeline.set(time, timeDat);
         }
     }
-    /**
-     * A map of all the keyframes at the time that they will play it, by miliseconds.
-     * @member {Map.<number, {animations: Array.<CCSSAnimationBase>, index: number}>} 
-     * @extends {module:animationmanager~CCSSAnimationBase#timeline}
-     */
-    timeline;
 
     frameUpdate(time){
         // Because the time we pull from in CSS is in terms of seconds, we convert to that here:
